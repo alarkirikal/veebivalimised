@@ -1,4 +1,0 @@
-veebivalimised
-==============
-
-Veebirakenduse loomise praktikum
