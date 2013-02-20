@@ -1,0 +1,49 @@
+﻿.pealkiri {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: xx-large;
+	font-weight: bold;
+	text-align:center;
+	padding:5mm;
+}
+
+.textCenter{
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	text-align:center;
+	padding:5mm;
+}
+
+.textLargeCenter{
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	font-size:x-large;
+	text-align:center;
+	padding:5mm;
+}
+
+.fConnectButton{
+	background-image: url('fconnect.png');
+    width: 132px;
+    height: 34px;
+}
+
+.questButton{
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	width: 129px;
+    height: 32px;
+}
+
+ #tabs {
+ border-bottom: .5em solid #03c;
+ margin: 0;
+ padding: 0;
+ }
+ #tabs li { 
+ display:inline; 
+ border-top: .1em solid #03c;
+ border-left: .1em solid #03c;
+ border-right: .1em solid #03c;
+ }
+ #tabs li a {
+ text-decoration: none;
+ padding: 0.25em 1em;
+ color: #000;
+ } 
