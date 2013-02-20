@@ -12,6 +12,16 @@
 	padding:5mm;
 }
 
+.textBold{
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	font-weight:bold;
+}
+
+.text{
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+
 .textLargeCenter{
 	font-family:Verdana, Geneva, Tahoma, sans-serif;
 	font-size:x-large;
@@ -20,7 +30,7 @@
 }
 
 .fConnectButton{
-	background-image: url('fconnect.png');
+	background-image: url('Images/fconnect.png');
     width: 132px;
     height: 34px;
 }
