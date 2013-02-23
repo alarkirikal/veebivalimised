@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Veebivalimine - Pealeht</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="http://jqueryjs.googlecode.com/files/jquery-1.3.1.min.js"></script>
+<script src="javascript.js"></script>
+</head>
+
+<body>
+
+<table width="100%">
+<tr>
+<td class="pealkiri"style="text-align:left">Veebivalimised</td>
+<td class="textCenter" style=text-align:right><img src="Images/facebook-logo.png" width="2%"/> Siim Plangi 
+<br /><a href="index.html">Logi Välja</a>
+</td>
+</tr>
+</table>
+
+<div id="wrapper">
+<div id="tabContainer">
+	<div id="tabs">
+		<ul>
+			<li id="tabHeader_1"> Avaleht </li>
+			<li id="tabHeader_2"> Hääletamine </li>
+			<li id="tabHeader_3"> Statistika Kandidaatide järgi </li>
+			<li id="tabHeader_4"> Statistika Erakondade Järgi </li>
+			<li id="tabHeader_5"> Kandideeri Valimistele </li>
+		</ul>
+	</div>
+	
+	<div id="tabscontent">
+	
+		<div class="tabpage" id="tabpage_1">
+			<div id="page_container">
+				<div>
+					<h4> Tere tulemast Veebivalimise keskonda. </h4> 
+					<p>
+						Antud keskond on loodud kahe tudengi poolt: Alar Kirikal ja Siim Plangi. <br>
+						Antud rakenduse mõte on kursuse veebirakenduse loomine raames luua e-valimis toode, <br>
+						mis võimaldab kasutajal anda hääl oma lemmik poliitikule. 
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="tabpage" id="tabpage_2">
+			<div id="page_container">
+				<div>
+			           <p class="noprinttitle">Valige valimispiirkond </p>
+			           <select class="noprint" id="selection" onChange="swapImage()">
+			           		<optgroup>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_01.png">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_02.png">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_03.png">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_04.png">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_05.png">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_06.png">Valimisringkond nr 6: Lääne-Virumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_07.png">Valimisringkond nr 7: Ida-Virumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_08.png">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_09.png">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_10.png">Valimisringkond nr 10: Tartu</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_11.png">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           		</optgroup>
+			           </select>
+				</div>
+				<div>
+			        <p><img id="imageToSwap" src="Images/Valimisringkonnad/Valimisringkond_nr_01.png"/></p>
+				</div>
+				<div>
+			       	<p class="textBold">Valitud valimispiirkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				</div>
+				<div id="scrolltable">
+					<table class="data" id="voting_table">
+						<thead>
+				       	<tr>
+					    	<th>nr</th>
+					       	<th>Kandidaadi nimi</th>
+					       	<th>Erakond</th>
+				       	</tr>
+						</thead>
+						<tbody>
+					    <tr>
+							<td>1</td>
+					       	<td>Edgar Savisaar</td>
+					       	<td>Keskerakond</td>
+				       	</tr>
+				       	<tr>
+							<td>2</td>
+					       	<td>Andrus Ansip</td>
+					       	<td>Reformierakond</td>
+				       	</tr>
+				       	<tr>
+					       	<td>3</td>
+					       	<td>Anti Taat</td>
+					       	<td>SDE</td>
+				       	</tr>
+				       	<tr>
+					       	<td>4</td>
+					       	<td>Toomas Kuusk</td>
+					       	<td>IRL</td>
+				       	</tr>
+						</tbody>
+			       	</table>
+				</div>
+				<p align="left"><button>Hääleta</button></p>
+			</div>
+		</div>
+		
+		<div class="tabpage" id="tabpage_3">
+			<div id="page_container">
+				<div>
+					<p class="noprinttitle"> Valige valimispiirkond </p>
+					<select class="noprint">
+			           	<optgroup>
+							<option>Kogu Eesti </option>
+			           		<option>Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option>Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option>Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option>Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			          		<option>Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option>Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option>Valimisringkond nr 7: Ida-Virumaa</option>
+							<option>Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option>Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option>Valimisringkond nr 10: Tartu</option>
+							<option>Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           	</optgroup>
+			        </select>
+			        <br><br>
+					<hr class="noprint">
+				</div>
+				
+				<div>
+					<p class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				</div>
+				<div id="scrolltable">
+					<table class="data" id="candidate_table">
+				       	<tr>
+				       		<th>Nimi</th>
+					      	<th>Erakond</th>
+					       	<th>%</th>
+					       	<th>Hääli kokku</th>
+				       	</tr>
+					    <tr>
+					       	<td>Edgar Savisaar</td>
+					       	<td>Keskerakond</td>
+					       	<td>22,5%</td>
+					       	<td>30000</td>
+				       	</tr>
+				       	<tr>
+				       		<td>Andrus Ansip</td>
+					       	<td>Reformierakond</td>
+					       	<td>19%</td>
+					       	<td>26000</td>
+				       	</tr>
+				       	<tr>
+				       		<td>Sven Mikser</td>
+					       	<td>SDE</td>
+					       	<td>17%</td>
+					       	<td>24000</td>
+				       	</tr>
+				       	<tr>
+				       		<td>Mart Laar</td>
+					       	<td>IRL</td>
+					       	<td>15%</td>
+					       	<td>22500</td>
+				       	</tr>
+			       	</table>
+				</div>
+				<div>
+			       		<img src="Images/Kandidaadid_chart.png"/>
+			    </div>
+			</div>
+		<input class="noprint" type="button" value="Print Current Page" onclick="printPage('#tabpage_3')" />
+		</div>
+
+		<div class="tabpage" id="tabpage_4">
+			<div id="page_container">
+				<div>
+					<p class="noprinttitle">Valige valimispiirkond </p>
+					<select class="noprint">
+			           	<optgroup>
+			           		<option>Kogu Eesti </option>
+			           		<option>Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option>Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option>Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option>Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           		<option>Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option>Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option>Valimisringkond nr 7: Ida-Virumaa</option>
+							<option>Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option>Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option>Valimisringkond nr 10: Tartu</option>
+							<option>Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           	</optgroup>
+			        </select>
+			        <br><br>
+					<hr class="noprint">
+				</div>
+				
+				<div>
+					<p class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				</div>
+				<div id="scrolltable">
+					<table class="data" id="party_table">
+						<thead>
+							<tr>
+								<th>Erakond</th>
+								<th>%</th>
+								<th>Hääli kokku</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Keskerakond</td>
+								<td>22,5%</td>
+								<td>30000</td>
+							</tr>
+							<tr>
+								<td>Reformierakond</td>
+								<td>19%</td>
+								<td>26000</td>
+							</tr>
+							<tr>
+								<td>SDE</td>
+								<td>17%</td>
+								<td>24000</td>
+							</tr>
+							<tr>
+								<td>IRL</td>
+								<td>15%</td>
+								<td>22500</td>
+							</tr>
+						</tbody>
+			       	</table>
+				</div>
+				
+				<div>
+			       		<img src="Images/Erakonnad_pie.png"/>
+				</div>
+			<input class="noprint" type="button" value="Print Current Page" onclick="printPage('#tabpage_4')" />
+		</div>
+   </div>
+        
+</div>
+</div>
+</body>
+
+</html>
