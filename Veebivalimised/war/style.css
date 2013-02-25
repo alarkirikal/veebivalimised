@@ -1,3 +1,10 @@
+﻿html{
+	max-width:1000px;
+	margin: 0 auto;
+  	background: #eee;
+  	position: relative;
+}
+
 .pealkiri {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: xx-large;
@@ -30,7 +37,7 @@
 }
 
 .fConnectButton{
-	background: url('/Images/fconnect.png');
+	background: url('Images/fconnect.png');
     width: 132px;
     height: 34px;
 }
