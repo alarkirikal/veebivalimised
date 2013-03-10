@@ -132,6 +132,26 @@ function getContent(){ // VOTE PAGE CONTENT
 	}
 }
 
+function checkApplication(){
+	if (document.getElementById("applicationArea").selectedIndex == 0){
+		new Effect.Highlight("applicationArea");
+		document.getElementById("RedX1").style.display="";
+	}
+	else {
+		document.getElementById("RedX1").style.display="none";
+	}
+	if(document.getElementById("applicationParty").selectedIndex == 0){
+		new Effect.Highlight("applicationParty");
+		document.getElementById("RedX2").style.display="";
+	}
+	else {
+		document.getElementById("RedX2").style.display="none";
+	}
+	if(document.getElementById("applicationParty").selectedIndex != 0 && document.getElementById("applicationArea").selectedIndex != 0){
+		alert("Tere avaldus on edukalt esitatud!")
+	}
+}
+
 function alertMe() {
 	alert("p2rast sorteerin vastavalt :)");	
 }

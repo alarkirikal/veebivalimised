@@ -1,4 +1,4 @@
-﻿html{
+html{
 	max-width:1000px;
 	margin: 0 auto;
   	background: #eee;
@@ -61,24 +61,13 @@
 	}
 }
 
+
+
 p.noprinttitle{
 	font-family:Verdana, Geneva, Tahoma, sans-serif;
 	font-weight:bold;
 }
 
-table.data {width:100%;min-width:240px;table-layout:fixed;text-align:center;}
-.data th {cursor:pointer;}
-.data th,.data td{padding:3px 12px;}
-.data tr {border-bottom: 1px solid #E3E3E3;}
-/* Horisontal */
-
-.txtC table .txtC td, table .txtC th, .data .txtC th, .data .txtC td{text-align:center;}
-.txtL table .txtL td, table .txtL th, .data .txtL th, .data .txtL td{text-align:left;}
-.txtR table .txtR td, table .txtR th, .data .txtR th, .data .txtR td{text-align:right;}
-/* Vertical */
-.txtT table .txtT td, table .txtT th, .data .txtT th, .data .txtT td{text-align:top;}
-.txtB table .txtB td, table .txtB th, .data .txtB th, .data .txtB td{text-align:bottom;}
-.txtM table .txtM td, table .txtM th, .data .txtM th, .data .txtM td{text-align:middle;}
 
 #loading_img {
 	text-align: center;
@@ -199,4 +188,41 @@ img{
 	/* background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFFFFF), color-stop(90%,#FFFFFF), color-stop(100%,#e4e9ed));  webkit */
 	margin:0;
 	color:#333;
+}
+
+
+/* Copyright 2006 Joost de Valk */
+a img {
+	border: 0;
+}
+table.sortable {
+	border-spacing: 0;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	border: 1px solid #000;
+	border-collapse: collapse;
+}
+
+
+table.sortable th, table.sortable td {
+	text-align: left;
+	padding: 2px 4px 2px 4px;
+	border-style: solid;
+	border-color: #444;
+}
+table.sortable th {
+	border-width: 0px 1px 1px 1px;
+}
+table.sortable td {
+	border-width: 0px 1px 0px 1px;
+}
+table.sortable tr.odd td {
+	background-color: #fff;
+}
+table.sortable tr.even td {
+	background-color: #ddd;
+}
+table.sortable tr.sortbottom td {
+	border-top: 1px solid #444;
+	background-color: #ccc;
+	font-weight: bold;
 }

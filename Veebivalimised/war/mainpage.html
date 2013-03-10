@@ -13,6 +13,8 @@
 	src="js/prototype.js"></script>
 <script language="javascript" type="text/javascript"
 	src="js/scriptaculous.js"></script>
+<script language="javascript" type="text/javascript"
+	src="js/sortable.js"></script>
 </head>
 
 <body>
@@ -85,12 +87,12 @@
 			       	<p class="textBold">Valitud valimispiirkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				</div>
 				<div 	id="scrolltable">
-					<table class="data" id="voting_table">
+					<table class="sortable" id="voting_table">
 						<thead>
 				       	<tr>
-					    	<th onClick="alertMe()">nr</th>
-					       	<th onClick="alertMe()">Kandidaadi nimi</th>
-					       	<th onClick="alertMe()">Erakond</th>
+					    	<th>nr</th>
+					       	<th>Kandidaadi nimi</th>
+					       	<th>Erakond</th>
 				       	</tr>
 						</thead>
 						<tbody>
@@ -151,7 +153,7 @@
 					<p id = "areaNameCandidates" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				
 				<div id="scrolltable">
-					<table class="data" id="candidate_table">
+					<table class="sortable" id="candidate_table">
 				       	<tr>
 				       		<th>Nimi</th>
 					      	<th>Erakond</th>
@@ -222,7 +224,7 @@
 					<p id = "areaNameParty" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				
 				<div id="scrolltable">
-					<table class="data" id="party_table">
+					<table class="sortable" id="party_table">
 						<thead>
 							<tr>
 								<th>Erakond</th>
@@ -272,22 +274,38 @@
 				Kui soovid kandideerida, siis sisesta järgnevad andmed:
 				<br/><br/>
 				
-				<form>
-					Isikukood: <input type="text" name="isikukood"/><br/>
-				</form>
-				<br/>
-					Valige erakond
-				<select>
+				Valige kandideerimispiirkond
+				<select id="applicationArea">
 					<optgroup>
+			           		<option value = "">Valimispiirkonnad</option>
+			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option value = "10">Valimisringkond nr 10: Tartu</option>
+							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			    	</optgroup>
+			    </select>
+			    <span id="RedX1" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
+				<br/><br/>
+					Valige erakond
+				<select id="applicationParty">
+					<optgroup>
+						<option>Erakonnad</option>
 						<option>Keskerakond</option>
 						<option>Reformierakond</option>
 						<option>Sotsiaaldemokraadid</option>
 						<option>IRL</option>
 						<option>Ei kandideeria erakonna all</option>
 					</optgroup>
-				</select>
+				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 				<br/><br/>
-				<a href="mainpage.html"><button>Kandideeri</button></a>
+				<button onclick="checkApplication()">Kandideeri</button>
 			</div>
 	</div>
 
