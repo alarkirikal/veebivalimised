@@ -42,8 +42,17 @@ function displayPage() {
 }
 
 // Display statistics on selection
-function displayStat() {
-
+function displayStat(tabname) {
+	Effect.Fade("statisticsAreaToAppear" + tabname, {duration: 0.5});
+	if (document.getElementById("selection" + tabname).value != "") {
+		Effect.Appear('loading_img_' + tabname);
+		window.setTimeout(function() {
+			var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
+			document.getElementById("areaName" + tabname).innerHTML = selectedOption.text
+			Effect.Appear("statisticsAreaToAppear" + tabname, {duration:0.5});
+		}, 500);
+		Effect.Fade('loading_img_' +tabname);
+	}
 }
 
 // When print is clicked
@@ -67,7 +76,7 @@ function popup(data, elem) {
 
 function getContent(){ // VOTE PAGE CONTENT 
 	start_loading();
-	
+	//If the chosen option is without a value
 	if (document.getElementById("selection").value == "") {
 		document.getElementById("ifVoteDisplayed").value = "waitabit";
 		console.log("esimese valiku algus");
@@ -81,7 +90,7 @@ function getContent(){ // VOTE PAGE CONTENT
 		}, 500);
 		return;
 	}
-	
+	//
 	if (document.getElementById("ifVoteDisplayed").value == "true") {
 		document.getElementById("ifVoteDisplayed").value = "false";
 		console.log("from 1 to 0, start");

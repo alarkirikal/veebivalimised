@@ -57,7 +57,7 @@
 			<div id="page_container">
 				<div>
 						<p class="noprinttitle">Valige valimispiirkond </p>
-						<select class="noprint" id="selection" onChange="getContent()">
+						<select class="noprint" id="selection" onchange="getContent()">
 			           		<optgroup>
 								<option value=""> Valimispiirkonnad </option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_01.png">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
@@ -84,7 +84,7 @@
 				<div>
 			       	<p class="textBold">Valitud valimispiirkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				</div>
-				<div id="scrolltable">
+				<div 	id="scrolltable">
 					<table class="data" id="voting_table">
 						<thead>
 				       	<tr>
@@ -126,29 +126,30 @@
 			<div id="page_container">
 				<div>
 					<p class="noprinttitle"> Valige valimispiirkond </p>
-					<select class="noprint" onChange="displayStat()">
+					<select class="noprint" id="selectionCandidates" onchange="displayStat('Candidates')">
 			           	<optgroup>
-							<option>Kogu Eesti </option>
-			           		<option>Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
-			           		<option>Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
-			           		<option>Valimisringkond nr 3: Mustamäe, Nõmme</option>
-			           		<option>Valimisringkond nr 4: Harjumaa, Raplamaa</option>
-			          		<option>Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
-							<option>Valimisringkond nr 6: Lääne-Virumaa</option>
-							<option>Valimisringkond nr 7: Ida-Virumaa</option>
-							<option>Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
-							<option>Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
-							<option>Valimisringkond nr 10: Tartu</option>
-							<option>Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           		<option value = "">Valimispiirkonnad </option>
+							<option value = "0">Kogu Eesti </option>
+			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			          		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option value = "10">Valimisringkond nr 10: Tartu</option>
+							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 			           	</optgroup>
-			        </select>
+			        </select> <span id="loading_img_Candidates" style="display:none;"><img src="Images/loader.gif" /></span>
 			        <br><br>
 					<hr class="noprint">
 				</div>
 				
-				<div>
-					<p class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
-				</div>
+				<div id="statisticsAreaToAppearCandidates" style="display:none; ">
+					<p id = "areaNameCandidates" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				
 				<div id="scrolltable">
 					<table class="data" id="candidate_table">
 				       	<tr>
@@ -186,37 +187,40 @@
 				<div>
 			       		<img src="Images/Kandidaadid_chart.png"/>
 			    </div>
-			</div>
+			
 		<input class="noprint" type="button" value="Print Current Page" onclick="printPage('#tabpage_3')" />
+		</div>
+		</div>
 		</div>
 
 		<div class="tabpage" id="tabpage_4">
 			<div id="page_container">
 				<div>
 					<p class="noprinttitle">Valige valimispiirkond </p>
-					<select class="noprint">
+					<select class="noprint" id="selectionParty" onchange="displayStat('Party')">
 			           	<optgroup>
-			           		<option>Kogu Eesti </option>
-			           		<option>Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
-			           		<option>Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
-			           		<option>Valimisringkond nr 3: Mustamäe, Nõmme</option>
-			           		<option>Valimisringkond nr 4: Harjumaa, Raplamaa</option>
-			           		<option>Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
-							<option>Valimisringkond nr 6: Lääne-Virumaa</option>
-							<option>Valimisringkond nr 7: Ida-Virumaa</option>
-							<option>Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
-							<option>Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
-							<option>Valimisringkond nr 10: Tartu</option>
-							<option>Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           		<option value = "">Valimispiirkonnad</option>
+			           		<option value = "0">Kogu Eesti </option>
+			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option value = "10">Valimisringkond nr 10: Tartu</option>
+							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 			           	</optgroup>
-			        </select>
+			        </select> <span id="loading_img_Party" style="display:none;"><img src="Images/loader.gif" /></span>
 			        <br><br>
 					<hr class="noprint">
 				</div>
 				
-				<div>
-					<p class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
-				</div>
+				<div id="statisticsAreaToAppearParty" style="display:none; ">
+					<p id = "areaNameParty" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				
 				<div id="scrolltable">
 					<table class="data" id="party_table">
 						<thead>
@@ -255,6 +259,7 @@
 			       		<img src="Images/Erakonnad_pie.png"/>
 				</div>
 			<input class="noprint" type="button" value="Print Current Page" onclick="printPage('#tabpage_4')" />
+		</div>
 		</div>
    </div>
    
