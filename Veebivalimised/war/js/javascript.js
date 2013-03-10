@@ -133,22 +133,25 @@ function getContent(){ // VOTE PAGE CONTENT
 }
 
 function checkApplication(){
-	if (document.getElementById("applicationArea").selectedIndex == 0){
+	var applicationAreaSelect = document.getElementById("applicationArea");
+	var applicationPartySelect = document.getElementById("applicationParty");
+	if (applicationAreaSelect.selectedIndex == 0){
 		new Effect.Highlight("applicationArea");
 		document.getElementById("RedX1").style.display="";
 	}
 	else {
 		document.getElementById("RedX1").style.display="none";
 	}
-	if(document.getElementById("applicationParty").selectedIndex == 0){
+	if(applicationPartySelect.selectedIndex == 0){
 		new Effect.Highlight("applicationParty");
 		document.getElementById("RedX2").style.display="";
 	}
 	else {
 		document.getElementById("RedX2").style.display="none";
 	}
-	if(document.getElementById("applicationParty").selectedIndex != 0 && document.getElementById("applicationArea").selectedIndex != 0){
+	if(applicationPartySelect.selectedIndex != 0 && applicationAreaSelect.selectedIndex != 0){
 		alert("Tere avaldus on edukalt esitatud!")
+		voteNow(applicationAreaSelect.options[applicationAreaSelect.selectedIndex].text, applicationPartySelect.options[applicationPartySelect.selectedIndex].text);
 	}
 }
 
@@ -156,8 +159,16 @@ function alertMe() {
 	alert("p2rast sorteerin vastavalt :)");	
 }
 
-function voteNow() {
-	alert("Muu info kaob 2ra ning tabi sisule tekib tekst \n'Olete h22letanud'");
+function voteNow(area, party) {
+	var name = "Siim Plangi"
+	document.getElementById("votedText").innerHTML  = "Teie, " + name + ",<br/> olete kandideerinud erakonnas: <b>" + party + "</b>,<br/> piirkonnas: <b>" + area + "</b>";
+	document.getElementById("notVoted").style.display = "none";
+	document.getElementById("voted").style.display = "";
+}
+
+function unVote(){
+	document.getElementById("voted").style.display = "none";
+	document.getElementById("notVoted").style.display = "";
 }
 
 function start_loading() {

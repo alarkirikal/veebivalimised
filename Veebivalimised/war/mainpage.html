@@ -190,7 +190,7 @@
 			       		<img src="Images/Kandidaadid_chart.png"/>
 			    </div>
 			
-		<input class="noprint" type="button" value="Print Current Page" onclick="printPage('#tabpage_3')" />
+		<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_3')"/>
 		</div>
 		</div>
 		</div>
@@ -260,14 +260,14 @@
 				<div>
 			       		<img src="Images/Erakonnad_pie.png"/>
 				</div>
-			<input class="noprint" type="button" value="Print Current Page" onclick="printPage('#tabpage_4')" />
+			<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_4')" />
 		</div>
 		</div>
    </div>
    
    		<div class="tabpage" id="tabpage_5">
 			<div id="page_container">
-			
+				<div id="notVoted">
 				Olete tuvastatud kui Siim Plangi.
 				<br/><br/>
 				
@@ -306,6 +306,11 @@
 				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 				<br/><br/>
 				<button onclick="checkApplication()">Kandideeri</button>
+				</div>
+				<div id="voted" style="display: none;">
+					<p id="votedText"></p>
+					<button onclick="unVote()">Tühista kandideering</button>
+				</div>
 			</div>
 	</div>
 
