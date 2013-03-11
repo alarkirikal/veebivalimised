@@ -155,10 +155,9 @@ function checkApplication(){
 	}
 }
 
-<<<<<<< HEAD
 function voteNow() {
 	alert("Muu info kaob 2ra ning tabi sisule tekib tekst \n'Olete h22letanud'");
-=======
+
 function alertMe() {
 	alert("p2rast sorteerin vastavalt :)");	
 }
