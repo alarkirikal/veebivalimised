@@ -43,6 +43,7 @@ function displayPage() {
 
 // Display statistics on selection
 function displayStat(tabname) {
+
 	Effect.Fade("statisticsAreaToAppear" + tabname, {duration: 0.5});
 	if (document.getElementById("selection" + tabname).value != "") {
 		Effect.Appear('loading_img_' + tabname);
@@ -53,11 +54,12 @@ function displayStat(tabname) {
 		}, 500);
 		Effect.Fade('loading_img_' +tabname);
 	}
+	
 }
 
 // When print is clicked
 function printPage(elem) {
-	popup($(elem).html(), elem);
+	popup(jQuery(elem).html(), elem);
 }
 
 function popup(data, elem) {
@@ -76,6 +78,7 @@ function popup(data, elem) {
 
 function getContent(){ // VOTE PAGE CONTENT 
 	start_loading();
+	
 	//If the chosen option is without a value
 	if (document.getElementById("selection").value == "") {
 		document.getElementById("ifVoteDisplayed").value = "waitabit";

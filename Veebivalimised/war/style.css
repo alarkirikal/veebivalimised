@@ -229,7 +229,7 @@ table.sortable tr.sortbottom td {
 }
 
 table.data {max-width:350; table-layout:fixed;text-align:center;}
-.data th {cursor: pointer;}
+.data th {cursor: pointer; text-decoration: none;}
 .data th,.data td{padding:3px 12px;}
 .data tr {border-bottom: 1px solid #E3E3E3;}
 /* horizontal alignment */
