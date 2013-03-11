@@ -172,7 +172,6 @@ function voteNow(area, party) {
 function unVote(){
 	document.getElementById("voted").style.display = "none";
 	document.getElementById("notVoted").style.display = "";
->>>>>>> 75a65890ae41c4172adec14395a1c9714bc801f3
 }
 
 function start_loading() {
@@ -183,6 +182,7 @@ function stop_loading() {
     Effect.Fade('loading_img', {duration:0.0});
 }
 
+//PALUN JAVASCRIPT MA ANUN SIND
 function getForm(form) {
 	var arr = new Array();
 	var nrSearched = 0;
