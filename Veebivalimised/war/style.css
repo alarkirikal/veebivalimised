@@ -226,3 +226,16 @@ table.sortable tr.sortbottom td {
 	background-color: #ccc;
 	font-weight: bold;
 }
+
+table.data {max-width:350; table-layout:fixed;text-align:center;}
+.data th {cursor: pointer;}
+.data th,.data td{padding:3px 12px;}
+.data tr {border-bottom: 1px solid #E3E3E3;}
+/* horizontal alignment */
+.txtC, table .txtC td, table .txtC th, .data .txtC th, .data .txtC td{text-align:center;}
+.txtL, table .txtL td, table .txtL th, .data .txtL th, .data .txtL td{text-align:left;}
+.txtR, table .txtR td, table .txtR th, .data .txtR th, .data .txtR td{text-align:right;}
+/* vertical alignment */
+.txtT, table .txtT td, table .txtT th, .data .txtT th, .data .txtT td{vertical-align:top;}
+.txtB, table .txtB td, table .txtB th, .data .txtB th, .data .txtB td{vertical-align:bottom;}
+.txtM, table .txtM td, table .txtM th, .data .txtM th, .data .txtM td{vertical-align:middle;}
