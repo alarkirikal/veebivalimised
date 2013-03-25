@@ -8,6 +8,10 @@
       <param-value/>
     </init-param>
   </servlet>
+  
+  <welcome-file-list>
+    <welcome-file>mainpage.html</welcome-file>
+  </welcome-file-list>
 
   <servlet-mapping>
     <servlet-name>SystemServiceServlet</servlet-name>
