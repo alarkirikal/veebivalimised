@@ -23,6 +23,7 @@ window.onload=function() {
     var tabs = container.getElementsByTagName("li");
     for (var i = 0; i < tabs.length; i++) {
 		tabs[i].onclick=displayPage;
+		
     }
 }
 
@@ -155,6 +156,8 @@ function checkApplication(){
 	if(applicationPartySelect.selectedIndex != 0 && applicationAreaSelect.selectedIndex != 0){
 		alert("Tere avaldus on edukalt esitatud!")
 		voteNow(applicationAreaSelect.options[applicationAreaSelect.selectedIndex].text, applicationPartySelect.options[applicationPartySelect.selectedIndex].text);
+		var f=document.getElementById('applicationForm');
+		f.submit();
 	}
 }
 

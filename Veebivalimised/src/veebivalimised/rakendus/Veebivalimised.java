@@ -1,6 +1,7 @@
 package veebivalimised.rakendus;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.appengine.api.rdbms.AppEngineDriver;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

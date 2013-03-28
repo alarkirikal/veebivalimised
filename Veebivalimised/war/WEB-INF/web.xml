@@ -17,5 +17,17 @@
     <servlet-name>SystemServiceServlet</servlet-name>
     <url-pattern>/_ah/spi/*</url-pattern>
   </servlet-mapping>
+  
+    <servlet>
+        <servlet-name>VeebiServlet</servlet-name>
+        <servlet-class>veebivalimised.servlet.VeebiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VeebiServlet</servlet-name>
+        <url-pattern>/vote</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>mainpage.html</welcome-file>
+    </welcome-file-list>
 
 </web-app>

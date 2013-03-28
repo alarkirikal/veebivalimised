@@ -15,6 +15,7 @@
 	src="js/scriptaculous.js"></script>
 <script language="javascript" type="text/javascript"
 	src="js/sortable.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 </head>
 
 <body>
@@ -50,7 +51,7 @@
 				<div>
 					<h4> Tere tulemast Veebivalimise keskonda. </h4> 
 					<p>
-						Antud keskond on loodud kahe tudengi poolt: Alar Kirikal ja Siim Plangi. <br>
+						Antud keskond on loodud kolme tudengi poolt: Alar Kirikal, Siim Plangi ja Argo Mändla. <br>
 						Antud rakenduse mõte on kursuse veebirakenduse loomine raames luua e-valimis toode, <br>
 						mis võimaldab kasutajal anda hääl oma lemmik poliitikule. 
 					</p>
@@ -102,12 +103,12 @@
 						<tbody>
 					    <tr>
 							<td>1</td>
-					       	<td>Edgar Savisaar</td>
+					       	<td>Roland Roos</td>
 					       	<td>Keskerakond</td>
 				       	</tr>
 				       	<tr>
 							<td>2</td>
-					       	<td>Andrus Ansip</td>
+					       	<td>Rain Vaher</td>
 					       	<td>Reformierakond</td>
 				       	</tr>
 				       	<tr>
@@ -284,7 +285,8 @@
 				<br/><br/>
 				
 				Valige kandideerimispiirkond
-				<select id="applicationArea">
+				<form id = "applicationForm" action="/vote" method = "post">
+				<select id="applicationArea" name="Area">
 					<optgroup>
 			           		<option value = "">Valimispiirkonnad</option>
 			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
@@ -303,18 +305,20 @@
 			    <span id="RedX1" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 				<br/><br/>
 					Valige erakond
-				<select id="applicationParty">
+				<select id="applicationParty" name="Party">
 					<optgroup>
-						<option>Erakonnad</option>
-						<option>Keskerakond</option>
-						<option>Reformierakond</option>
-						<option>Sotsiaaldemokraadid</option>
-						<option>IRL</option>
-						<option>Ei kandideeria erakonna all</option>
+						<optrion value ="">Erakonnad</optrion>
+						<option value = "1">Eestimaa Mustad</option>
+						<option value = "2">Eestimaa Sinised</option>
+						<option value = "3">Eestimaa Ruudulised</option>
+						<option value = "4">Eestimaa Joonelised</option>
+						<option value = "5">Eestimaa Kollased</option>
+						<option value = "6">Eestimaa Läbipaistvad</option>
 					</optgroup>
 				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 				<br/><br/>
 				<button onclick="checkApplication()">Kandideeri</button>
+				</form>
 				</div>
 				<div id="voted" style="display: none;">
 					<p id="votedText"></p>
@@ -344,10 +348,17 @@
 	</div>
 </div>
 
+<div id = "Proov">
+	<script>
+		$("#ParteiLoomine").load("ParteiLoomine.jsp");
+	</script>
+</div>
+
 <p class="paisjajalus">Rakenduses realiseeritud e-valimiste näide on realiseeritud tehnoloogiate 
 					praktiseerimise eesmärgil ning ei ole mõeldud reaalsete e-valimiste korraldamiseks.
 					 Kokkulangevused reaalse e-valimiste protsessiga on juhuslikud</p>
 
+<div id ="proov"></div>
 </body>
 
 </html>
