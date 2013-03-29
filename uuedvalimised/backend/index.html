@@ -5,30 +5,30 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>Veebivalimised</title>
 
-<link href="style.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 
 <h1 class="pealkiri">Veebivalimised</h1>
-
 <p class="textLargeCenter"> Tere tulemast veebivalimiste keskonda </p>
 
-<p class="textCenter">
-
-<a href="mainpage.html"><img src="Images/fconnect.png"/></a>
-
-<br />
-<br />
-	Hääletamiseks palun logige sisse facebooki abil
-</p>
-
-<p class = "textCenter">
-	<a href="mainpage.html"><button type="button" class="questButton">Külalisena</button></a> 
-<br />
-<br />
-	Külalisena ei saa te hääletada
-</p>
+    <form action="" method="POST">
+        <input type="hidden" name="action" value="login_auth">
+        <p class="textCenter">
+            <input type="image" src="Images/fconnect.png" onClick="this.form.submit()">
+            <br><br>
+	    Hääletamiseks palun logige sisse facebooki abil
+        </p>
+    </form>
+    <form action="" method="POST">
+        <input type="hidden" name="action" value="login_guest">
+        <p class = "textCenter">
+	    <button type="button" class="questButton" onClick="this.form.submit()">Külalisena</button>
+            <br><br>
+	    Külalisena ei saa te hääletada
+        </p>
+    </form>
 
 </body>
 

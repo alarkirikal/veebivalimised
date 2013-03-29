@@ -5,8 +5,24 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /
-  script: valimised.app
+
+- url: /main
+  script: valimised.main
+
+- url: /index
+  script: valimised.index
+
+- url: /Images
+  static_dir: Images
+
+- url: /js
+  static_dir: js
+
+- url: /css
+  static_dir: css
+
+- url: /json_temp
+  static_dir: json_temp
 
 libraries:
 - name: lxml

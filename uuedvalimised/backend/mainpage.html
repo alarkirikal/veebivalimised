@@ -4,18 +4,8 @@
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>Veebivalimine - Pealeht</title>
-<link href="style.css" rel="stylesheet" type="text/css" />
-<script language="javascript" type="text/javascript" 
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-<script language="javascript" type="text/javascript"
-	src="js/javascript.js"></script>
-<script language="javascript" type="text/javascript"
-	src="js/prototype.js"></script>
-<script language="javascript" type="text/javascript"
-	src="js/scriptaculous.js"></script>
-<script language="javascript" type="text/javascript"
-	src="js/sortable.js"></script>
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
 </head>
 
 <body>
@@ -63,7 +53,7 @@
 			<div id="page_container">
 				<div class="noprint">
 						<p class="noprinttitle">Valige valimispiirkond </p>
-						<select class="noprint" id="selection" onchange="getContent()">
+						<select class="noprint" id="selection" onChange="getContent()">
 			           		<optgroup>
 								<option value=""> Valimispiirkonnad </option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_01.png">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
@@ -277,6 +267,8 @@
    
    		<div class="tabpage" id="tabpage_5">
 			<div id="page_container">
+                            {% if session = 'login_auth' %}
+                                {% if canCandidate %}
 				<div id="notVoted">
 				Olete tuvastatud kui Siim Plangi.
 				<br/><br/>
@@ -285,7 +277,7 @@
 				<br/><br/>
 				
 				Valige kandideerimispiirkond
-				<form id = "applicationForm" action="/vote" method = "post">
+				<form id = "applicationForm" method = "post">
 				<select id="applicationArea" name="Area">
 					<optgroup>
 			           		<option value = "">Valimispiirkonnad</option>
@@ -307,7 +299,7 @@
 					Valige erakond
 				<select id="applicationParty" name="Party">
 					<optgroup>
-						<optrion value ="">Erakonnad</optrion>
+						<option value ="">Erakonnad</option>
 						<option value = "1">Eestimaa Mustad</option>
 						<option value = "2">Eestimaa Sinised</option>
 						<option value = "3">Eestimaa Ruudulised</option>
@@ -318,12 +310,27 @@
 				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 				<br/><br/>
 				<button onclick="checkApplication()">Kandideeri</button>
+                                <input type="hidden" name="toDo" value="set_candidate">
+                                <input type="hidden" name="person_id" value="1">
+                                
 				</form>
 				</div>
-				<div id="voted" style="display: none;">
-					<p id="votedText"></p>
-					<button onclick="unVote()">Tühista kandideering</button>
-				</div>
+                                {% else %}
+                                    <div id="voted">
+					<p> Olete juba kandideerinud erakonda <strong>{{ party }}</strong> piirkonnas <strong>{{ region }}</strong> </p>
+                                        <form method="POST">
+                                            <input type="hidden" name="toDo" value="delete_candidate">
+                                            <input type="hidden" name="person_id" value="1">
+                                            <button type="submit" value="submit">Tühista kandideering</button>
+                                        </form>
+				    </div>
+
+                                {% endif %}
+                            {% else %}
+                                <div>
+                                    <p> Külalisena ei saa kandideerida. Palun logige sisse! </p>
+                                </div>
+			    {% endif %}
 			</div>
 	</div>
 
@@ -348,17 +355,46 @@
 	</div>
 </div>
 
-<div id = "Proov">
-	<script>
-		$("#ParteiLoomine").load("ParteiLoomine.jsp");
-	</script>
-</div>
-
 <p class="paisjajalus">Rakenduses realiseeritud e-valimiste näide on realiseeritud tehnoloogiate 
 					praktiseerimise eesmärgil ning ei ole mõeldud reaalsete e-valimiste korraldamiseks.
 					 Kokkulangevused reaalse e-valimiste protsessiga on juhuslikud</p>
 
 <div id ="proov"></div>
+
+<!--
+<script language="javascript" type="text/javascript">
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+-->
+
+<script language="javascript" type="text/javascript"
+    src="js/javascript.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/prototype.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/scriptaculous.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/sortable.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/jquery-1.9.1.min.js"></script>
+
+<!--
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+-->
+
 </body>
+
+<p> {{ x }} </p>
+
+canCandidate: {{ canCandidate }}<br>canVote: {{ canVote }}<br>
+
+<br>
+Andmed: {{ andmed }}
+<br>
+
+{% if session == 'login_auth' %}
+    <p> Sisse logitud <p>
+{% else %}
+    <p> Guest <p>
+{% endif %}
 
 </html>
