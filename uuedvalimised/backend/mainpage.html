@@ -50,6 +50,7 @@
 		</div>
 		
 		<div class="tabpage" id="tabpage_2">
+                    {% if canVote %}
 			<div id="page_container">
 				<div class="noprint">
 						<p class="noprinttitle">Valige valimispiirkond </p>
@@ -61,12 +62,12 @@
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_03.png">Valimisringkond nr 3: Mustamäe, Nõmme</option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_04.png">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_05.png">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_06.png">Valimisringkond nr 6: Lääne-Virumaa</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_07.png">Valimisringkond nr 7: Ida-Virumaa</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_08.png">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_09.png">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_10.png">Valimisringkond nr 10: Tartu</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_11.png">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+							<option value="Images/Valimisringkonnad/Valimisringkond_nr_06.png">Valimisringkond nr 6: Lääne-Virumaa</option>
+						    	<option value="Images/Valimisringkonnad/Valimisringkond_nr_07.png">Valimisringkond nr 7: Ida-Virumaa</option>
+					    		<option value="Images/Valimisringkonnad/Valimisringkond_nr_08.png">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+				    			<option value="Images/Valimisringkonnad/Valimisringkond_nr_09.png">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+			    				<option value="Images/Valimisringkonnad/Valimisringkond_nr_10.png">Valimisringkond nr 10: Tartu</option>
+		    					<option value="Images/Valimisringkonnad/Valimisringkond_nr_11.png">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 			           		</optgroup>
 			           </select> <span id="loading_img" style="display:none;"><img src="Images/loader.gif" /></span>
 						<br><br>
@@ -80,6 +81,7 @@
 				<div>
 			       	<p class="textBold">Valitud valimispiirkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				</div>
+                                <form method="POST">
 				<div id="scrolltable">
 					<table class="data" id="voting_table">
 						<thead>
@@ -92,33 +94,47 @@
 						
 						<tbody>
 					    <tr>
-							<td>1</td>
+						<td><input type="radio" name="selected_candidate" value="1"></td>
 					       	<td>Roland Roos</td>
 					       	<td>Keskerakond</td>
 				       	</tr>
 				       	<tr>
-							<td>2</td>
+						<td><input type="radio" name="selected_candidate" value="2"></td>
 					       	<td>Rain Vaher</td>
 					       	<td>Reformierakond</td>
 				       	</tr>
 				       	<tr>
-					       	<td>3</td>
+					       	<td><input type="radio" name="selected_candidate" value="3"></td>
 					       	<td>Anti Taat</td>
 					       	<td>SDE</td>
 				       	</tr>
 				       	<tr>
-					       	<td>4</td>
+					       	<td><input type="radio" name="selected_candidate" value="4"></td>
 					       	<td>Toomas Kuusk</td>
 					       	<td>IRL</td>
 				       	</tr>
 						</tbody>
 			       	</table>
 				</div>
-				<p align="left"><button onClick="voteNow()">Hääleta</button></p>
+                                <input type="hidden" name="toDo" value="make_vote">
+                                <input type="hidden" name="person_id" value="1">
+				<button type="submit" value="submit">h22leta!</button>
+                            </form>
 			</div>
 			</div>
 		</div>
-		
+	            {% else %}
+                        {% if session == 'guest' %}
+                            Kylalisena ei saa h22letada
+                        {% else %}
+                            olete juba h22letanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
+                            <form method="POST">
+                                <input type="hidden" name="toDo" value="delete_vote">
+                                <input type="hidden" name="person_id" value="1">
+                                <button type="submit" value="submit">Tühista h22l</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
 		<div class="tabpage" id="tabpage_3">
 			<div id="page_container">
 				<div>
@@ -317,7 +333,7 @@
 				</div>
                                 {% else %}
                                     <div id="voted">
-					<p> Olete juba kandideerinud erakonda <strong>{{ party }}</strong> piirkonnas <strong>{{ region }}</strong> </p>
+					<p> Olete juba kandideerinud erakonda <strong>{{ cand_party }}</strong> piirkonnas <strong>{{ cand_region }}</strong> </p>
                                         <form method="POST">
                                             <input type="hidden" name="toDo" value="delete_candidate">
                                             <input type="hidden" name="person_id" value="1">
@@ -389,8 +405,9 @@
 canCandidate: {{ canCandidate }}<br>canVote: {{ canVote }}<br>
 
 <br>
-Andmed: {{ andmed }}
+cand_data: {{ cand_data }}
 <br>
+vote_data: {{ vote_data }}
 
 {% if session == 'login_auth' %}
     <p> Sisse logitud <p>

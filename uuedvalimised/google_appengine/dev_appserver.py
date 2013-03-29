@@ -23,7 +23,7 @@
 import os
 import re
 import sys
-
+import MySQLdb
 
 if not hasattr(sys, 'version_info'):
   sys.stderr.write('Very old versions of Python are not supported. Please '

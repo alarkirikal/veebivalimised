@@ -28,30 +28,45 @@ class MainPage(webapp2.RequestHandler):
 
         canCandidate = False
         canVote = False
-        party = ""
-        region = ""
-        andmed = ()
+        cand_party = ""
+        cand_region = ""
+        vote_isik = ""
+        vote_party = ""
+        vote_region = ""
 
         if session != "login_auth":
             session = "guest"
 
         if session != "guest":
-            canCandidate, canVote, andmed = self.get_rights() #get_rights(id)
+            canCandidate, canVote, cand_data, vote_data = self.get_rights() #get_rights(id)
             try:
-                party = andmed[0].encode('utf-8')
-                region = andmed[1].encode('utf-8')
+                cand_party = cand_data[0].encode('utf-8')
+                cand_region = cand_data[1].encode('utf-8')
             except IndexError:
-                party = ""
-                region = ""
+                cand_party = ""
+                cand_region = ""
+
+            try:
+                vote_isik = vote_data[0] + vote_data[1]
+                vote_party = vote_data[2]
+                vote_region = vote_data[3]
+            except IndexError:
+                vote_isik = ""
+                vote_party = ""
+                vote_region = ""
 
         template_values = {
             "x" : "hai world",
             "session" : session,
             "canCandidate" : canCandidate,
             "canVote" : canVote,
-            "party" : party,
-            "region" : region,
-            "andmed" : andmed,
+            "cand_party" : cand_party,
+            "cand_region" : cand_region,
+            "vote_isik" : vote_isik,
+            "vote_party" : vote_party,
+            "vote_region" : vote_region,
+            "cand_data" : cand_data,
+            "vote_data" : vote_data,
             "candNames" : self.get_candnames()
         }
 
@@ -72,6 +87,19 @@ class MainPage(webapp2.RequestHandler):
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
 
+        if self.request.get("toDo") == "delete_vote":
+            conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+            cursor = conn.cursor()
+            cursor.execute("""
+                DELETE FROM
+                    vote
+                WHERE
+                    isik_ID = '1'
+            """)
+            conn.commit()
+            conn.close()
+            self.redirect("/main?action=" + self.request.get("action"))
+
         if self.request.get("toDo") == "set_candidate":
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
             cursor = conn.cursor()
@@ -85,9 +113,24 @@ class MainPage(webapp2.RequestHandler):
             conn.close()
             self.redirect('/main?action=' + self.request.get("action"))
 
+        if self.request.get("toDo") == "make_vote":
+            conn=rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO
+                    vote (kandidaat_ID, isik_ID)
+                VALUES
+                    (%s, %s)
+            """ % (self.request.get("selected_candidate"), self.request.get("person_id")))
+
+            conn.commit()
+            conn.close()
+            self.redirect("/main?action=" + self.request.get("action"))
+
 
     def get_rights(self):
-        andmed = ""
+        cand_data = ""
+        vote_data = ""
         conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM kandidaat WHERE isik_ID = '1'")
@@ -107,7 +150,7 @@ class MainPage(webapp2.RequestHandler):
                 AND
                     kandidaat.piirkond_ID = piirkond.ID
             """)
-            andmed = cursor.fetchone()
+            cand_data = cursor.fetchone()
 
 
         cursor.execute("SELECT * FROM vote WHERE isik_ID = '1'")
@@ -115,10 +158,26 @@ class MainPage(webapp2.RequestHandler):
             canVote = True
         else:
             canVote = False
-
+            cursor.execute("""
+            SELECT
+                isik.Nimi, isik.perenimi, partei.Nimi, piirkond.Nimi
+            FROM
+                isik, partei, piirkond, vote, kandidaat
+            WHERE
+                vote.isik_ID = '1'
+            AND
+                vote.kandidaat_ID = kandidaat.ID
+            AND
+                kandidaat.isik_ID = isik.ID
+            AND
+                kandidaat.piirkond_ID = piirkond.ID
+            AND
+                kandidaat.partei_ID = partei.ID
+            """)
+            vote_data = cursor.fetchone()
         conn.close()
 
-        return canCandidate, canVote, andmed
+        return canCandidate, canVote, cand_data, vote_data
 
     def get_candnames(self):
         conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
