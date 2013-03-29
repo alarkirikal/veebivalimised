@@ -28,6 +28,8 @@ class MainPage(webapp2.RequestHandler):
 
         canCandidate = False
         canVote = False
+        cand_data = ""
+        vote_data = ""
         cand_party = ""
         cand_region = ""
         vote_isik = ""
