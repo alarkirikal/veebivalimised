@@ -52,7 +52,7 @@ class MainPage(webapp2.RequestHandler):
                 vote_isik = vote_data[0] + vote_data[1]
                 vote_party = vote_data[2]
                 vote_region = vote_data[3]
-            except IndexError:
+            except IndexError or TypeError:
                 vote_isik = ""
                 vote_party = ""
                 vote_region = ""
