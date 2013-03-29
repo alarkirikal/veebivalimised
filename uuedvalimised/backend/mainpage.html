@@ -50,8 +50,8 @@
 		</div>
 		
 		<div class="tabpage" id="tabpage_2">
-                    {% if canVote %}
 			<div id="page_container">
+			{% if canVote %}
 				<div class="noprint">
 						<p class="noprinttitle">Valige valimispiirkond </p>
 						<select class="noprint" id="selection" onChange="getContent()">
@@ -121,9 +121,7 @@
 				<button type="submit" value="submit">h22leta!</button>
                             </form>
 			</div>
-			</div>
-		</div>
-	            {% else %}
+			{% else %}
                         {% if session == 'guest' %}
                             Kylalisena ei saa h22letada
                         {% else %}
@@ -135,6 +133,8 @@
                             </form>
                         {% endif %}
                     {% endif %}
+			</div>
+		</div>
 		<div class="tabpage" id="tabpage_3">
 			<div id="page_container">
 				<div>
