@@ -6,24 +6,6 @@
 <title>Veebivalimine - Pealeht</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="/_ah/channel/jsapi"></script>
-<script language="javascript" src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
-<script language="javascript" src="js/jquery.ba-hashchange.min.js" type="text/javascript"></script>
-<script language="javascript" src="js/jquery.easytabs.min.js" type="text/javascript"></script>
-<script language="javascript" type="text/javascript"
-    src="js/javascript.js"></script>
-<script language="javascript" type="text/javascript"
-    src="js/prototype.js"></script>
-<script language="javascript" type="text/javascript"
-    src="js/scriptaculous.js"></script>
-<script language="javascript" type="text/javascript"
-    src="js/sortable.js"></script>
-
-<script type="text/javascript">
-    jQuery(document).ready( function() {
-      jQuery('#tab-container').easytabs();
-    });
-</script>
-
 </head>
 
 <body>
@@ -34,22 +16,23 @@
 <tr>
 <td class="pealkiri" style="text-align:left">Veebivalimised</td>
 <td class="textCenter" style=text-align:right><img src="Images/facebook-logo.png" width="2%"/> Siim Plangi 
-<br /><a href="index">Logi Välja</a>
+<br /><a href="index.html">Logi Välja</a>
 </td>
 </tr>
 </table>
 
-
-<div id="tab-container">
-	
-		<ul class = "etabs">
-			<li class = "tab"><a href="#tabpage_1"> Avaleht </a> </li>
-			<li class = "tab"><a href="#tabpage_2"> Hääletamine </a> </li>
-			<li class = "tab"><a href="#tabpage_3"> Statistika Kandidaatide järgi </a> </li>
-			<li class = "tab"><a href="#tabpage_4"> Statistika Erakondade Järgi </a> </li>
-			<li class = "tab"><a href="#tabpage_5"> Kandideeri Valimistele </a> </li>
-			<li class = "tab"><a href="#tabpage_6"> Vaata Kandidaate </a> </li>
+<div id="wrapper">
+<div id="tabContainer">
+	<div id="tabs">
+		<ul>
+			<li id="tabHeader_1"> Avaleht </li>
+			<li id="tabHeader_2"> Hääletamine </li>
+			<li id="tabHeader_3"> Statistika Kandidaatide järgi </li>
+			<li id="tabHeader_4"> Statistika Erakondade Järgi </li>
+			<li id="tabHeader_5"> Kandideeri Valimistele </li>
+			<li id="tabHeader_6"> Vaata Kandidaate </li>
 		</ul>
+	</div>
 	
 	<div id="tabscontent">
 	
@@ -79,7 +62,7 @@
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_03.png">Valimisringkond nr 3: Mustamäe, Nõmme</option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_04.png">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_05.png">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
-								<option value="Images/Valimisringkonnad/Valimisringkond_nr_06.png">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value="Images/Valimisringkonnad/Valimisringkond_nr_06.png">Valimisringkond nr 6: Lääne-Virumaa</option>
 						    	<option value="Images/Valimisringkonnad/Valimisringkond_nr_07.png">Valimisringkond nr 7: Ida-Virumaa</option>
 					    		<option value="Images/Valimisringkonnad/Valimisringkond_nr_08.png">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
 				    			<option value="Images/Valimisringkonnad/Valimisringkond_nr_09.png">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
@@ -398,6 +381,18 @@
 <script language="javascript" type="text/javascript">
     src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 -->
+
+<script language="javascript" type="text/javascript"
+    src="js/jquery-1.9.1.min.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/javascript.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/prototype.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/scriptaculous.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/sortable.js"></script>
+
 
 <!--
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>

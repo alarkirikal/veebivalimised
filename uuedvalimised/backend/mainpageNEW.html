@@ -1,0 +1,414 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>Veebivalimine - Pealeht</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+<script language="javascript" src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script language="javascript" src="js/jquery.ba-hashchange.min.js" type="text/javascript"></script>
+<script language="javascript" src="js/jquery.easytabs.min.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript"
+    src="js/javascript.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/prototype.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/scriptaculous.js"></script>
+<script language="javascript" type="text/javascript"
+    src="js/sortable.js"></script>
+
+<script type="text/javascript">
+    jQuery(document).ready( function() {
+      jQuery('#tab-container').easytabs();
+    });
+</script>
+
+</head>
+
+<body>
+
+<p class="paisjajalus">Antud rakendus ei ole mõeldud kasutamiseks reaalsetel valimistel</p>
+
+<table width="100%">
+<tr>
+<td class="pealkiri" style="text-align:left">Veebivalimised</td>
+<td class="textCenter" style=text-align:right><img src="Images/facebook-logo.png" width="2%"/> Siim Plangi 
+<br /><a href="index.html">Logi Välja</a>
+</td>
+</tr>
+</table>
+
+
+<div id="tab-container">
+	
+		<ul class = "etabs">
+			<li class = "tab"><a href="#tabpage_1"> Avaleht </a> </li>
+			<li class = "tab"><a href="#tabpage_2"> Hääletamine </a> </li>
+			<li class = "tab"><a href="#tabpage_3"> Statistika Kandidaatide järgi </a> </li>
+			<li class = "tab"><a href="#tabpage_4"> Statistika Erakondade Järgi </a> </li>
+			<li class = "tab"><a href="#tabpage_5"> Kandideeri Valimistele </a> </li>
+			<li class = "tab"><a href="#tabpage_6"> Vaata Kandidaate </a> </li>
+		</ul>
+	
+
+	
+	<div id="tabscontent">
+	
+		<div class="tabpage" id="tabpage_1">
+			<div id="page_container">
+				<div>
+					<h4> Tere tulemast Veebivalimise keskonda. </h4> 
+					<p>
+						Antud keskond on loodud kolme tudengi poolt: Alar Kirikal, Siim Plangi ja Argo Mändla. <br>
+						Antud rakenduse mõte on kursuse veebirakenduse loomine raames luua e-valimis toode, <br>
+						mis võimaldab kasutajal anda hääl oma lemmik poliitikule. 
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="tabpage" id="tabpage_2">
+			<div id="page_container">
+				<div class="noprint">
+						<p class="noprinttitle">Valige valimispiirkond </p>
+						<select class="noprint" id="selection" onChange="getContent()">
+			           		<optgroup>
+								<option value=""> Valimispiirkonnad </option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_01.png">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_02.png">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_03.png">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_04.png">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_05.png">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_06.png">Valimisringkond nr 6: Lääne-Virumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_07.png">Valimisringkond nr 7: Ida-Virumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_08.png">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_09.png">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_10.png">Valimisringkond nr 10: Tartu</option>
+								<option value="Images/Valimisringkonnad/Valimisringkond_nr_11.png">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           		</optgroup>
+			           </select> <span id="loading_img" style="display:none;"><img src="Images/loader.gif" /></span>
+						<br><br>
+						<hr>
+				</div>
+				<div id="areaToAppear" style="display:none;">
+				<input type="hidden" id="ifVoteDisplayed" value="beginning" />
+				<div>
+			        <p><img id="imageToSwap" src="Images/Valimisringkonnad/Valimisringkond_nr_01.png"/></p>
+				</div>
+				<div>
+			       	<p class="textBold">Valitud valimispiirkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				</div>
+				<div id="scrolltable">
+					<table class="data" id="voting_table">
+						<thead>
+				       	<tr>
+					    	<th>nr</th>
+					       	<th>Kandidaadi nimi</th>
+					       	<th>Erakond</th>
+				       	</tr>
+						</thead>
+						
+						<tbody>
+					    <tr>
+							<td>1</td>
+					       	<td>Roland Roos</td>
+					       	<td>Keskerakond</td>
+				       	</tr>
+				       	<tr>
+							<td>2</td>
+					       	<td>Rain Vaher</td>
+					       	<td>Reformierakond</td>
+				       	</tr>
+				       	<tr>
+					       	<td>3</td>
+					       	<td>Anti Taat</td>
+					       	<td>SDE</td>
+				       	</tr>
+				       	<tr>
+					       	<td>4</td>
+					       	<td>Toomas Kuusk</td>
+					       	<td>IRL</td>
+				       	</tr>
+						</tbody>
+			       	</table>
+				</div>
+				<p align="left"><button onClick="voteNow()">Hääleta</button></p>
+			</div>
+			</div>
+		</div>
+		
+		<div class="tabpage" id="tabpage_3">
+			<div id="page_container">
+				<div>
+					<p class="noprinttitle"> Valige valimispiirkond </p>
+					<select class="noprint" id="selectionCandidates" onchange="displayStat('Candidates')">
+			           	<optgroup>
+			           		<option value = "">Valimispiirkonnad </option>
+							<option value = "0">Kogu Eesti </option>
+			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			          		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option value = "10">Valimisringkond nr 10: Tartu</option>
+							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           	</optgroup>
+			        </select> <span id="loading_img_Candidates" style="display:none;"><img src="Images/loader.gif" /></span>
+			        <br><br>
+					<hr class="noprint">
+				</div>
+				
+				<div id="statisticsAreaToAppearCandidates" style="display:none; ">
+					<p id = "areaNameCandidates" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				
+				<div id="scrolltable">
+					<table class="data" id="candidate_table">
+						<thead>
+				       	<tr>
+				       		<th>Nimi</th>
+					      	<th>Erakond</th>
+					       	<th>Protsent</th>
+					       	<th>Hääli kokku</th>
+				       	</tr>
+						</thead>
+						
+						<tbody>
+					    <tr>
+					       	<td>Edgar Savisaar</td>
+					       	<td>Keskerakond</td>
+					       	<td>22,5%</td>
+					       	<td>30000</td>
+				       	</tr>
+				       	<tr>
+				       		<td>Andrus Ansip</td>
+					       	<td>Reformierakond</td>
+					       	<td>19%</td>
+					       	<td>26000</td>
+				       	</tr>
+				       	<tr>
+				       		<td>Sven Mikser</td>
+					       	<td>SDE</td>
+					       	<td>17%</td>
+					       	<td>24000</td>
+				       	</tr>
+				       	<tr>
+				       		<td>Mart Laar</td>
+					       	<td>IRL</td>
+					       	<td>15%</td>
+					       	<td>22500</td>
+				       	</tr>
+						</tbody>
+			       	</table>
+				</div>
+				<div>
+			       		<img src="Images/Kandidaadid_chart.png"/>
+			    </div>
+			
+		<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_3')"/>
+		</div>
+		</div>
+		</div>
+
+		<div class="tabpage" id="tabpage_4">
+			<div id="page_container">
+				<div>
+					<p class="noprinttitle">Valige valimispiirkond </p>
+					<select class="noprint" id="selectionParty" onchange="displayStat('Party')">
+			           	<optgroup>
+			           		<option value = "">Valimispiirkonnad</option>
+			           		<option value = "0">Kogu Eesti </option>
+			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option value = "10">Valimisringkond nr 10: Tartu</option>
+							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			           	</optgroup>
+			        </select> <span id="loading_img_Party" style="display:none;"><img src="Images/loader.gif" /></span>
+			        <br><br>
+					<hr class="noprint">
+				</div>
+				
+				<div id="statisticsAreaToAppearParty" style="display:none; ">
+					<p id = "areaNameParty" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+				
+				<div id="scrolltable">
+					<table class="data" id="party_table">
+						<thead>
+							<tr>
+								<th>Erakond</th>
+								<th>%</th>
+								<th>Hääli kokku</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Keskerakond</td>
+								<td>22,5%</td>
+								<td>30000</td>
+							</tr>
+							<tr>
+								<td>Reformierakond</td>
+								<td>19%</td>
+								<td>26000</td>
+							</tr>
+							<tr>
+								<td>SDE</td>
+								<td>17%</td>
+								<td>24000</td>
+							</tr>
+							<tr>
+								<td>IRL</td>
+								<td>15%</td>
+								<td>22500</td>
+							</tr>
+						</tbody>
+			       	</table>
+				</div>
+				
+				<div>
+			       		<img src="Images/Erakonnad_pie.png"/>
+				</div>
+			<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_4')" />
+		</div>
+		</div>
+   </div>
+   
+   		<div class="tabpage" id="tabpage_5">
+			<div id="page_container">
+                            {% if session = 'login_auth' %}
+                                {% if canCandidate %}
+				<div id="notVoted">
+				Olete tuvastatud kui Siim Plangi.
+				<br/><br/>
+				
+				Kui soovid kandideerida, siis sisesta järgnevad andmed:
+				<br/><br/>
+				
+				Valige kandideerimispiirkond
+				<form id = "applicationForm" method = "post">
+				<select id="applicationArea" name="Area">
+					<optgroup>
+			           		<option value = "">Valimispiirkonnad</option>
+			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+			           		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+							<option value = "10">Valimisringkond nr 10: Tartu</option>
+							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+			    	</optgroup>
+			    </select>
+			    <span id="RedX1" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
+				<br/><br/>
+					Valige erakond
+				<select id="applicationParty" name="Party">
+					<optgroup>
+						<option value ="">Erakonnad</option>
+						<option value = "1">Eestimaa Mustad</option>
+						<option value = "2">Eestimaa Sinised</option>
+						<option value = "3">Eestimaa Ruudulised</option>
+						<option value = "4">Eestimaa Joonelised</option>
+						<option value = "5">Eestimaa Kollased</option>
+						<option value = "6">Eestimaa Läbipaistvad</option>
+					</optgroup>
+				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
+				<br/><br/>
+				<button onclick="checkApplication()">Kandideeri</button>
+                                <input type="hidden" name="toDo" value="set_candidate">
+                                <input type="hidden" name="person_id" value="1">
+                                
+				</form>
+				</div>
+                                {% else %}
+                                    <div id="voted">
+					<p> Olete juba kandideerinud erakonda <strong>{{ party }}</strong> piirkonnas <strong>{{ region }}</strong> </p>
+                                        <form method="POST">
+                                            <input type="hidden" name="toDo" value="delete_candidate">
+                                            <input type="hidden" name="person_id" value="1">
+                                            <button type="submit" value="submit">Tühista kandideering</button>
+                                        </form>
+				    </div>
+
+                                {% endif %}
+                            {% else %}
+                                <div>
+                                    <p> Külalisena ei saa kandideerida. Palun logige sisse! </p>
+                                </div>
+			    {% endif %}
+			</div>
+	</div>
+
+		<div class="tabpage" id="tabpage_6">
+			<div id="page_container">
+				<div>
+					<h3> Kandidaatite otsing: </h3>
+					<hr> <br />
+					<form name="testform" action="" method="GET" >
+						Nimi: <input type="text" name="search_name" /> <br />
+						Erakond: <input type="text" name="search_party" /> <br />
+						Regioon: <input type="text" name="search_region" /> <br />
+						<br> <input type="button" value="Otsi" onclick="getForm(this.form)" />
+						<hr>
+						<input type="hidden" id="column" value="esimesse" />
+						<div id="kekeke"></div>
+						<table id="myTable" class="data"></table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<p class="paisjajalus">Rakenduses realiseeritud e-valimiste näide on realiseeritud tehnoloogiate 
+					praktiseerimise eesmärgil ning ei ole mõeldud reaalsete e-valimiste korraldamiseks.
+					 Kokkulangevused reaalse e-valimiste protsessiga on juhuslikud</p>
+
+<div id ="proov"></div>
+
+<!--
+<script language="javascript" type="text/javascript">
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+-->
+
+
+
+
+<!--
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+-->
+
+</body>
+
+<p> {{ x }} </p>
+
+canCandidate: {{ canCandidate }}<br>canVote: {{ canVote }}<br>
+
+<br>
+Andmed: {{ andmed }}
+<br>
+
+{% if session == 'login_auth' %}
+    <p> Sisse logitud <p>
+{% else %}
+    <p> Guest <p>
+{% endif %}
+
+<br><br>
+candNames:<br>{{ candNames }}
+
+</html>
