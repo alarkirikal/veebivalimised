@@ -44,7 +44,6 @@ class MainPage(webapp2.RequestHandler):
                 party = ""
                 region = ""
 
-
         template_values = {
             "x" : "hai world",
             "session" : session,
@@ -52,7 +51,8 @@ class MainPage(webapp2.RequestHandler):
             "canVote" : canVote,
             "party" : party,
             "region" : region,
-            "andmed" : andmed
+            "andmed" : andmed,
+            "candNames" : self.get_candnames()
         }
 
         path = os.path.join(os.path.dirname(__file__), "mainpage.html")
@@ -120,6 +120,22 @@ class MainPage(webapp2.RequestHandler):
 
         return canCandidate, canVote, andmed
 
+    def get_candnames(self):
+        conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT
+            isik.perenimi, isik.nimi
+        FROM
+            kandidaat, isik
+        WHERE
+            kandidaat.isik_ID = isik.ID
+        """)
+        names = []
+        for row in cursor.fetchall():
+            names.append(row)
+
+        return names
 
 main = webapp2.WSGIApplication([('/main', MainPage)], debug=True)
 index = webapp2.WSGIApplication([('/index', IndexPage)], debug=True)
