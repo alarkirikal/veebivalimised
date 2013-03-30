@@ -199,7 +199,6 @@ class MainPage(webapp2.RequestHandler):
 
         return names
 
-
 class DataPage(webapp2.RequestHandler):
     
     def connectDb(self):
@@ -214,10 +213,6 @@ class DataPage(webapp2.RequestHandler):
     def get(self):
         result = {}
 
-        name = False
-        area = False
-        party = False
-
         self.connectDb()
         sql = """
             SELECT
@@ -231,55 +226,45 @@ class DataPage(webapp2.RequestHandler):
             AND
                 kandidaat.piirkond_ID = piirkond.ID
         """
-
-        if self.request.get("name") != "":
-            name = True
+        
+        sqlRequestParameters=[];
+        if self.request.get("lastname") != "":
+            sqlRequestParameters.append("lastname");
             sql += " AND isik.perenimi LIKE %s"
+        if self.request.get("firstname") != "":
+            sqlRequestParameters.append("firstname");
+            sql += " AND isik.nimi LIKE %s"
         if self.request.get("area") != "":
-            area = True
+            sqlRequestParameters.append("area");
             sql += " AND piirkond.nimi LIKE %s"
         if self.request.get("party") != "":
-            party = True
+            sqlRequestParameters.append("party");
             sql += " AND partei.nimi LIKE %s"
            
-        executed = False
-        if name and area and party:
-            executed = True
-            self.cursor.execute(sql, (self.request.get("name") + "%",
-                                      "%" + self.request.get("area") + "%",
-                                      "%" + self.request.get("party") +"%"))
-           
-        if name and area and not executed:
-            executed = True
-            self.cursor.execute(sql, (self.request.get("name") + "%",
-                                      "%" + self.request.get("area") + "%"))
-
-        if name and party and not executed:
-            executed = True
-            self.cursor.execute(sql, (self.request.get("name") + "%",
-                                      "%" + self.request.get("party") + "%"))
-
-        if area and party and not executed:
-            executed = True
-            self.cursor.execute(sql, ("%" + self.request.get("area") + "%",
-                                      "%" + self.request.get("party") + "%"))
-            
-        if name and not executed:
-            executed = True
-            self.cursor.execute(sql, (self.request.get("name") + "%"))
-
-        if area and not executed:
-            executed = True
-            self.cursor.execute(sql, (self.request.get("area") + "%"))
-
-        if party and not executed:
-            executed = True
-            self.cursor.execute(sql, (self.request.get("party") + "%"))
+        if len(sqlRequestParameters)==4:
+            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[1]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[2]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[3]) +"%"))
+                    
+        if len(sqlRequestParameters)==3:
+            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[1]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[2]) +"%"))  
+       
+        if len(sqlRequestParameters)==2:
+            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[1]) +"%"))      
+        
+        if len(sqlRequestParameters)==1:
+            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%"))  
+        
 
         counter = 1
         for row in self.cursor.fetchall():
             temp = {}
-            temp['name'] = row[0] + " " + row[1]
+            temp['firstname'] = row[0]
+            temp['lastname'] =  row[1]
             temp['party'] = row[2]
             temp['area'] = row[3]
             result[str(counter)] = temp

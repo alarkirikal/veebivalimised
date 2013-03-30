@@ -14,12 +14,11 @@ window.onload=function() {
     	if(name!=""){
     		if(!suggestionsAdded){
     			suggestionsAdded=true
-		    	jQuery.getJSON("myjson?name="+name, function(result) {
+		    	jQuery.getJSON("myjson?lastname="+name, function(result) {
 					var obj = jQuery('#candidateSearchByName');
 					jQuery.each(result, function(index, item) {
 						if (index != "id") {
-							var k = item.name.split(" ");
-							obj.append(jQuery("<option value='"+k[1]+", "+k[0]+"'>"));
+							obj.append(jQuery("<option value='"+item.lastname+", "+item.firstname+"'>"));
 						}
 					});
 		    	});
@@ -211,9 +210,12 @@ function getForm(form) {
 		var nimi = name.split(", ");
 		if(nimi.length===1){
 			var nimi2 = name.split(" ");
-			searchParameter+="name="+nimi2[0];
+			searchParameter+="lastname="+nimi2[0];
+			if(nimi2.length > 1){
+				searchParameter+="&firstname="+nimi2[1];
+			}
 		}else{
-			searchParameter+="name="+nimi[0];
+			searchParameter+="lastname="+ nimi[0] + "&firstname="+nimi[1];
 		}
 		
 	}
@@ -236,7 +238,7 @@ function getForm(form) {
 			jQuery.each(result, function(index, item) {
 				if (index != "id") {
 					gotStuff+=1;
-					table_obj.append(jQuery('<tr><td>' + item.name + '</td><td>' + item.area + '</td><td>' + item.party + '</td></tr>'));
+					table_obj.append(jQuery('<tr><td>' + item.firstname + " " + item.lastname + '</td><td>' + item.area + '</td><td>' + item.party + '</td></tr>'));
 				}
 			});
 			if (gotStuff == 0) {
