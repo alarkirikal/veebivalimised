@@ -1,5 +1,35 @@
 // Loading tabs
 window.onload=function() {
+	var searchFieldContent = document.getElementsByName("candidateSearchByName")[0].value;
+    setInterval(function() {
+    	if(searchFieldContent != document.getElementsByName("candidateSearchByName")[0].value){
+    		searchFieldContent = document.getElementsByName("candidateSearchByName")[0].value;
+    		suggestNames(searchFieldContent);
+    	};
+	},100);
+    
+    var suggestionsAdded=false;
+    
+    function suggestNames(name){
+    	if(name!=""){
+    		if(!suggestionsAdded){
+    			suggestionsAdded=true
+		    	jQuery.getJSON("myjson?name="+name, function(result) {
+					var obj = jQuery('#candidateSearchByName');
+					jQuery.each(result, function(index, item) {
+						if (index != "id") {
+							var k = item.name.split(" ");
+							obj.append(jQuery("<option value='"+k[1]+", "+k[0]+"'>"));
+						}
+					});
+		    	});
+    		}
+    	}else{
+    		jQuery('#candidateSearchByName').empty();
+    		suggestionsAdded=false;
+    	}
+    	
+    }
 }
 
 // When a tab is clicked
@@ -169,7 +199,7 @@ function getForm(form) {
 	var arr = new Array();
 	var nrSearched = 0;
 
-	var name = form.search_name.value;
+	var name = form.candidateSearchByName.value;
 	if (name != ""){arr.push("name:" + name); nrSearched += 1;}
 	
 	var party = form.search_party.value;
