@@ -15,6 +15,9 @@ handlers:
 - url: /myjson
   script: valimised.myjson
 
+- url: /myjson/stat
+  script: valimised.mystat
+
 - url: /Images
   static_dir: Images
 

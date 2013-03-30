@@ -199,14 +199,6 @@ class MainPage(webapp2.RequestHandler):
 
         return names
 
-"""
-byname = 1
-byparty = 2
-byarea = 3
-byname/party = 4
-byname/area = 5
-byparty/area = 6
-"""
 
 class DataPage(webapp2.RequestHandler):
     
@@ -258,7 +250,7 @@ class DataPage(webapp2.RequestHandler):
                                       "%" + self.request.get("party") +"%"))
            
         if name and area and not executed:
-            executed = Trued
+            executed = True
             self.cursor.execute(sql, (self.request.get("name") + "%",
                                       "%" + self.request.get("area") + "%"))
 
@@ -299,7 +291,57 @@ class DataPage(webapp2.RequestHandler):
 
 
 
+class StatPage(webapp2.RequestHandler):
+    
+    def connectDb(self):
+        self.conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+        self.cursor = self.conn.cursor()
 
+
+    def closeDb(self):
+        self.conn.close()
+
+    def get(self):
+        area = self.request.get("area")
+        tabname = self.request.get("tabname")
+        self.connectDb()
+        respJSON = {}
+
+        if self.request.get("tabname") == "Candidates":
+            self.cursor.execute("""
+                SELECT
+                    isik.nimi, isik.perenimi, count(kandidaat_ID)
+                FROM
+                    vote, isik, kandidaat
+                WHERE
+                    vote.kandidaat_ID = kandidaat.ID
+                AND
+                    kandidaat.isik_ID = isik.ID
+                AND
+                    piirkond_ID = %s
+                GROUP BY kandidaat_ID
+            """, (self.request.get("area")))
+            counter = 1
+            for row in self.cursor.fetchall():
+                temp = {}
+                temp['firstname'] = row[0]
+                temp['lastname'] = row[1]
+                temp['votes'] = row[2]
+                respJSON[str(counter)] = temp
+                counter += 1
+
+            self.response.out.write(json.dumps(respJSON, sort_keys=True))
+
+        self.conn.commit()
+        self.conn.close()
+
+
+
+        
+
+
+
+mystat = webapp2.WSGIApplication([('/myjson/stat', StatPage)], debug=True)
 myjson = webapp2.WSGIApplication([('/myjson', DataPage)], debug=True)
 main = webapp2.WSGIApplication([('/main', MainPage)], debug=True)
 index = webapp2.WSGIApplication([('/index', IndexPage)], debug=True)
