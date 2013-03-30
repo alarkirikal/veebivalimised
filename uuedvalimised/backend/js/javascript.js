@@ -1,30 +1,5 @@
 // Loading tabs
 window.onload=function() {
-
-	var container = document.getElementById("tabContainer");
-	var tabcon = document.getElementById("tabscontent");
-
-    // Setting the first tab
-    var navitem = document.getElementById("tabHeader_1");
-	
-    // Storing current tab nr
-    var ident = navitem.id.split("_")[1];
-	
-    navitem.parentNode.setAttribute("data-current",ident);
-    navitem.setAttribute("class","tabActiveHeader");
-
-    // Hiding the rest of the tabs
-   	 var pages = tabcon.getElementsByClassName("tabpage");
-    	for (var i = 1; i < pages.length; i++) {
-     	 pages.item(i).style.display="none";
-		};
-
-    // onClick listener for tabs
-    var tabs = container.getElementsByTagName("li");
-    for (var i = 0; i < tabs.length; i++) {
-		tabs[i].onclick=displayPage;
-		
-    }
 }
 
 // When a tab is clicked
