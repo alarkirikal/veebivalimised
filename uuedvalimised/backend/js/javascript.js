@@ -6,6 +6,13 @@ window.onload=function() {
     		searchFieldContent = document.getElementsByName("candidateSearchByName")[0].value;
     		suggestNames(searchFieldContent);
     	};
+    	
+    	if(document.getElementsByName("candidateSearchByName")[0].value == "" && document.getElementById("search_party").value == "" && document.getElementById("search_region").value == ""){
+    		document.getElementById("otsiNupp").value="Kuva kõik kandidaadid";
+    	}else{
+    		document.getElementById("otsiNupp").value="Otsi kandidaati";
+    	}
+    	
 	},100);
     
     var suggestionsAdded=false;
@@ -13,6 +20,7 @@ window.onload=function() {
     function suggestNames(name){
     	if(name!=""){
     		if(!suggestionsAdded){
+    			
     			suggestionsAdded=true
 		    	jQuery.getJSON("myjson?lastname="+name, function(result) {
 					var obj = jQuery('#candidateSearchByName');
@@ -26,6 +34,7 @@ window.onload=function() {
     	}else{
     		jQuery('#candidateSearchByName').empty();
     		suggestionsAdded=false;
+    		
     	}
     	
     }
@@ -231,20 +240,23 @@ function getForm(form) {
 		}
 		searchParameter+="area="+region;
 	}
-	if(searchParameter != ""){
-		jQuery.getJSON("myjson?"+searchParameter, function(result){
-			var table_obj = jQuery('#myTable');
-			table_obj.append(jQuery('<tr><td><strong>Kandidaat</strong></td><td><strong>Piirkond</strong></td><td><strong>Erakond</strong></td></tr><tr>'));
-			jQuery.each(result, function(index, item) {
-				if (index != "id") {
-					gotStuff+=1;
-					table_obj.append(jQuery('<tr><td>' + item.firstname + " " + item.lastname + '</td><td>' + item.area + '</td><td>' + item.party + '</td></tr>'));
-				}
-			});
-			if (gotStuff == 0) {
-				var myDiv = jQuery('#kekeke');
-				myDiv.append(jQuery('<h3>P&auml;ringule vastused puuduvad!</h3>'));
+	if(searchParameter === ""){
+		searchParameter+="lastname=";
+	}
+		
+	jQuery.getJSON("myjson?"+searchParameter, function(result){
+		var table_obj = jQuery('#myTable');
+		table_obj.append(jQuery('<tr><td><strong>Kandidaat</strong></td><td><strong>Piirkond</strong></td><td><strong>Erakond</strong></td></tr><tr>'));
+		jQuery.each(result, function(index, item) {
+			if (index != "id") {
+				gotStuff+=1;
+				table_obj.append(jQuery('<tr><td>' + item.firstname + " " + item.lastname + '</td><td>' + item.area + '</td><td>' + item.party + '</td></tr>'));
 			}
 		});
-	}
+		if (gotStuff == 0) {
+			var myDiv = jQuery('#kekeke');
+			myDiv.append(jQuery('<h3>P&auml;ringule vastused puuduvad!</h3>'));
+		}
+	});
+
 }

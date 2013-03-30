@@ -257,7 +257,10 @@ class DataPage(webapp2.RequestHandler):
                                       "%" + self.request.get(sqlRequestParameters[1]) +"%"))      
         
         if len(sqlRequestParameters)==1:
-            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%"))  
+            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%")) 
+        
+        if len(sqlRequestParameters)==0:
+            self.cursor.execute(sql, (self.request.get_all("lastname" + "%")))
         
 
         counter = 1
@@ -313,7 +316,7 @@ class StatPage(webapp2.RequestHandler):
                 temp = {}
                 temp['firstname'] = row[0]
                 temp['lastname'] = row[1]
-				temp['party'] = row[2]
+                temp['party'] = row[2]
                 temp['votes'] = row[3]
                 respJSON[str(counter)] = temp
                 counter += 1
