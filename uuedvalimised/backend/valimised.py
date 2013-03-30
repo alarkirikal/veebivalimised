@@ -295,13 +295,15 @@ class StatPage(webapp2.RequestHandler):
         if self.request.get("tabname") == "Candidates":
             self.cursor.execute("""
                 SELECT
-                    isik.nimi, isik.perenimi, count(kandidaat_ID)
+                    isik.nimi, isik.perenimi, partei.nimi, count(kandidaat_ID)
                 FROM
-                    vote, isik, kandidaat
+                    vote, isik, kandidaat, partei
                 WHERE
                     vote.kandidaat_ID = kandidaat.ID
                 AND
                     kandidaat.isik_ID = isik.ID
+                AND
+                    kandidaat.partei_ID = partei.ID
                 AND
                     piirkond_ID = %s
                 GROUP BY kandidaat_ID
@@ -311,7 +313,8 @@ class StatPage(webapp2.RequestHandler):
                 temp = {}
                 temp['firstname'] = row[0]
                 temp['lastname'] = row[1]
-                temp['votes'] = row[2]
+				temp['party'] = row[2]
+                temp['votes'] = row[3]
                 respJSON[str(counter)] = temp
                 counter += 1
 
