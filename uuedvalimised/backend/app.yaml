@@ -12,6 +12,9 @@ handlers:
 - url: /index
   script: valimised.index
 
+- url: /myjson
+  script: valimised.myjson
+
 - url: /Images
   static_dir: Images
 

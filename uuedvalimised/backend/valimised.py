@@ -2,6 +2,7 @@ import sys
 import cgi
 import webapp2
 import os
+import json
 
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -198,6 +199,108 @@ class MainPage(webapp2.RequestHandler):
 
         return names
 
+"""
+byname = 1
+byparty = 2
+byarea = 3
+byname/party = 4
+byname/area = 5
+byparty/area = 6
+"""
+
+class DataPage(webapp2.RequestHandler):
+    
+    def connectDb(self):
+        self.conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+        self.cursor = self.conn.cursor()
+
+
+    def closeDb(self):
+        self.conn.close()
+
+
+    def get(self):
+        result = {}
+
+        name = False
+        area = False
+        party = False
+
+        self.connectDb()
+        sql = """
+            SELECT
+                isik.nimi, isik.perenimi, partei.nimi, piirkond.nimi
+            FROM
+                isik, kandidaat, partei, piirkond
+            WHERE
+                kandidaat.isik_ID = isik.ID
+            AND
+                kandidaat.partei_ID = partei.ID
+            AND
+                kandidaat.piirkond_ID = piirkond.ID
+        """
+
+        if self.request.get("name") != "":
+            name = True
+            sql += " AND isik.perenimi LIKE %s"
+        if self.request.get("area") != "":
+            area = True
+            sql += " AND piirkond.nimi LIKE %s"
+        if self.request.get("party") != "":
+            party = True
+            sql += " AND partei.nimi LIKE %s"
+           
+        executed = False
+        if name and area and party:
+            executed = True
+            self.cursor.execute(sql, (self.request.get("name") + "%",
+                                      "%" + self.request.get("area") + "%",
+                                      "%" + self.request.get("party") +"%"))
+           
+        if name and area and not executed:
+            executed = Trued
+            self.cursor.execute(sql, (self.request.get("name") + "%",
+                                      "%" + self.request.get("area") + "%"))
+
+        if name and party and not executed:
+            executed = True
+            self.cursor.execute(sql, (self.request.get("name") + "%",
+                                      "%" + self.request.get("party") + "%"))
+
+        if area and party and not executed:
+            executed = True
+            self.cursor.execute(sql, ("%" + self.request.get("area") + "%",
+                                      "%" + self.request.get("party") + "%"))
+            
+        if name and not executed:
+            executed = True
+            self.cursor.execute(sql, (self.request.get("name") + "%"))
+
+        if area and not executed:
+            executed = True
+            self.cursor.execute(sql, (self.request.get("area") + "%"))
+
+        if party and not executed:
+            executed = True
+            self.cursor.execute(sql, (self.request.get("party") + "%"))
+
+        counter = 1
+        for row in self.cursor.fetchall():
+            temp = {}
+            temp['name'] = row[0] + " " + row[1]
+            temp['party'] = row[2]
+            temp['area'] = row[3]
+            result[str(counter)] = temp
+            counter += 1
+
+        self.conn.close()
+        self.response.out.write(json.dumps(result, sort_keys=True))
+
+
+
+
+
+myjson = webapp2.WSGIApplication([('/myjson', DataPage)], debug=True)
 main = webapp2.WSGIApplication([('/main', MainPage)], debug=True)
 index = webapp2.WSGIApplication([('/index', IndexPage)], debug=True)
 
