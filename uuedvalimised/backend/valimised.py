@@ -258,7 +258,7 @@ class DataPage(webapp2.RequestHandler):
                                       "%" + self.request.get("party") +"%"))
            
         if name and area and not executed:
-            executed = Trued
+            executed = True
             self.cursor.execute(sql, (self.request.get("name") + "%",
                                       "%" + self.request.get("area") + "%"))
 
