@@ -17,11 +17,19 @@
     src="js/scriptaculous.js"></script>
 <script language="javascript" type="text/javascript"
     src="js/sortable.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
 
 <script type="text/javascript">
     jQuery(document).ready( function() {
       jQuery('#tab-container').easytabs();
     });
+	
+	// Load the Visualization API and the piechart package.
+	google.load('visualization', '1.0', {'packages':['corechart']});
+
+	// Set a callback to run when the Google Visualization API is loaded.
+	//google.setOnLoadCallback(drawChart);
 </script>
 
 </head>
@@ -185,7 +193,7 @@
 				<div id="statisticsAreaToAppearCandidates" style="display:none; ">
 					<p id = "areaNameCandidates" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				
-					<table class ="data">
+					<table id="CandidatesSortTable" class ="data">
 						<thead>
 							<tr>
 								<th>Nimi</th>
@@ -198,6 +206,10 @@
 							
 						</tbody>
 					</table>
+					
+					<div id = "chart_div">
+					
+					</div>
 				
 			
 				<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_3')"/>

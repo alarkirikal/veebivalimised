@@ -1,5 +1,13 @@
-// Loading tabs
+
 window.onload=function() {
+	/*
+	// Load the Visualization API and the piechart package.
+	google.load('visualization', '1.0', {'packages':['corechart']});
+
+	// Set a callback to run when the Google Visualization API is loaded.
+	google.setOnLoadCallback(displayStat);
+	*/
+
 	var searchFieldContent = document.getElementsByName("candidateSearchByName")[0].value;
     setInterval(function() {
     	if(searchFieldContent != document.getElementsByName("candidateSearchByName")[0].value){
@@ -40,23 +48,21 @@ window.onload=function() {
     }
 }
 
-// When a tab is clicked
-function displayPage() {
-
-	// Losing previous content
-	var current = this.parentNode.getAttribute("data-current");
-	document.getElementById("tabHeader_" + current).removeAttribute("class");
-	document.getElementById("tabpage_" + current).style.display="none";
-
-	// Showing new content
-	var ident = this.id.split("_")[1];
-	this.setAttribute("class","tabActiveHeader");
-	document.getElementById("tabpage_" + ident).style.display="block";
-	this.parentNode.setAttribute("data-current",ident);
+function drawChart(array){
+	var options = {'title':'Diagramm', 'width':500, 'height':400};
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'nimi');
+	data.addColumn('number', 'votes');
+	for (var i = 0; i < array.length; i++){
+		data.addRow(array[i]);
+	}
+	var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
 }
 
 // Display statistics on selection
 function displayStat(tabname) {
+	var arrayForChart = new Array();
 	var area = document.getElementById("selection" + tabname).value;
 	document.getElementById("statisticsAreaToAppear" + tabname).style.display="none";
 	if (document.getElementById("selection" + tabname).value != "") {
@@ -71,15 +77,26 @@ function displayStat(tabname) {
 					
 				    var row = jQuery("<tr />");
 					if (tabname == "Candidates"){
-					jQuery("<td />").text(item.firstname + " " + item.lastname).appendTo(row);
+						jQuery("<td />").text(item.firstname + " " + item.lastname).appendTo(row);
+						arrayForChart.push([item.firstname + " " + item.lastname, item.votes])
 					}
-					jQuery("<td />").text("Keskerakond").appendTo(row);
+					else{
+						arrayForChart.push([item.party, item.votes])
+					}
+					jQuery("<td />").text(item.party).appendTo(row);
 					jQuery("<td />").text(item.votes).appendTo(row);
-					jQuery("<td />").text(item.votes / totalvotes * 100.0 + ("%")).appendTo(row);
+					jQuery("<td />").text(Math.round(item.votes / totalvotes * 100.0) + "%").appendTo(row);
 
 					row.appendTo(jQuery('#' + tabname + 'Table'));
 			});
-		})
+			jQuery.getScript("js/sortable.js", function(){
+			//Make the table sortable again
+				ts_makeSortable(document.getElementById("CandidatesSortTable"));
+			});
+			console.log(arrayForChart);
+			drawChart(arrayForChart);
+		});
+		
 		var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
 		document.getElementById("areaName" + tabname).innerHTML = selectedOption.text
 		Effect.Fade('loading_img_' +tabname);
