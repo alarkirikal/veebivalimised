@@ -33,9 +33,15 @@
 <table width="100%">
 <tr>
 <td class="pealkiri" style="text-align:left">Veebivalimised</td>
-<td class="textCenter" style=text-align:right><img src="Images/facebook-logo.png" width="2%"/> Siim Plangi 
-<br /><a href="index">Logi Välja</a>
-</td>
+{% if session == 'guest' %}
+	<td class="textCenter" style=text-align:right> Külaline
+	<br /><a href="index">Logi Sisse</a>
+	</td>
+{% else %}
+	<td class="textCenter" style=text-align:right><img src="Images/facebook-logo.png" width="2%"/> Siim Plangi 
+	<br /><a href="index">Logi Välja</a>
+	</td>
+{% endif %}
 </tr>
 </table>
 
