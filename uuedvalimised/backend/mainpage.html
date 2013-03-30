@@ -160,7 +160,6 @@
 		</div>
 		<div class="tabpage" id="tabpage_3">
 			<div id="page_container">
-				<div>
 					<p class="noprinttitle"> Valige valimispiirkond </p>
 					<select class="noprint" id="selectionCandidates" onchange="displayStat('Candidates')">
 			           	<optgroup>
@@ -186,53 +185,24 @@
 				<div id="statisticsAreaToAppearCandidates" style="display:none; ">
 					<p id = "areaNameCandidates" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				
-				<div id="scrolltable">
-					<table class="data" id="candidate_table">
+					<table class ="data">
 						<thead>
-				       	<tr>
-				       		<th>Nimi</th>
-					      	<th>Erakond</th>
-					       	<th>Protsent</th>
-					       	<th>Hääli kokku</th>
-				       	</tr>
+							<tr>
+								<th>Nimi</th>
+								<th>Erakond</th>
+								<th>Hääli</th>
+								<th>Hääli (%)</th>
+							</tr>
 						</thead>
-						
-						<tbody>
-					    <tr>
-					       	<td>Edgar Savisaar</td>
-					       	<td>Keskerakond</td>
-					       	<td>22,5%</td>
-					       	<td>30000</td>
-				       	</tr>
-				       	<tr>
-				       		<td>Andrus Ansip</td>
-					       	<td>Reformierakond</td>
-					       	<td>19%</td>
-					       	<td>26000</td>
-				       	</tr>
-				       	<tr>
-				       		<td>Sven Mikser</td>
-					       	<td>SDE</td>
-					       	<td>17%</td>
-					       	<td>24000</td>
-				       	</tr>
-				       	<tr>
-				       		<td>Mart Laar</td>
-					       	<td>IRL</td>
-					       	<td>15%</td>
-					       	<td>22500</td>
-				       	</tr>
+						<tbody id = "CandidatesTable">
+							
 						</tbody>
-			       	</table>
-				</div>
-				<div>
-			       		<img src="Images/Kandidaadid_chart.png"/>
-			    </div>
+					</table>
+				
 			
-		<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_3')"/>
-		</div>
-		</div>
-		</div>
+				<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_3')"/>
+				</div>
+			</div>
 
 		<div class="tabpage" id="tabpage_4">
 			<div id="page_container">
@@ -262,43 +232,19 @@
 				<div id="statisticsAreaToAppearParty" style="display:none; ">
 					<p id = "areaNameParty" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				
-				<div id="scrolltable">
-					<table class="data" id="party_table">
+				<table class ="data">
 						<thead>
 							<tr>
 								<th>Erakond</th>
-								<th>%</th>
-								<th>Hääli kokku</th>
+								<th>Hääli</th>
+								<th>Hääli (%)</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>Keskerakond</td>
-								<td>22,5%</td>
-								<td>30000</td>
-							</tr>
-							<tr>
-								<td>Reformierakond</td>
-								<td>19%</td>
-								<td>26000</td>
-							</tr>
-							<tr>
-								<td>SDE</td>
-								<td>17%</td>
-								<td>24000</td>
-							</tr>
-							<tr>
-								<td>IRL</td>
-								<td>15%</td>
-								<td>22500</td>
-							</tr>
+						<tbody id = "PartyTable">
+							
 						</tbody>
-			       	</table>
-				</div>
-				
-				<div>
-			       		<img src="Images/Erakonnad_pie.png"/>
-				</div>
+				</table>
+					
 			<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_4')" />
 		</div>
 		</div>

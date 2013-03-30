@@ -57,19 +57,36 @@ function displayPage() {
 
 // Display statistics on selection
 function displayStat(tabname) {
-
-	Effect.Fade("statisticsAreaToAppear" + tabname, {duration: 0.5});
+	var area = document.getElementById("selection" + tabname).value;
+	document.getElementById("statisticsAreaToAppear" + tabname).style.display="none";
 	if (document.getElementById("selection" + tabname).value != "") {
 		Effect.Appear('loading_img_' + tabname);
-		window.setTimeout(function() {
-			var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
-			document.getElementById("areaName" + tabname).innerHTML = selectedOption.text
-			Effect.Appear("statisticsAreaToAppear" + tabname, {duration:0.5});
-		}, 500);
+		jQuery('#' + tabname + 'Table').html("");
+		jQuery.getJSON("myjson/stat?area=" + area + "&tabname=" + tabname, function(data){
+			var totalvotes = 0
+			jQuery.each(data, function(index, item){
+					totalvotes = totalvotes + (item.votes)
+			});
+			jQuery.each(data, function(index, item){
+					
+				    var row = jQuery("<tr />");
+					if (tabname == "Candidates"){
+					jQuery("<td />").text(item.firstname + " " + item.lastname).appendTo(row);
+					}
+					jQuery("<td />").text("Keskerakond").appendTo(row);
+					jQuery("<td />").text(item.votes).appendTo(row);
+					jQuery("<td />").text(item.votes / totalvotes * 100.0 + ("%")).appendTo(row);
+
+					row.appendTo(jQuery('#' + tabname + 'Table'));
+			});
+		})
+		var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
+		document.getElementById("areaName" + tabname).innerHTML = selectedOption.text
 		Effect.Fade('loading_img_' +tabname);
+		Effect.Appear("statisticsAreaToAppear" + tabname, {duration: 0.5});
 	}
-	
 }
+
 
 // When print is clicked
 function printPage(elem) {
