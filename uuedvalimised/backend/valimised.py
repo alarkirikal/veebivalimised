@@ -277,6 +277,39 @@ class DataPage(webapp2.RequestHandler):
         self.response.out.write(json.dumps(result, sort_keys=True))
 
 
+class VotePage(webapp2.RequestHandler):
+    def connectDb(self):
+        self.conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+        self.cursor = self.conn.cursor()
+
+    def get(self):
+        self.connectDb()
+        respJSON = {}
+
+        self.cursor.execute("""
+            SELECT
+                kandidaat.ID, isik.nimi, isik.perenimi, partei.nimi
+            FROM
+                kandidaat, isik, partei
+            WHERE
+                kandidaat.isik_ID = isik.ID
+            AND
+                kandidaat.partei_ID = partei.ID
+            AND
+                kandidaat.piirkond_ID = 2
+        """)
+        counter = 1
+        for row in self.cursor.fetchall():
+            temp = {}
+            temp['cand_id'] = row[0]
+            temp['firstname'] = row[1]
+            temp['lastname'] = row[2]
+            temp['party'] = row[3]
+            respJSON[str(counter)] = temp
+            counter += 1
+
+        self.response.out.write(json.dumps(respJSON, sort_keys=True))
+        self.conn.close()
 
 
 class StatPage(webapp2.RequestHandler):
@@ -284,10 +317,6 @@ class StatPage(webapp2.RequestHandler):
     def connectDb(self):
         self.conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
         self.cursor = self.conn.cursor()
-
-
-    def closeDb(self):
-        self.conn.close()
 
     def get(self):
         area = self.request.get("area")
@@ -323,6 +352,34 @@ class StatPage(webapp2.RequestHandler):
 
             self.response.out.write(json.dumps(respJSON, sort_keys=True))
 
+        elif self.request.get("tabname") == "Party":
+            self.cursor.execute("""
+                SELECT
+                    partei.nimi, count(kandidaat_ID)
+                FROM
+                    vote, isik, kandidaat, partei
+                WHERE
+                    vote.kandidaat_ID = kandidaat.ID
+                AND
+                    kandidaat.isik_ID = isik.ID
+                AND
+                    kandidaat.partei_ID = partei.ID
+                AND
+                    kandidaat.piirkond_ID = %s
+               
+                GROUP BY partei_ID
+            """, (self.request.get("area")))
+
+            counter = 1
+            for row in self.cursor.fetchall():
+                temp = {}
+                temp['party'] = row[0]
+                temp['votes'] = row[1]
+                respJSON[str(counter)] = temp
+                counter += 1
+            
+            self.response.out.write(json.dumps(respJSON, sort_keys=True))
+
         self.conn.commit()
         self.conn.close()
 
@@ -331,7 +388,7 @@ class StatPage(webapp2.RequestHandler):
         
 
 
-
+myvote = webapp2.WSGIApplication([('/myjson/vote', VotePage)], debug=True)
 mystat = webapp2.WSGIApplication([('/myjson/stat', StatPage)], debug=True)
 myjson = webapp2.WSGIApplication([('/myjson', DataPage)], debug=True)
 main = webapp2.WSGIApplication([('/main', MainPage)], debug=True)
