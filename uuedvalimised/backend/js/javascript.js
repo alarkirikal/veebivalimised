@@ -297,16 +297,23 @@ function getForm(form) {
 		
 	jQuery.getJSON("myjson?"+searchParameter, function(result){
 		var table_obj = jQuery('#myTable');
-		table_obj.append(jQuery('<tr><td><strong>Kandidaat</strong></td><td><strong>Piirkond</strong></td><td><strong>Erakond</strong></td></tr><tr>'));
+		table_obj.append(jQuery('<thead><tr><th><strong>Kandidaat</strong></th><th><strong>Piirkond</strong></th><th><strong>Erakond</strong></th></tr></thead>'));
 		jQuery.each(result, function(index, item) {
 			if (index != "id") {
 				gotStuff+=1;
 				table_obj.append(jQuery('<tr><td>' + item.firstname + " " + item.lastname + '</td><td>' + item.area + '</td><td>' + item.party + '</td></tr>'));
+	
 			}
 		});
 		if (gotStuff == 0) {
 			var myDiv = jQuery('#kekeke');
 			myDiv.append(jQuery('<h3>P&auml;ringule vastused puuduvad!</h3>'));
+		}
+		else{
+			jQuery.getScript("js/sortable.js", function(){
+					//Make the table sortable again
+				ts_makeSortable(document.getElementById("myTable"));
+			});
 		}
 	});
 
