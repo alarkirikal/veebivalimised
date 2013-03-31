@@ -99,6 +99,7 @@ function displayStat(tabname) {
 		
 		var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
 		document.getElementById("areaName" + tabname).innerHTML = selectedOption.text;
+		setTimeout(function(){
 			Effect.Fade('loading_img_' +tabname);
 			Effect.Appear("statisticsAreaToAppear" + tabname, {duration: 0.5});
 		}, 1000);
