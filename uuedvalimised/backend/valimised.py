@@ -230,8 +230,12 @@ class DataPage(webapp2.RequestHandler):
         sqlRequestParameters=[];
         if self.request.get("lastname") != "":
             sqlRequestParameters.append("lastname");
+            sqlRequestParameters.append("lastname");
+            sql += " AND (isik.perenimi LIKE %s OR isik.nimi LIKE %s)"
+        elif self.request.get("lastname") != "":
+            sqlRequestParameters.append("lastname");
             sql += " AND isik.perenimi LIKE %s"
-        if self.request.get("firstname") != "":
+        elif self.request.get("firstname") != "":
             sqlRequestParameters.append("firstname");
             sql += " AND isik.nimi LIKE %s"
         if self.request.get("area") != "":
@@ -241,6 +245,12 @@ class DataPage(webapp2.RequestHandler):
             sqlRequestParameters.append("party");
             sql += " AND partei.nimi LIKE %s"
            
+        if len(sqlRequestParameters)==5:
+            self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[1]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[2]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[3]) + "%",
+                                      "%" + self.request.get(sqlRequestParameters[4]) +"%"))
         if len(sqlRequestParameters)==4:
             self.cursor.execute(sql, (self.request.get(sqlRequestParameters[0]) + "%",
                                       "%" + self.request.get(sqlRequestParameters[1]) + "%",

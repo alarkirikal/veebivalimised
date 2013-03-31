@@ -34,7 +34,12 @@ window.onload=function() {
 					var obj = jQuery('#candidateSearchByName');
 					jQuery.each(result, function(index, item) {
 						if (index != "id") {
-							obj.append(jQuery("<option value='"+item.lastname+", "+item.firstname+"'>"));
+							if(item.lastname.charAt(0) == name.toUpperCase()){
+								obj.append(jQuery("<option value='"+item.lastname+", "+item.firstname+"'>"));
+							}
+							if(item.firstname.charAt(0) == name.toUpperCase()){
+								obj.append(jQuery("<option value='"+item.firstname+" "+item.lastname+"'>"));
+							}
 						}
 					});
 		    	});
