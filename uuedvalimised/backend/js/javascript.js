@@ -130,6 +130,20 @@ function popup(data, elem) {
 function getContent(){ // VOTE PAGE CONTENT 
 	start_loading();
 	
+	var selectionIndex=document.getElementById('selection').selectedIndex;
+	if(selectionIndex != 0){
+		jQuery('#voting_table_body').empty();
+		document.getElementById('piirkond').innerHTML=document.getElementById('selection').options[selectionIndex].text ;
+			jQuery.getJSON("myjson/vote?area="+selectionIndex, function(result){
+			var table_obj = jQuery('#voting_table_body');
+			jQuery.each(result, function(index, item) {
+				if (index != "id") {
+					table_obj.append(jQuery('<tr><td><input type="radio" name="selected_candidate" value="' + item.cand_id + '"></td><td>' + item.cand_id + '</td><td>' + item.firstname + ' ' + item.lastname + '</td><td>' + item.party + '</td></tr>'));
+					}
+			});
+		});
+	}
+	
 	//If the chosen option is without a value
 	if (document.getElementById("selection").value == "") {
 		document.getElementById("ifVoteDisplayed").value = "waitabit";

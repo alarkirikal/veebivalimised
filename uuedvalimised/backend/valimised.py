@@ -296,8 +296,8 @@ class VotePage(webapp2.RequestHandler):
             AND
                 kandidaat.partei_ID = partei.ID
             AND
-                kandidaat.piirkond_ID = 2
-        """)
+                kandidaat.piirkond_ID =  %s
+        """, self.request.get("area"))
         counter = 1
         for row in self.cursor.fetchall():
             temp = {}

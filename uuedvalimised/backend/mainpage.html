@@ -110,57 +110,40 @@
 			        <p><img id="imageToSwap" src="Images/Valimisringkonnad/Valimisringkond_nr_01.png"/></p>
 				</div>
 				<div>
-			       	<p class="textBold">Valitud valimispiirkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
+			       	<p class="textBold" id="piirkond"></p>
 				</div>
                                 <form method="POST">
 				<div id="scrolltable">
+
 					<table class="data" id="voting_table">
 						<thead>
 				       	<tr>
+				       		<th></th>
 					    	<th>nr</th>
 					       	<th>Kandidaadi nimi</th>
 					       	<th>Erakond</th>
 				       	</tr>
 						</thead>
 						
-						<tbody>
-					    <tr>
-						<td><input type="radio" name="selected_candidate" value="1"></td>
-					       	<td>Roland Roos</td>
-					       	<td>Keskerakond</td>
-				       	</tr>
-				       	<tr>
-						<td><input type="radio" name="selected_candidate" value="2"></td>
-					       	<td>Rain Vaher</td>
-					       	<td>Reformierakond</td>
-				       	</tr>
-				       	<tr>
-					       	<td><input type="radio" name="selected_candidate" value="3"></td>
-					       	<td>Anti Taat</td>
-					       	<td>SDE</td>
-				       	</tr>
-				       	<tr>
-					       	<td><input type="radio" name="selected_candidate" value="4"></td>
-					       	<td>Toomas Kuusk</td>
-					       	<td>IRL</td>
-				       	</tr>
+						<tbody id="voting_table_body">
+				       	
 						</tbody>
 			       	</table>
 				</div>
                                 <input type="hidden" name="toDo" value="make_vote">
                                 <input type="hidden" name="person_id" value="1">
-				<button type="submit" value="submit">h22leta!</button>
+				<button type="submit" value="submit">Hääleta!</button>
                             </form>
 			</div>
 			{% else %}
                         {% if session == 'guest' %}
-                            Kylalisena ei saa h22letada
+                            Külalisena ei saa hääletada
                         {% else %}
-                            olete juba h22letanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
+                            Olete juba hääletanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
                             <form method="POST">
                                 <input type="hidden" name="toDo" value="delete_vote">
                                 <input type="hidden" name="person_id" value="1">
-                                <button type="submit" value="submit">Tühista h22l</button>
+                                <button type="submit" value="submit">Tühista hääl</button>
                             </form>
                         {% endif %}
                     {% endif %}
