@@ -172,7 +172,7 @@
 					<select class="noprint" id="selectionCandidates" onchange="displayStat('Candidates')">
 			           	<optgroup>
 			           		<option value = "">Valimispiirkonnad </option>
-							<option value = "0">Kogu Eesti </option>
+							<option value = "12">Kogu Eesti </option>
 			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
 			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
 			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
@@ -207,7 +207,7 @@
 						</tbody>
 					</table>
 					
-					<div id = "chart_div">
+					<div id = "Candidates_chart_div">
 					
 					</div>
 				
@@ -223,7 +223,7 @@
 					<select class="noprint" id="selectionParty" onchange="displayStat('Party')">
 			           	<optgroup>
 			           		<option value = "">Valimispiirkonnad</option>
-			           		<option value = "0">Kogu Eesti </option>
+			           		<option value = "12">Kogu Eesti </option>
 			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
 			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
 			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
@@ -244,7 +244,7 @@
 				<div id="statisticsAreaToAppearParty" style="display:none; ">
 					<p id = "areaNameParty" class="textBold">Valitud Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</p>
 				
-				<table class ="data">
+				<table class ="data" id = "PartySortTable">
 						<thead>
 							<tr>
 								<th>Erakond</th>
@@ -256,6 +256,10 @@
 							
 						</tbody>
 				</table>
+				
+				<div id = "Party_chart_div">
+					
+				</div>
 					
 			<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_4')" />
 		</div>

@@ -48,15 +48,15 @@ window.onload=function() {
     }
 }
 
-function drawChart(array){
-	var options = {'title':'Diagramm', 'width':500, 'height':400};
+function drawChart(array, tabname){
+	var options = {'title':'Diagramm', 'width':700, 'height':500};
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'nimi');
 	data.addColumn('number', 'votes');
 	for (var i = 0; i < array.length; i++){
 		data.addRow(array[i]);
 	}
-	var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	var chart = new google.visualization.PieChart(document.getElementById(tabname + '_chart_div'));
 	chart.draw(data, options);
 }
 
@@ -91,16 +91,18 @@ function displayStat(tabname) {
 			});
 			jQuery.getScript("js/sortable.js", function(){
 			//Make the table sortable again
-				ts_makeSortable(document.getElementById("CandidatesSortTable"));
+				ts_makeSortable(document.getElementById(tabname + "SortTable"));
 			});
 			console.log(arrayForChart);
-			drawChart(arrayForChart);
+			drawChart(arrayForChart, tabname);
 		});
 		
 		var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
-		document.getElementById("areaName" + tabname).innerHTML = selectedOption.text
-		Effect.Fade('loading_img_' +tabname);
-		Effect.Appear("statisticsAreaToAppear" + tabname, {duration: 0.5});
+		document.getElementById("areaName" + tabname).innerHTML = selectedOption.text;
+			Effect.Fade('loading_img_' +tabname);
+			Effect.Appear("statisticsAreaToAppear" + tabname, {duration: 0.5});
+		}, 1000);
+		
 	}
 }
 
