@@ -325,21 +325,37 @@ class StatPage(webapp2.RequestHandler):
         respJSON = {}
 
         if self.request.get("tabname") == "Candidates":
-            self.cursor.execute("""
-                SELECT
-                    isik.nimi, isik.perenimi, partei.nimi, count(kandidaat_ID)
-                FROM
-                    vote, isik, kandidaat, partei
-                WHERE
-                    vote.kandidaat_ID = kandidaat.ID
-                AND
-                    kandidaat.isik_ID = isik.ID
-                AND
-                    kandidaat.partei_ID = partei.ID
-                AND
-                    piirkond_ID = %s
-                GROUP BY kandidaat_ID
-            """, (self.request.get("area")))
+            if str(self.request.get("area")) == "12":
+                self.cursor.execute("""
+                    SELECT
+                        isik.nimi, isik.perenimi, partei.nimi, count(kandidaat_ID)
+                    FROM
+                        vote, isik, kandidaat, partei
+                    WHERE
+                        vote.kandidaat_ID = kandidaat.ID
+                    AND
+                        kandidaat.isik_ID = isik.ID
+                    AND
+                        kandidaat.partei_ID = partei.ID
+
+                    GROUP BY kandidaat_ID
+                """)
+            else:
+                self.cursor.execute("""
+                    SELECT
+                        isik.nimi, isik.perenimi, partei.nimi, count(kandidaat_ID)
+                    FROM
+                        vote, isik, kandidaat, partei
+                    WHERE
+                        vote.kandidaat_ID = kandidaat.ID
+                    AND
+                        kandidaat.isik_ID = isik.ID
+                    AND
+                        kandidaat.partei_ID = partei.ID
+                    AND
+                        piirkond_ID = %s
+                    GROUP BY kandidaat_ID
+                """, (self.request.get("area")))
             counter = 1
             for row in self.cursor.fetchall():
                 temp = {}
@@ -353,22 +369,38 @@ class StatPage(webapp2.RequestHandler):
             self.response.out.write(json.dumps(respJSON, sort_keys=True))
 
         elif self.request.get("tabname") == "Party":
-            self.cursor.execute("""
-                SELECT
-                    partei.nimi, count(kandidaat_ID)
-                FROM
-                    vote, isik, kandidaat, partei
-                WHERE
-                    vote.kandidaat_ID = kandidaat.ID
-                AND
-                    kandidaat.isik_ID = isik.ID
-                AND
-                    kandidaat.partei_ID = partei.ID
-                AND
-                    kandidaat.piirkond_ID = %s
+            if str(self.request.get("area")) == "12":
+                self.cursor.execute("""
+                    SELECT
+                        partei.nimi, count(kandidaat_ID)
+                    FROM
+                        vote, isik, kandidaat, partei
+                    WHERE
+                        vote.kandidaat_ID = kandidaat.ID
+                    AND
+                        kandidaat.isik_ID = isik.ID
+                    AND
+                        kandidaat.partei_ID = partei.ID
+
+                    GROUP BY partei_ID
+                """)
+            else:
+                self.cursor.execute("""
+                    SELECT
+                        partei.nimi, count(kandidaat_ID)
+                    FROM
+                        vote, isik, kandidaat, partei
+                    WHERE
+                        vote.kandidaat_ID = kandidaat.ID
+                    AND
+                        kandidaat.isik_ID = isik.ID
+                    AND
+                        kandidaat.partei_ID = partei.ID
+                    AND
+                        kandidaat.piirkond_ID = %s
                
-                GROUP BY partei_ID
-            """, (self.request.get("area")))
+                    GROUP BY partei_ID
+                """, (self.request.get("area")))
 
             counter = 1
             for row in self.cursor.fetchall():
