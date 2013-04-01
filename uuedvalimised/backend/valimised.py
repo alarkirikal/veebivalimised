@@ -11,17 +11,19 @@ from google.appengine.ext.webapp import template
 
 _INSTANCE_NAME = "veebivalimiseddb:veebidb"
 
+class RedirectPage(webapp2.RequestHandler):
+    def get(self):
+        self.redirect("/index")
+
 class IndexPage(webapp2.RequestHandler):
     def get(self):
-
-        template_values = {}
-
-        path = os.path.join(os.path.dirname(__file__), "index.html")
-        self.response.out.write(template.render(path, template_values))
-    def post(self):
-        action = self.request.get("action")
-        self.redirect("/main?action=" + action)
-
+        if self.request.get("action"):
+            action = self.request.get("action")
+            self.redirect("/main?action=" + action)
+        else:
+            template_values = {}
+            path = os.path.join(os.path.dirname(__file__), "index.html")
+            self.response.out.write(template.render(path, template_values))
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -59,7 +61,6 @@ class MainPage(webapp2.RequestHandler):
                 vote_region = ""
 
         template_values = {
-            "x" : "hai world",
             "session" : session,
             "canCandidate" : canCandidate,
             "canVote" : canVote,
@@ -429,7 +430,7 @@ class StatPage(webapp2.RequestHandler):
 
         
 
-
+redirect = webapp2.WSGIApplication([('/*', RedirectPage)], debug=True)
 myvote = webapp2.WSGIApplication([('/myjson/vote', VotePage)], debug=True)
 mystat = webapp2.WSGIApplication([('/myjson/stat', StatPage)], debug=True)
 myjson = webapp2.WSGIApplication([('/myjson', DataPage)], debug=True)

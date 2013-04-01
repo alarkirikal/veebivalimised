@@ -6,6 +6,9 @@ threadsafe: true
 
 handlers:
 
+- url: /*
+  script: valimised.redirect
+
 - url: /main
   script: valimised.main
 
