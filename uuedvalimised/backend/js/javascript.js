@@ -132,6 +132,21 @@ function popup(data, elem) {
 	return true;
 }
 
+function checkVote(){
+	var radiobuttons = document.getElementsByName("selected_candidate");
+	var result = false;
+	for (var i = 0; i < radiobuttons.length; i++){
+		if (radiobuttons[i].checked){
+			result = true;
+			break;
+		}
+	}
+	if (!result){
+		alert("Te pole kandidaati valinud");
+	}
+	return result;
+}
+
 function getContent(){ // VOTE PAGE CONTENT 
 	start_loading();
 	
