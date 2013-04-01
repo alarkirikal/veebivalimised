@@ -226,8 +226,9 @@ function checkApplication(){
 		alert("Tere avaldus on edukalt esitatud!")
 		voteNow(applicationAreaSelect.options[applicationAreaSelect.selectedIndex].text, applicationPartySelect.options[applicationPartySelect.selectedIndex].text);
 		var f=document.getElementById('applicationForm');
-		f.submit();
+		return true
 	}
+	return false
 }
 
 function voteNow() {

@@ -261,7 +261,7 @@
 				<br/><br/>
 				
 				Valige kandideerimispiirkond
-				<form id = "applicationForm" method = "post">
+				<form id = "applicationForm" method = "POST" onsubmit = "return checkApplication()">
 				<select id="applicationArea" name="Area">
 					<optgroup>
 			           		<option value = "">Valimispiirkonnad</option>
@@ -293,7 +293,8 @@
 					</optgroup>
 				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 				<br/><br/>
-				<button onclick="checkApplication()">Kandideeri</button>
+				
+				<button type="submit" value = "submit">Kandideeri</button>
                                 <input type="hidden" name="toDo" value="set_candidate">
                                 <input type="hidden" name="person_id" value="1">
                                 
