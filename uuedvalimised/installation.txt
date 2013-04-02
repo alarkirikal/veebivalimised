@@ -1,0 +1,13 @@
+Väike installatsioonijuhend
+
+Tarvis on:
+1) MySQL Server
+2) Python (2.6 või 2.7)
+
+Asudes veebivalimised/uuedvalimised/ kasutas, tuleb käivitada järgnev käsk:
+python google_appengine/dev_appserver.py backend/
+
+Server jooksutatakse ning serveri saab kätte aadressilt 127.0.0.1:8080
+
+PS!
+Probleemid installatsiooniga on kerged tekkima SQL käskude täitmisel (MySQL serveriga)
