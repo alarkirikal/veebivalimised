@@ -69,7 +69,15 @@ html{
 	}
 }
 
+.iceberg{
+	display: block;
+	width: 100m;
+	height: 400m;
+}
 
+#titanic{
+	float: none;
+}
 
 p.noprinttitle{
 	font-family:Verdana, Geneva, Tahoma, sans-serif;
