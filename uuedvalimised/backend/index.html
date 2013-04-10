@@ -6,22 +6,29 @@
 <title>Veebivalimised</title>
 
 <link href="css/style.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="js/startScript.js" type="text/javascript"></script>
 </head>
 
 <body>
 
+<div id="fb-root"></div>
+
+
 <h1 class="pealkiri">Veebivalimised</h1>
 <p class="textLargeCenter"> Tere tulemast veebivalimiste keskonda </p>
 
-    <form action="" method="GET">
-        <input type="hidden" name="action" value="login_auth">
+    <form action="" method="get" id = "facebookAuth">
+        <input type="hidden" name="action" id = "IDaction" value="login_auth"></input>
+        <input type="hidden" name="fname" id = "IDfname" value=""></input>
+        <input type="hidden" name="lname" id = "IDlname" value=""></input>
+        <input type="hidden" name="userID" id = "IDuserID" value=""></input>
         <p class="textCenter">
-            <input type="image" src="Images/fconnect.png" onClick="this.form.submit()">
-            <br><br>
+            <input type="image" src="Images/fconnect.png" onclick="auth(); return false;"></input>
+            <br/><br/>
 	    Hääletamiseks palun logige sisse facebooki abil
         </p>
     </form>
-    <form action="" method="GET">
+    <form action="" method="get">
         <input type="hidden" name="action" value="login_guest">
         <p class = "textCenter">
 	    <button type="button" class="questButton" onClick="this.form.submit()">Külalisena</button>
