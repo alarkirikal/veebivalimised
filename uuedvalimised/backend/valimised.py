@@ -1,19 +1,100 @@
+from models import User
+
 import sys
 import cgi
 import webapp2
 import os
 import json
+import facebook
+import urllib2
+import jinja2
 
-from google.appengine.ext import db
+from webapp2_extras import sessions
 from google.appengine.api import users
 from google.appengine.api import rdbms
 from google.appengine.ext.webapp import template
 
+FACEBOOK_APP_ID = "555712221116753"
+FACEBOOK_APP_SECRET = "22923f7fb835ae8eb1d34404bc060d21"
+
+config = {}
+config['webapp2_extras.sessions'] = dict(secret_key='')
 _INSTANCE_NAME = "veebivalimiseddb:veebidb"
 
-class RedirectPage(webapp2.RequestHandler):
+""" Facebook tests BEGIN """
+
+class BaseHandler(webapp2.RequestHandler):
+    @property
+    def current_user(self):
+        if self.session.get("user"):
+            return self.session.get("user")
+        else:
+            cookie = facebook.get_user_from_cookie(self.request.cookies,
+                                                   FACEBOOK_APP_ID,
+                                                   FACEBOOK_APP_SECRET)
+            
+            if cookie:
+                user = User.get_by_key_name(cookie["uid"])
+                if not user:
+                    graph = facebook.GraphAPI(cookie["access_token"])
+                    profile = graph.get_object("me")
+                    user = User(
+                        key_name = str(profile["id"]),
+                        id = str(profile["id"]),
+                        name = profile["name"],
+                        profile_url = profile["link"],
+                        access_token = cookie["access_token"]
+                    )
+                    user.put()
+                elif user.access_token != cookie["access_token"]:
+                    user.access_token = cookie["access_token"]
+                    user.put()
+            
+                self.session["user"] = dict(
+                    name = user.name,
+                    profile_url = user.profile_url,
+                    id = user.id,
+                    access_token = user.access_token
+                )
+                return self.session.get("user")
+        return None
+
+    def dispatch(self):
+        self.session_store = sessions.get_store(request=self.request)
+        try:
+            webapp2.RequestHandler.dispatch(self)
+        finally:
+            self.session_store.save_sessions(self.response)
+
+    @webapp2.cached_property
+    def session(self):
+        return self.session_store.get_session()
+
+
+class HomeHandler(BaseHandler):
     def get(self):
-        self.redirect("/index")
+        template = jinja_environment.get_template('example.html')
+        self.response.out.write(template.render(dict(
+            facebook_app_id=FACEBOOK_APP_ID,
+            current_user=self.current_user
+        )))
+
+    def post(self):
+        url = self.request.get('url')
+        file = urllib2.urlopen(url)
+        graph = facebook.GraphAPI(self.current_user['access_token'])
+        response = graph.put_photo(file, "Test Image")
+        photo_url = ("http://www.facebook.com/photo.php?fbid={0}".format(response['id']))
+        self.redirect(str(photo_url))
+
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+        if self.current_user is not None:
+            self.session['user'] = None
+        self.redirect('/main')
+
+""" Facebook tests END """
 
 class IndexPage(webapp2.RequestHandler):
     def get(self):
@@ -25,9 +106,8 @@ class IndexPage(webapp2.RequestHandler):
             path = os.path.join(os.path.dirname(__file__), "index.html")
             self.response.out.write(template.render(path, template_values))
 
-class MainPage(webapp2.RequestHandler):
+class MainPage(BaseHandler):
     def get(self):
-        session = self.request.get("action")
 
         canCandidate = False
         canVote = False
@@ -38,30 +118,47 @@ class MainPage(webapp2.RequestHandler):
         vote_isik = ""
         vote_party = ""
         vote_region = ""
+        x = ""
+        
+        try:
+            # Logged in
+            conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+            cursor = conn.cursor()
+            cursor.execute("SELECT COUNT(*) FROM isik WHERE ID = %s", (int(self.current_user['id'])))
+            registered = cursor.fetchone()[0]
 
-        if session != "login_auth":
-            session = "guest"
+            if registered == 0:
+                x = self.current_user['name'].split(" ")
+                firstname = x[0]
+                lastname = x[1]
+                cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s)",
+                    (self.current_user['id'], str(firstname), str(lastname)))
+                conn.commit()
 
-        if session != "guest":
-            canCandidate, canVote, cand_data, vote_data = self.get_rights() #get_rights(id)
-            try:
-                cand_party = cand_data[0].encode('utf-8')
-                cand_region = cand_data[1].encode('utf-8')
-            except IndexError:
-                cand_party = ""
-                cand_region = ""
+            canCandidate, canVote, cand_data, vote_data = self.get_rights(self.current_user['id'])
+        except TypeError:
+            # Guest
+            pass
 
-            try:
-                vote_isik = vote_data[0] + vote_data[1]
-                vote_party = vote_data[2]
-                vote_region = vote_data[3]
-            except IndexError or TypeError:
-                vote_isik = ""
-                vote_party = ""
-                vote_region = ""
+        try:
+            cand_party = cand_data[0]
+            cand_region = cand_data[1]
+        except IndexError:
+            cand_party = ""
+            cand_region = ""
+
+        try:
+            vote_isik = vote_data[0] + vote_data[1]
+            vote_party = vote_data[2]
+            vote_region = vote_data[3]
+        except IndexError or TypeError:
+            vote_isik = ""
+            vote_party = ""
+            vote_region = ""
 
         template_values = {
-            "session" : session,
+            "facebook_app_id" : FACEBOOK_APP_ID,
+            "current_user" : self.current_user,
             "canCandidate" : canCandidate,
             "canVote" : canVote,
             "cand_party" : cand_party,
@@ -71,11 +168,12 @@ class MainPage(webapp2.RequestHandler):
             "vote_region" : vote_region,
             "cand_data" : cand_data,
             "vote_data" : vote_data,
-            "candNames" : self.get_candnames()
+            "candNames" : self.get_candnames(),
         }
 
-        path = os.path.join(os.path.dirname(__file__), "mainpage.html")
-        self.response.out.write(template.render(path, template_values))
+
+        template = jinja_environment.get_template('mainpage.html')
+        self.response.out.write(template.render(template_values))
     
     def post(self):
         if self.request.get("toDo") == "delete_candidate":
@@ -85,8 +183,8 @@ class MainPage(webapp2.RequestHandler):
                 DELETE FROM
                     kandidaat
                 WHERE
-                    isik_ID = '1'
-            """)
+                    isik_ID = %s
+            """, (self.current_user['id']))
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
@@ -98,8 +196,8 @@ class MainPage(webapp2.RequestHandler):
                 DELETE FROM
                     vote
                 WHERE
-                    isik_ID = '1'
-            """)
+                    isik_ID = %s
+            """, (self.current_user['id']))
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
@@ -112,7 +210,7 @@ class MainPage(webapp2.RequestHandler):
                     kandidaat (partei_ID, piirkond_ID, isik_ID)
                 VALUES
                     (%s, %s, %s)
-            """ % (self.request.get("Party"), self.request.get("Area"), self.request.get("person_id")))
+            """ % (self.request.get("Party"), self.request.get("Area"), self.current_user['id']))
             conn.commit()
             conn.close()
             self.redirect('/main?action=' + self.request.get("action"))
@@ -125,19 +223,19 @@ class MainPage(webapp2.RequestHandler):
                     vote (kandidaat_ID, isik_ID)
                 VALUES
                     (%s, %s)
-            """ % (self.request.get("selected_candidate"), self.request.get("person_id")))
+            """ % (self.request.get("selected_candidate"), self.current_user['id']))
 
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
 
 
-    def get_rights(self):
+    def get_rights(self, id):
         cand_data = ""
         vote_data = ""
         conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM kandidaat WHERE isik_ID = '1'")
+        cursor.execute("SELECT * FROM kandidaat WHERE isik_ID = %s", (id,))
         if cursor.fetchone() == None:
             canCandidate = True
         else:
@@ -148,16 +246,16 @@ class MainPage(webapp2.RequestHandler):
                 FROM
                     partei, piirkond, kandidaat
                 WHERE 
-                    kandidaat.isik_ID = 1 
+                    kandidaat.isik_ID = %s 
                 AND
                     kandidaat.partei_ID = partei.ID
                 AND
                     kandidaat.piirkond_ID = piirkond.ID
-            """)
+            """, (id, ))
             cand_data = cursor.fetchone()
 
 
-        cursor.execute("SELECT * FROM vote WHERE isik_ID = '1'")
+        cursor.execute("SELECT * FROM vote WHERE isik_ID = %s", (id, ))
         if cursor.fetchone() == None:
             canVote = True
         else:
@@ -168,7 +266,7 @@ class MainPage(webapp2.RequestHandler):
             FROM
                 isik, partei, piirkond, vote, kandidaat
             WHERE
-                vote.isik_ID = '1'
+                vote.isik_ID = %s
             AND
                 vote.kandidaat_ID = kandidaat.ID
             AND
@@ -177,7 +275,7 @@ class MainPage(webapp2.RequestHandler):
                 kandidaat.piirkond_ID = piirkond.ID
             AND
                 kandidaat.partei_ID = partei.ID
-            """)
+            """, (id, ))
             vote_data = cursor.fetchone()
         conn.close()
 
@@ -199,6 +297,8 @@ class MainPage(webapp2.RequestHandler):
             names.append(row)
 
         return names
+
+
 
 class DataPage(webapp2.RequestHandler):
     
@@ -428,15 +528,22 @@ class StatPage(webapp2.RequestHandler):
 
 
 
-        
 
-redirect = webapp2.WSGIApplication([('/*', RedirectPage)], debug=True)
-myvote = webapp2.WSGIApplication([('/myjson/vote', VotePage)], debug=True)
-mystat = webapp2.WSGIApplication([('/myjson/stat', StatPage)], debug=True)
-myjson = webapp2.WSGIApplication([('/myjson', DataPage)], debug=True)
-main = webapp2.WSGIApplication([('/main', MainPage)], debug=True)
-index = webapp2.WSGIApplication([('/index', IndexPage)], debug=True)
+jinja_environment = jinja2.Environment(
+    loader = jinja2.FileSystemLoader(os.path.dirname(__file__))
+)
 
+app = webapp2.WSGIApplication([
+    ('/', HomeHandler),
+    ('/logout', LogoutHandler),
+    ('/myjson/vote', VotePage),
+    ('/myjson/stat', StatPage),
+    ('/myjson', DataPage),
+    ('/main', MainPage),
+    ('/index', IndexPage)],
+    debug = True,
+    config = config
+)
 
 
 

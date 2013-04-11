@@ -6,14 +6,31 @@ threadsafe: true
 
 handlers:
 
-- url: /*
-  script: valimised.redirect
+
+# Static files
+- url: /Images
+  static_dir: Images
+
+- url: /js
+  static_dir: js
+
+- url: /css
+  static_dir: css
+
+# Facebook
+
+- url: /.*
+  script: valimised.app
+
+# toDepriciate
 
 - url: /main
   script: valimised.main
 
 - url: /index
   script: valimised.index
+
+# JSON requests
 
 - url: /myjson
   script: valimised.myjson
@@ -24,18 +41,14 @@ handlers:
 - url: /myjson/vote
   script: valimised.myvote
 
-- url: /Images
-  static_dir: Images
-
-- url: /js
-  static_dir: js
-
-- url: /css
-  static_dir: css
+# Testing
 
 - url: /json_temp
   static_dir: json_temp
 
 libraries:
 - name: lxml
+  version: latest
+
+- name: jinja2
   version: latest
