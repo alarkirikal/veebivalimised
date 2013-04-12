@@ -17,7 +17,10 @@
     <td style="float:right">
         <fb:login-button autologoutlink="true" scope="publish_stream"></fb:login-button>
         {% if current_user %}
-            {{ current_user.name|escape }}
+			<br />
+            Logitud sisse kui: {{ current_user.name|escape }} 
+			<br />
+			{{ current_user.id|escape }}
         {% endif %}
     </td>
     <div id="fb-root"></div>
@@ -221,7 +224,7 @@
                             {% if current_user %}
                                 {% if canCandidate %}
 				<div id="notVoted">
-				Olete tuvastatud kui Siim Plangi.
+				Olete tuvastatud kui {{ current_user.name|escape }}
 				<br/><br/>
 				
 				Kui soovid kandideerida, siis sisesta järgnevad andmed:

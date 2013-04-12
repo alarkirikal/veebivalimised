@@ -140,15 +140,15 @@ class MainPage(BaseHandler):
         except IndexError:
             cand_party = ""
             cand_region = ""
-
-        try:
-            vote_isik = vote_data[0] + vote_data[1]
-            vote_party = vote_data[2]
-            vote_region = vote_data[3]
-        except IndexError or TypeError:
-            vote_isik = ""
-            vote_party = ""
-            vote_region = ""
+        if (len(vote_data) != 0):
+            try:
+                vote_isik = vote_data[0] + vote_data[1]
+                vote_party = vote_data[2]
+                vote_region = vote_data[3]
+            except TypeError:
+                vote_isik = ""
+                vote_party = ""
+                vote_region = ""
 
         template_values = {
             "facebook_app_id" : FACEBOOK_APP_ID,
