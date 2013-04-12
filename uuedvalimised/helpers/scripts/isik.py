@@ -32,7 +32,7 @@ def create_isik():
     nimilist = []
     i = 2
 
-    while (i<100):
+    while (i<10000):
         nimi = eesnimi[random.randint(0,55)] + " " + perekonnanimi[random.randint(0,47)]
         kaslistis = False;
         for j in nimilist:

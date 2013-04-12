@@ -5,7 +5,6 @@
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
 <title>Veebivalimine - Pealeht</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
-
 </head>
 
 <body>
@@ -15,13 +14,11 @@
 <tr>
     <td class="pealkiri" style="float:left">Veebivalimised</td>
     <td style="float:right">
-        <fb:login-button autologoutlink="true" scope="publish_stream"></fb:login-button>
-        {% if current_user %}
-			<br />
-            Logitud sisse kui: {{ current_user.name|escape }} 
-			<br />
-			{{ current_user.id|escape }}
-        {% endif %}
+        <fb:login-button autologoutlink="true"></fb:login-button>
+		<br />
+		<div id = "loggedInAs" style = "display:none;">
+            Logitud sisse kui:  
+		</div>
     </td>
     <div id="fb-root"></div>
 </tr>
@@ -39,7 +36,7 @@
 		</ul>
 	
 	<div class="panel-container">
-	    <div id="tabpage_1">
+	    <div class = "tabpage" id="tabpage_1" style = "display: none;">
 		<div id="page_container">
 		    <h4> Tere tulemast Veebivalimise keskonda. </h4> 
 		    <p>
@@ -50,9 +47,9 @@
 		</div>
 	    </div>
 	
-		<div class="tabpage" id="tabpage_2">
+		<div class="tabpage" id="tabpage_2" style = "display: none;">
 			<div id="page_container">
-			{% if canVote %}
+			<div id = "canVote" style = "display:none;">
 				<div class="noprint">
 						<p class="noprinttitle">Valige valimispiirkond </p>
 						<select class="noprint" id="selection" onChange="getContent()">
@@ -82,44 +79,42 @@
 				<div>
 			       	<p class="textBold" id="piirkond"></p>
 				</div>
-							<form method="POST"  onsubmit="return checkVote()">
-				<div id="scrolltable">
+					<div id="scrolltable">
 
-					<table class="data" id="voting_table">
-						<thead>
-				       	<tr>
-				       		<th></th>
-					    	<th>nr</th>
-					       	<th>Kandidaadi nimi</th>
-					       	<th>Erakond</th>
-				       	</tr>
-						</thead>
-						
-						<tbody id="voting_table_body">
-				       	
-						</tbody>
-			       	</table>
-				</div>
-                                <input type="hidden" name="toDo" value="make_vote">
-                                <input type="hidden" name="person_id" value="1">
-				<button type="submit" value="submit">Hääleta!</button>
-                            </form>
+						<table class="data" id="voting_table">
+							<thead>
+							<tr>
+								<th></th>
+								<th>nr</th>
+								<th>Kandidaadi nimi</th>
+								<th>Erakond</th>
+							</tr>
+							</thead>
+							
+							<tbody id="voting_table_body">
+							
+							</tbody>
+						</table>
+					</div>
+					<button onClick="checkVoteAndSend()">Hääleta!</button>
 			</div>
-			{% else %}
-                            {% if not current_user %}
-                                Külalisena ei saa hääletada
-                            {% else %}
-                                Olete juba hääletanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
-                                <form method="POST">
-                                    <input type="hidden" name="toDo" value="delete_vote">
-                                    <input type="hidden" name="person_id" value="1">
-                                    <button type="submit" value="submit">Tühista hääl</button>
-                                </form>
-                            {% endif %}
-                        {% endif %}
+			</div>
+			<div id = "noVoteAsQuest" style = "display:none;">
+				Külalisena ei saa te hääletada. Tuvastage end Facebooki abil.
+			</div>
+			<div id = "alreadyVoted" style = "display:none;">
+				<div id = "votedFor">
+				Olete juba hääletanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
+				</div>
+				<form method="POST">
+					<input type="hidden" name="toDo" value="delete_vote">
+					<input type="hidden" name="person_id" value="1">
+					<button type="submit" value="submit">Tühista hääl</button>
+				</form>
+            </div>
 		    </div>
 		</div>
-		<div class="tabpage" id="tabpage_3">
+		<div class="tabpage" id="tabpage_3" style = "display: none;">
 			<div id="page_container">
 					<p class="noprinttitle"> Valige valimispiirkond </p>
 					<select class="noprint" id="selectionCandidates" onchange="displayStat('Candidates')">
@@ -169,7 +164,7 @@
 				</div>
 			</div>
 
-		<div class="tabpage" id="tabpage_4">
+		<div class="tabpage" id="tabpage_4" style = "display: none;">
 			<div id="page_container">
 				<div>
 					<p class="noprinttitle">Valige valimispiirkond </p>
@@ -219,77 +214,67 @@
 		</div>
    </div>
    
-   		<div class="tabpage" id="tabpage_5">
+   		<div class="tabpage" id="tabpage_5" style = "display: none;">
 			<div id="page_container">
-                            {% if current_user %}
-                                {% if canCandidate %}
-				<div id="notVoted">
-				Olete tuvastatud kui {{ current_user.name|escape }}
-				<br/><br/>
-				
-				Kui soovid kandideerida, siis sisesta järgnevad andmed:
-				<br/><br/>
-				
-				Valige kandideerimispiirkond
-				<form id = "applicationForm" method = "POST" onsubmit = "return checkApplication()">
-				<select id="applicationArea" name="Area">
-					<optgroup>
-			           		<option value = "">Valimispiirkonnad</option>
-			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
-			           		<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
-			           		<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
-			           		<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
-			           		<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
-							<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
-							<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
-							<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
-							<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
-							<option value = "10">Valimisringkond nr 10: Tartu</option>
-							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
-			    	</optgroup>
-			    </select>
-			    <span id="RedX1" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
-				<br/><br/>
-					Valige erakond
-				<select id="applicationParty" name="Party">
-					<optgroup>
-						<option value ="">Erakonnad</option>
-						<option value = "1">Eestimaa Mustad</option>
-						<option value = "2">Eestimaa Sinised</option>
-						<option value = "3">Eestimaa Ruudulised</option>
-						<option value = "4">Eestimaa Joonelised</option>
-						<option value = "5">Eestimaa Kollased</option>
-						<option value = "6">Eestimaa Läbipaistvad</option>
-					</optgroup>
-				</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
-				<br/><br/>
-				
-				<button type="submit" value = "submit">Kandideeri</button>
-                                <input type="hidden" name="toDo" value="set_candidate">
-                                <input type="hidden" name="person_id" value="1">
-                                
-				</form>
+				<div id="notCandidate" style = "display:none;">
+					
+					<div id = "loggedInAs2">
+						Logitud sisse kui:  
+					</div>
+					<br/>
+					Kui soovid kandideerida, siis sisesta järgnevad andmed:
+					<br/><br/>
+					Valige kandideerimispiirkond
+					<select id="applicationArea" name="Area">
+						<optgroup>
+								<option value = "">Valimispiirkonnad</option>
+								<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
+								<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
+								<option value = "3">Valimisringkond nr 3: Mustamäe, Nõmme</option>
+								<option value = "4">Valimisringkond nr 4: Harjumaa, Raplamaa</option>
+								<option value = "5">Valimisringkond nr 5: Läänemaa, Saaremaa, Hiiumaa</option>
+								<option value = "6">Valimisringkond nr 6: Lääne-Virumaa</option>
+								<option value = "7">Valimisringkond nr 7: Ida-Virumaa</option>
+								<option value = "8">Valimisringkond nr 8: Viljandimaa, Järvamaa</option>
+								<option value = "9">Valimisringkond nr 9: Jõgevamaa, Tartumaa</option>
+								<option value = "10">Valimisringkond nr 10: Tartu</option>
+								<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
+						</optgroup>
+					</select>
+					<span id="RedX1" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
+					<br/><br/>
+						Valige erakond
+					<select id="applicationParty" name="Party">
+						<optgroup>
+							<option value ="">Erakonnad</option>
+							<option value = "1">Eestimaa Mustad</option>
+							<option value = "2">Eestimaa Sinised</option>
+							<option value = "3">Eestimaa Ruudulised</option>
+							<option value = "4">Eestimaa Joonelised</option>
+							<option value = "5">Eestimaa Kollased</option>
+							<option value = "6">Eestimaa Läbipaistvad</option>
+						</optgroup>
+					</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
+					<br/><br/>
+					
+					<button onClick = "checkApplicationAndSend()">Kandideeri</button>									
 				</div>
-                                {% else %}
-                                    <div id="voted">
-					<p> Olete juba kandideerinud erakonda <strong>{{ cand_party }}</strong> piirkonnas <strong>{{ cand_region }}</strong> </p>
-                                        <form method="POST">
-                                            <input type="hidden" name="toDo" value="delete_candidate">
-                                            <input type="hidden" name="person_id" value="1">
-                                            <button type="submit" value="submit">Tühista kandideering</button>
-                                        </form>
-				    </div>
+             
+                <div id="Candidate" style = "display:none;">
+					<div id = "candidateAs">
+						Viga!
+					</div>
+					
+					<button onClick = unCandidate()>Tühista kandideering</button>
+				</div>
 
-                                {% endif %}
-                            {% else %}
-                                <div>
-                                    <p> Külalisena ei saa kandideerida. Palun logige sisse! </p>
-                                </div>
-			    {% endif %}
+				<div id = "noCandidateAsQuest" style = "display:none;">
+					<p> Külalisena ei saa kandideerida. Palun logige sisse! </p>
+				</div>
 			</div>
 	</div>
 
-		<div class="tabpage" id="tabpage_6">
+		<div class="tabpage" id="tabpage_6" style = "display: none;">
 			<div id="page_container">
 				<div>
 					<h3> Kandidaatite otsing: </h3>
@@ -327,6 +312,7 @@
 <script language="javascript" src="js/prototype.js" type="text/javascript"></script>
 <script language="javascript" src="js/scriptaculous.js" type="text/javascript"></script>
 <script language="javascript" src="js/sortable.js" type="text/javascript"></script>
+<script language="javascript" src='/_ah/channel/jsapi' type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
 <script type="text/javascript">
@@ -350,6 +336,21 @@
         e.async = true;
         document.getElementById('fb-root').appendChild(e);
     }());
+	
+	/*
+	channel = new goog.appengine.Channel('{{ token }}');
+    socket = channel.open();
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+    socket.onerror = onError;
+    socket.onclose = onClose;
+	console.log("channel opened, socket created");
+	
+	onOpened = function() {
+	  connected = true;
+	  sendMessage('opened');
+	  updateBoard();
+	};*/
 
 </script>
 

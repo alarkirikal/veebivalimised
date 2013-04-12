@@ -12,6 +12,7 @@ import jinja2
 from webapp2_extras import sessions
 from google.appengine.api import users
 from google.appengine.api import rdbms
+from google.appengine.api import channel
 from google.appengine.ext.webapp import template
 
 FACEBOOK_APP_ID = "555712221116753"
@@ -106,11 +107,13 @@ class IndexPage(webapp2.RequestHandler):
             path = os.path.join(os.path.dirname(__file__), "index.html")
             self.response.out.write(template.render(path, template_values))
 
-class MainPage(BaseHandler):
+class MainPageParameters(BaseHandler):
     def get(self):
 
         canCandidate = False
         canVote = False
+        userId = ""
+        userName = ""
         cand_data = ""
         vote_data = ""
         cand_party = ""
@@ -119,19 +122,18 @@ class MainPage(BaseHandler):
         vote_party = ""
         vote_region = ""
         x = ""
-        
+        token = ""
+                
         try:
             # Logged in
-            conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
-            cursor = conn.cursor()
-	    x = self.current_user['name'].split(" ")
-            firstname = x[0]
-            lastname = x[1]
-            cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], str(firstname), str(lastname)))
-            conn.commit()
-            canCandidate, canVote, cand_data, vote_data = self.get_rights(self.current_user['id'])
+            canCandidate, canVote, cand_data, vote_data = self.get_rights2(self.current_user['id'])
+            userId = self.current_user['id']
+            userName = self.current_user['name']
+            #Channel for live data
+            #token = channel.create_channel(self.current_user['id'])
+
         except TypeError:
-            # Guest
+
             pass
 
         try:
@@ -151,8 +153,10 @@ class MainPage(BaseHandler):
                 vote_region = ""
 
         template_values = {
+            'token': token,
             "facebook_app_id" : FACEBOOK_APP_ID,
-            "current_user" : self.current_user,
+            "current_user_id" : userId,
+            "current_user_name" : userName,
             "canCandidate" : canCandidate,
             "canVote" : canVote,
             "cand_party" : cand_party,
@@ -160,14 +164,93 @@ class MainPage(BaseHandler):
             "vote_isik" : vote_isik,
             "vote_party" : vote_party,
             "vote_region" : vote_region,
-            "cand_data" : cand_data,
-            "vote_data" : vote_data,
-            "candNames" : self.get_candnames(),
+        }
+
+        self.response.out.write(json.dumps(template_values, sort_keys=True))
+        
+    def get_rights2(self, id):
+        cand_data = ""
+        vote_data = ""
+        conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM kandidaat WHERE isik_ID = %s", (id,))
+        if cursor.fetchone() == None:
+            canCandidate = True
+        else:
+            canCandidate = False
+            cursor.execute("""
+                SELECT 
+                    partei.nimi, piirkond.nimi, kandidaat.isik_id
+                FROM
+                    partei, piirkond, kandidaat
+                WHERE 
+                    kandidaat.isik_ID = %s 
+                AND
+                    kandidaat.partei_ID = partei.ID
+                AND
+                    kandidaat.piirkond_ID = piirkond.ID
+            """, (id, ))
+            cand_data = cursor.fetchone()
+
+
+        cursor.execute("SELECT * FROM vote WHERE isik_ID = %s", (id, ))
+        if cursor.fetchone() == None:
+            canVote = True
+        else:
+            canVote = False
+            cursor.execute("""
+            SELECT
+                isik.Nimi, isik.perenimi, partei.Nimi, piirkond.Nimi
+            FROM
+                isik, partei, piirkond, vote, kandidaat
+            WHERE
+                vote.isik_ID = %s
+            AND
+                vote.kandidaat_ID = kandidaat.ID
+            AND
+                kandidaat.isik_ID = isik.ID
+            AND
+                kandidaat.piirkond_ID = piirkond.ID
+            AND
+                kandidaat.partei_ID = partei.ID
+            """, (id, ))
+            vote_data = cursor.fetchone()
+        conn.close()
+
+        return canCandidate, canVote, cand_data, vote_data
+
+        
+class MainPage(BaseHandler):
+    def get(self):
+        
+        try:
+            # Logged in
+            conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+            cursor = conn.cursor()
+	    x = self.current_user['name'].split(" ")
+            firstname = x[0]
+            lastname = x[1]
+            cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], str(firstname), str(lastname)))
+            conn.commit()
+            conn.close()
+            #Channel for live data
+            #token = channel.create_channel(self.current_user['id'])
+        except TypeError:
+            pass
+
+        template_values = {
+            "facebook_app_id" : FACEBOOK_APP_ID,
+            "current_user" : self.current_user,
         }
 
 
         template = jinja_environment.get_template('mainpage.html')
         self.response.out.write(template.render(template_values))
+
+    def notify_all(self, message):
+      for client in User.all():
+        channel.send_message( client.id, message)
+
     
     def post(self):
         if self.request.get("toDo") == "delete_candidate":
@@ -182,6 +265,7 @@ class MainPage(BaseHandler):
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
+            self.notify_all("Client Deleted")
 
         if self.request.get("toDo") == "delete_vote":
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
@@ -529,6 +613,7 @@ jinja_environment = jinja2.Environment(
 
 app = webapp2.WSGIApplication([
     ('/', HomeHandler),
+    ('/mainpageparameters', MainPageParameters),
     ('/logout', LogoutHandler),
     ('/myjson/vote', VotePage),
     ('/myjson/stat', StatPage),

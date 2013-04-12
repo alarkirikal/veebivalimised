@@ -1,5 +1,25 @@
-
+var parameters = {};
 window.onload=function() {
+	
+	getMainPageParametersAndUpdate();
+	
+	
+	/*
+	channel = new goog.appengine.Channel('{{ token }}');
+    socket = channel.open();
+    socket.onopen = onOpened;
+    socket.onmessage = onMessage;
+    socket.onerror = onError;
+    socket.onclose = onClose;
+	console.log("channel opened, socket created");
+	
+	onOpened = function() {
+	  connected = true;
+	  sendMessage('opened');
+	  updateBoard();
+	};*/
+
+	
 	/*
 	// Load the Visualization API and the piechart package.
 	google.load('visualization', '1.0', {'packages':['corechart']});
@@ -52,6 +72,75 @@ window.onload=function() {
     	
     }
 }
+
+on_message = function(message) {
+    console.log("message received");
+	alert(message);
+  };
+  
+function getMainPageParametersAndUpdate(){
+		parameters = {};
+		jQuery.getJSON("mainpageparameters" , function(data){
+		
+		jQuery.each(data, function(index, item){
+			parameters[index] = item;
+		});
+		
+		var loggedInAsDiv = document.getElementById("loggedInAs");
+		if (parameters.current_user_name != ""){
+			loggedInAsDiv.innerHTML = "Logitud sisse kui: " + parameters["current_user_name"];
+			loggedInAsDiv.style.display = "";
+			document.getElementById("loggedInAs2").innerHTML = "Logitud sisse kui " + parameters["current_user_name"];
+		}
+		
+		if (parameters.canVote){
+			document.getElementById("noVoteAsQuest").style.display = "none";
+			document.getElementById("alreadyVoted").style.display = "none";
+			document.getElementById("canVote").style.display = "";
+		}
+		else{
+			document.getElementById("canVote").style.display = "none";
+			if (parameters.current_user_name == ""){
+				document.getElementById("alreadyVoted").style.display = "none";
+				document.getElementById("noVoteAsQuest").style.display = "";
+		}
+			else {
+				var alreadyVotedDiv = document.getElementById("votedFor");
+				alreadyVotedDiv.innerHTML = "Teie, <strong> " + parameters["current_user_name"] +
+											"</strong>, olete juba hääletanud <strong>" 
+											+ parameters.vote_isik + 
+											"</strong> poolt, kes on erakonnas <strong>" + 
+											parameters.vote_party + "</strong> piirkonnas <strong>" + 
+											parameters.vote_region + "</strong>.";
+				document.getElementById("noVoteAsQuest").style.display = "none";
+				document.getElementById("alreadyVoted").style.display = "";
+			}
+		}
+		
+		if (parameters.canCandidate){
+			document.getElementById("Candidate").style.display = "none";
+			document.getElementById("noCandidateAsQuest").style.display = "none";
+			document.getElementById("notCandidate").style.display = "";
+		}
+		else{
+			document.getElementById("notCandidate").style.display = "none";
+			if (parameters.current_user_name == ""){
+				document.getElementById("Candidate").style.display = "none";
+				document.getElementById("noCandidateAsQuest").style.display = "";
+				
+			}
+			else {
+				var candidateAs = document.getElementById("candidateAs");
+				candidateAs.innerHTML = "Olete juba kandideerinud erakonda <strong>" + parameters.cand_party+ "</strong> piirkonnas <strong>" + parameters.cand_region + "</strong>.";
+				document.getElementById("noCandidateAsQuest").style.display = "none";
+				document.getElementById("Candidate").style.display = "";
+			}
+		}
+		
+		
+	});
+}
+
 
 function drawChart(array, tabname){
 	var options = {'title':'Diagramm', 'width':700, 'height':500};
@@ -132,19 +221,41 @@ function popup(data, elem) {
 	return true;
 }
 
-function checkVote(){
+function checkVoteAndSend(){
 	var radiobuttons = document.getElementsByName("selected_candidate");
 	var result = false;
 	for (var i = 0; i < radiobuttons.length; i++){
 		if (radiobuttons[i].checked){
 			result = true;
+			var valitud = radiobuttons[i].value;
 			break;
 		}
 	}
 	if (!result){
 		alert("Te pole kandidaati valinud");
 	}
-	return result;
+	else {
+		var xmlhttp;
+		xmlhttp=new XMLHttpRequest();
+		xmlhttp.open("POST", "main?" +
+					"selected_candidate=" + valitud +
+					"&person_id=" + parameters.current_user_id +
+					"&toDo=make_vote", false);
+		xmlhttp.send();
+		alert("Teie hääl on arvestatud");
+		getMainPageParametersAndUpdate();
+	}
+}
+
+function unVote(){
+	var xmlhttp;
+		xmlhttp=new XMLHttpRequest();
+		xmlhttp.open("POST", "main?" +
+					"person_id=" + parameters.current_user_id +
+					"&toDo=delete_vote", false);
+		xmlhttp.send();
+		alert("Teie hääl on tagasi võetud");
+		getMainPageParametersAndUpdate();
 }
 
 function getContent(){ // VOTE PAGE CONTENT 
@@ -220,7 +331,7 @@ function getContent(){ // VOTE PAGE CONTENT
 	}
 }
 
-function checkApplication(){
+function checkApplicationAndSend(){
 	var applicationAreaSelect = document.getElementById("applicationArea");
 	var applicationPartySelect = document.getElementById("applicationParty");
 	if (applicationAreaSelect.selectedIndex == 0){
@@ -238,32 +349,27 @@ function checkApplication(){
 		document.getElementById("RedX2").style.display="none";
 	}
 	if(applicationPartySelect.selectedIndex != 0 && applicationAreaSelect.selectedIndex != 0){
-		alert("Tere avaldus on edukalt esitatud!")
-		voteNow(applicationAreaSelect.options[applicationAreaSelect.selectedIndex].text, applicationPartySelect.options[applicationPartySelect.selectedIndex].text);
-		var f=document.getElementById('applicationForm');
-		return true
+		var xmlhttp;
+		xmlhttp=new XMLHttpRequest();
+		xmlhttp.open("POST", "main?Area=" + applicationAreaSelect.selectedIndex + 
+					"&Party=" + applicationPartySelect.selectedIndex +
+					"&person_id=" + parameters.current_user_id +
+					"&toDo=set_candidate", false);
+		xmlhttp.send();
+		alert("Tere avaldus on edukalt esitatud!");
+		getMainPageParametersAndUpdate();
 	}
-	return false
 }
 
-function voteNow() {
-	alert("Muu info kaob 2ra ning tabi sisule tekib tekst \n'Olete h22letanud'");
-}
-
-function alertMe() {
-	alert("p2rast sorteerin vastavalt :)");	
-}
-
-function voteNow(area, party) {
-	var name = "Siim Plangi"
-	document.getElementById("votedText").innerHTML  = "Teie, " + name + ",<br/> olete kandideerinud erakonnas: <b>" + party + "</b>,<br/> piirkonnas: <b>" + area + "</b>";
-	document.getElementById("notVoted").style.display = "none";
-	document.getElementById("voted").style.display = "";
-}
-
-function unVote(){
-	document.getElementById("voted").style.display = "none";
-	document.getElementById("notVoted").style.display = "";
+function unCandidate(){
+	var xmlhttp;
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open("POST", "main?"+
+					"person_id=" + parameters.current_user_id +
+					"&toDo=delete_candidate", false);
+	xmlhttp.send();
+	alert("Teie avaldus on edukalt tagasi võetud.");
+	getMainPageParametersAndUpdate();
 }
 
 function start_loading() {
