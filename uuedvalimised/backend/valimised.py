@@ -124,17 +124,11 @@ class MainPage(BaseHandler):
             # Logged in
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
             cursor = conn.cursor()
-            cursor.execute("SELECT COUNT(*) FROM isik WHERE ID = %s", (int(self.current_user['id'])))
-            registered = cursor.fetchone()[0]
-
-            if registered == 0:
-                x = self.current_user['name'].split(" ")
-                firstname = x[0]
-                lastname = x[1]
-                cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s)",
-                    (self.current_user['id'], str(firstname), str(lastname)))
-                conn.commit()
-
+	    x = self.current_user['name'].split(" ")
+            firstname = x[0]
+            lastname = x[1]
+            cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], str(firstname), str(lastname)))
+            conn.commit()
             canCandidate, canVote, cand_data, vote_data = self.get_rights(self.current_user['id'])
         except TypeError:
             # Guest
