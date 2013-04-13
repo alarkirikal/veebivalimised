@@ -106,11 +106,7 @@
 				<div id = "votedFor">
 				Olete juba hääletanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
 				</div>
-				<form method="POST">
-					<input type="hidden" name="toDo" value="delete_vote">
-					<input type="hidden" name="person_id" value="1">
-					<button type="submit" value="submit">Tühista hääl</button>
-				</form>
+					<button onClick = "unVote()">Tühista hääl</button>
             </div>
 		    </div>
 		</div>
@@ -336,8 +332,26 @@
         e.async = true;
         document.getElementById('fb-root').appendChild(e);
     }());
-	
 	/*
+	onOpened = function() {
+	  var connected = true;
+	  alert("Channel opened");
+	};
+	
+	onMessage = function() {
+		alert("Received a message");
+		updateStat();
+	}
+	
+	onError = function(description) {
+		alert("Channel has encountered a error");
+		console.log(description);
+	}
+	
+	onClose = function() {
+		alert("Channel has closed");
+	}
+	
 	channel = new goog.appengine.Channel('{{ token }}');
     socket = channel.open();
     socket.onopen = onOpened;
@@ -346,11 +360,9 @@
     socket.onclose = onClose;
 	console.log("channel opened, socket created");
 	
-	onOpened = function() {
-	  connected = true;
-	  sendMessage('opened');
-	  updateBoard();
-	};*/
+	
+	*/
+	
 
 </script>
 

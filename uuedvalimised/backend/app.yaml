@@ -45,6 +45,10 @@ handlers:
 
 - url: /json_temp
   static_dir: json_temp
+  
+# Channel api
+inbound_services:
+- channel_presence
 
 libraries:
 - name: lxml

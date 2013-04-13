@@ -3,21 +3,12 @@ window.onload=function() {
 	
 	getMainPageParametersAndUpdate();
 	
+	jQuery(document).ready( function() {
+		jQuery('#tab-container').easytabs();
+    });
 	
-	/*
-	channel = new goog.appengine.Channel('{{ token }}');
-    socket = channel.open();
-    socket.onopen = onOpened;
-    socket.onmessage = onMessage;
-    socket.onerror = onError;
-    socket.onclose = onClose;
-	console.log("channel opened, socket created");
-	
-	onOpened = function() {
-	  connected = true;
-	  sendMessage('opened');
-	  updateBoard();
-	};*/
+    google.load('visualization', '1.0', {'packages':['corechart']});
+    //google.setOnLoadCallback(drawChart);
 
 	
 	/*
@@ -152,6 +143,59 @@ function drawChart(array, tabname){
 	}
 	var chart = new google.visualization.PieChart(document.getElementById(tabname + '_chart_div'));
 	chart.draw(data, options);
+}
+
+function updateStat() {
+	
+	/*if (area != upDatedArea){
+		console.log("piirkonnad ei klapi");
+		return
+	}*/
+	var tabname = "";
+	if (document.getElementById("tabpage_3").style.display != "none"){
+		tabname = "Candidates";
+	}
+	else if (document.getElementById("tabpage_4").style.display != "none"){
+		tabname = "Party";
+	}
+	else {
+		return
+	}
+	var area = document.getElementById("selection" + tabname).value;
+	if (document.getElementById("selection" + tabname).value != ""){
+		Effect.Appear('loading_img_' + tabname);
+		jQuery('#' + tabname + 'Table').html("");
+		jQuery.getJSON("myjson/stat?area=" + area + "&tabname=" + tabname, function(data){
+			var totalvotes = 0
+			jQuery.each(data, function(index, item){
+					totalvotes = totalvotes + (item.votes)
+			});
+			jQuery.each(data, function(index, item){
+					
+				    var row = jQuery("<tr />");
+					if (tabname == "Candidates"){
+						jQuery("<td />").text(item.firstname + " " + item.lastname).appendTo(row);
+						arrayForChart.push([item.firstname + " " + item.lastname, item.votes])
+					}
+					else{
+						arrayForChart.push([item.party, item.votes])
+					}
+					jQuery("<td />").text(item.party).appendTo(row);
+					jQuery("<td />").text(item.votes).appendTo(row);
+					jQuery("<td />").text(Math.round(item.votes / totalvotes * 100.0) + "%").appendTo(row);
+
+					row.appendTo(jQuery('#' + tabname + 'Table'));
+			});
+			jQuery.getScript("js/sortable.js", function(){
+			//Make the table sortable again
+				ts_makeSortable(document.getElementById(tabname + "SortTable"));
+			});
+			console.log(arrayForChart);
+			drawChart(arrayForChart, tabname);
+			Effect.Fade('loading_img_' + tabname);
+		});
+		
+	}
 }
 
 // Display statistics on selection

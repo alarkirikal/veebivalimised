@@ -142,15 +142,15 @@ class MainPageParameters(BaseHandler):
         except IndexError:
             cand_party = ""
             cand_region = ""
-        if (len(vote_data) != 0):
-            try:
-                vote_isik = vote_data[0] + vote_data[1]
-                vote_party = vote_data[2]
-                vote_region = vote_data[3]
-            except TypeError:
-                vote_isik = ""
-                vote_party = ""
-                vote_region = ""
+        
+        try:
+            vote_isik = vote_data[0] + vote_data[1]
+            vote_party = vote_data[2]
+            vote_region = vote_data[3]
+        except (TypeError, IndexError):
+            vote_isik = ""
+            vote_party = ""
+            vote_region = ""
 
         template_values = {
             'token': token,
@@ -222,6 +222,7 @@ class MainPageParameters(BaseHandler):
         
 class MainPage(BaseHandler):
     def get(self):
+        token = ""
         
         try:
             # Logged in
@@ -236,9 +237,11 @@ class MainPage(BaseHandler):
             #Channel for live data
             #token = channel.create_channel(self.current_user['id'])
         except TypeError:
+            
             pass
 
         template_values = {
+            "token" : token,
             "facebook_app_id" : FACEBOOK_APP_ID,
             "current_user" : self.current_user,
         }
@@ -247,9 +250,9 @@ class MainPage(BaseHandler):
         template = jinja_environment.get_template('mainpage.html')
         self.response.out.write(template.render(template_values))
 
-    def notify_all(self, message):
+    def notify_all(self):
       for client in User.all():
-        channel.send_message( client.id, message)
+        channel.send_message( client.id, "Update")
 
     
     def post(self):
@@ -265,7 +268,7 @@ class MainPage(BaseHandler):
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
-            self.notify_all("Client Deleted")
+            self.notify_all()
 
         if self.request.get("toDo") == "delete_vote":
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
@@ -279,7 +282,7 @@ class MainPage(BaseHandler):
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
-
+            self.notify_all()
         if self.request.get("toDo") == "set_candidate":
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
             cursor = conn.cursor()
@@ -292,7 +295,7 @@ class MainPage(BaseHandler):
             conn.commit()
             conn.close()
             self.redirect('/main?action=' + self.request.get("action"))
-
+            self.notify_all()
         if self.request.get("toDo") == "make_vote":
             conn=rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
             cursor = conn.cursor()
@@ -306,7 +309,7 @@ class MainPage(BaseHandler):
             conn.commit()
             conn.close()
             self.redirect("/main?action=" + self.request.get("action"))
-
+            self.notify_all()
 
     def get_rights(self, id):
         cand_data = ""
@@ -604,7 +607,12 @@ class StatPage(webapp2.RequestHandler):
         self.conn.commit()
         self.conn.close()
 
-
+class ChannelDisconnected(webapp2.RequestHandler):
+    def post(self):
+        client_id = self.request.get('from')
+        items = User.all().filter( "id = ", client_id )
+        for item in items:
+            item.delete()
 
 
 jinja_environment = jinja2.Environment(
@@ -619,7 +627,9 @@ app = webapp2.WSGIApplication([
     ('/myjson/stat', StatPage),
     ('/myjson', DataPage),
     ('/main', MainPage),
-    ('/index', IndexPage)],
+    ('/index', IndexPage),
+    ('/_ah/channel/disconnected/', ChannelDisconnected)
+    ],
     debug = True,
     config = config
 )
