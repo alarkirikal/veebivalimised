@@ -73,7 +73,7 @@ window.onload=function() {
     			    	addSuggestions(result, name);
     				});
     			}else{
-    				var retrievedObject = JSON.parse(localStorage.getItem('myjson?lastname='+name));
+    				var retrievedObject = JSON.parse(localStorage.getItem('myjson?lastname='+name[0]));
     				if(retrievedObject != null){
     					addSuggestions(retrievedObject, name);
     				}
