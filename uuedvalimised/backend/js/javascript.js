@@ -350,6 +350,15 @@ function unVote(){
 	}
 }
 
+function addVoteCandidates(data){
+	var table_obj = jQuery('#voting_table_body');
+	jQuery.each(data, function(index, item) {
+		if (index != "id") {
+			table_obj.append(jQuery('<tr><td><input type="radio" name="selected_candidate" value="' + item.cand_id + '"></td><td>' + item.cand_id + '</td><td>' + item.firstname + ' ' + item.lastname + '</td><td>' + item.party + '</td></tr>'));
+			}
+	});
+}
+
 function getContent(){ // VOTE PAGE CONTENT 
 	start_loading();
 	
@@ -357,14 +366,16 @@ function getContent(){ // VOTE PAGE CONTENT
 	if(selectionIndex != 0){
 		jQuery('#voting_table_body').empty();
 		document.getElementById('piirkond').innerHTML=document.getElementById('selection').options[selectionIndex].text ;
+		if(online){
 			jQuery.getJSON("myjson/vote?area="+selectionIndex, function(result){
-			var table_obj = jQuery('#voting_table_body');
-			jQuery.each(result, function(index, item) {
-				if (index != "id") {
-					table_obj.append(jQuery('<tr><td><input type="radio" name="selected_candidate" value="' + item.cand_id + '"></td><td>' + item.cand_id + '</td><td>' + item.firstname + ' ' + item.lastname + '</td><td>' + item.party + '</td></tr>'));
-					}
+				addVoteCandidates(result)
 			});
-		});
+		}else{
+			var retrievedObject = JSON.parse(localStorage.getItem("myjson/vote?area="+selectionIndex));
+			if(retrievedObject != null){
+				addVoteCandidates(retrievedObject);
+			}
+		}
 	}
 	
 	//If the chosen option is without a value
@@ -575,20 +586,7 @@ function getForm(form) {
 					table_obj.append(jQuery('<tr><td>' + item.firstname + " " + item.lastname + '</td><td>' + item.area + '</td><td>' + item.party + '</td></tr>'));
 				}
 			}
-			
-			
-			
-			
-			
-			
 		});
-	
-	
-	
-	
-	
-	
-	
 	
 		if (gotStuff == 0) {
 			var myDiv = jQuery('#kekeke');
@@ -647,6 +645,16 @@ function getDataForLocalStorage(){
 	
 	for(i = 1;i<13;i++){
 		setParty(i);
+	}
+	
+	function setCandidatingCandidates(i) {
+		jQuery.getJSON("myjson/vote?area="+i, function(data){
+			localStorage["myjson/vote?area="+i] = JSON.stringify(data);
+		});
+	}
+
+	for(i = 1;i<12;i++){
+		setCandidatingCandidates(i);
 	}
 }
 	
