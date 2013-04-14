@@ -234,7 +234,7 @@ class MainPage(BaseHandler):
 	    x = self.current_user['name'].split(" ")
             firstname = x[0]
             lastname = x[1]
-            cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], str(firstname), str(lastname)))
+            cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], firstname.encode('utf-8'), lastname.encode('utf-8')))
             conn.commit()
             conn.close()
         except (TypeError):
