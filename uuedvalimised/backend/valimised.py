@@ -1,5 +1,6 @@
 from models import User
 
+import models
 import sys
 import cgi
 import webapp2
@@ -8,6 +9,7 @@ import json
 import facebook
 import urllib2
 import jinja2
+import logging
 
 from webapp2_extras import sessions
 from google.appengine.api import users
@@ -221,7 +223,8 @@ class MainPageParameters(BaseHandler):
 
         
 class MainPage(BaseHandler):
-    def get(self):
+    def get(self):        
+
         token = ""
         
         try:
@@ -234,11 +237,12 @@ class MainPage(BaseHandler):
             cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], str(firstname), str(lastname)))
             conn.commit()
             conn.close()
-            #Channel for live data
-            #token = channel.create_channel(self.current_user['id'])
-        except TypeError:
-            
+        except (TypeError):
             pass
+
+        #Channel stuff is commented out because, GAE only allows 100 channel creations per 24h
+        #token = self.openChannel()
+        
 
         template_values = {
             "token" : token,
@@ -250,9 +254,21 @@ class MainPage(BaseHandler):
         template = jinja_environment.get_template('mainpage.html')
         self.response.out.write(template.render(template_values))
 
+    def openChannel(self):
+        channelId = os.urandom(16).encode('hex')
+        token = channel.create_channel(channelId)
+        try:
+            models.Client.add(channelId, self.current_user['name'])
+        except (TypeError):
+            models.Client.add(channelId, "UnloggedUser")
+        return token
+
     def notify_all(self):
-      for client in User.all():
-        channel.send_message( client.id, "Update")
+        logging.info( "notifying of new state" )
+        for client in models.Client.all():
+            logging.info( "notifying of new state for %s" % client.name)
+            channel.send_message( client.id, "Update")
+        logging.info( "notifying of new state: done" )
 
     
     def post(self):
@@ -610,8 +626,9 @@ class StatPage(webapp2.RequestHandler):
 class ChannelDisconnected(webapp2.RequestHandler):
     def post(self):
         client_id = self.request.get('from')
-        items = User.all().filter( "id = ", client_id )
+        items = models.Client.all().filter( "id = ", client_id )
         for item in items:
+            logging.info("Disconnect" + item.name)
             item.delete()
 
 

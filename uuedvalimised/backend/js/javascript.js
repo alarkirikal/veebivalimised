@@ -1,9 +1,10 @@
 var parameters = {};
 window.onload=function() {
 	
-	alert("hai");
-	alert(navigator.onLine);
+	//alert("hai");
+	//alert(navigator.onLine);
 	
+	/*
 	
 	var appCache = window.applicationCache;
 
@@ -48,7 +49,7 @@ window.onload=function() {
 
 		// Fired when the manifest resources have been newly redownloaded.
 		appCache.addEventListener('updateready', handleCacheEvent, false);
-
+	*/
 	
 	getMainPageParametersAndUpdate();
 	
@@ -113,10 +114,6 @@ window.onload=function() {
     }
 }
 
-on_message = function(message) {
-    console.log("message received");
-	alert(message);
-  };
   
 function getMainPageParametersAndUpdate(){
 		parameters = {};
@@ -195,7 +192,7 @@ function drawChart(array, tabname){
 }
 
 function updateStat() {
-	
+	var arrayForChart = new Array();
 	/*if (area != upDatedArea){
 		console.log("piirkonnad ei klapi");
 		return
