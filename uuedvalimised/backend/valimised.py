@@ -132,7 +132,7 @@ class MainPageParameters(BaseHandler):
             userId = self.current_user['id']
             userName = self.current_user['name']
             #Channel for live data
-            #token = channel.create_channel(self.current_user['id'])
+            token = channel.create_channel(self.current_user['id'])
 
         except TypeError:
 
