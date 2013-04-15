@@ -637,13 +637,14 @@ jinja_environment = jinja2.Environment(
 )
 
 app = webapp2.WSGIApplication([
-    ('/', HomeHandler),
+    #('/', HomeHandler),
+    ('/', MainPage),
     ('/mainpageparameters', MainPageParameters),
     ('/logout', LogoutHandler),
     ('/myjson/vote', VotePage),
     ('/myjson/stat', StatPage),
     ('/myjson', DataPage),
-    ('/main', MainPage),
+    #('/main', MainPage),
     ('/index', IndexPage),
     ('/_ah/channel/disconnected/', ChannelDisconnected)
     ],
