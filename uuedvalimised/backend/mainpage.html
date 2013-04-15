@@ -336,21 +336,21 @@
 
 	onOpened = function() {
 	  var connected = true;
-	  alert("Channel opened");
+	  //alert("Channel opened");
 	};
 	
 	onMessage = function(data) {
-		alert("Received a message" + data);
+		//alert("Received a message" + data);
 		updateStat();
 	}
 	
 	onError = function(description) {
-		alert("Channel has encountered a error");
+		//alert("Channel has encountered a error");
 		console.log(description);
 	}
 	
 	onClose = function() {
-		alert("Channel has closed");
+		//alert("Channel has closed");
 	}
 	
 	channel = new goog.appengine.Channel('{{ token }}');
