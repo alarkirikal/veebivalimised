@@ -326,7 +326,7 @@ function checkVoteAndSend(){
 		if(online){
 			var xmlhttp;
 			xmlhttp=new XMLHttpRequest();
-			xmlhttp.open("POST", "main?" +
+			xmlhttp.open("POST", "?" +
 						"selected_candidate=" + valitud +
 						"&person_id=" + parameters.current_user_id +
 						"&toDo=make_vote", false);
@@ -341,7 +341,7 @@ function unVote(){
 	if(online){
 		var xmlhttp;
 			xmlhttp=new XMLHttpRequest();
-			xmlhttp.open("POST", "main?" +
+			xmlhttp.open("POST", "?" +
 						"person_id=" + parameters.current_user_id +
 						"&toDo=delete_vote", false);
 			xmlhttp.send();
@@ -454,7 +454,7 @@ function checkApplicationAndSend(){
 	if(applicationPartySelect.selectedIndex != 0 && applicationAreaSelect.selectedIndex != 0 && online){
 		var xmlhttp;
 		xmlhttp=new XMLHttpRequest();
-		xmlhttp.open("POST", "main?Area=" + applicationAreaSelect.selectedIndex + 
+		xmlhttp.open("POST", "?Area=" + applicationAreaSelect.selectedIndex + 
 					"&Party=" + applicationPartySelect.selectedIndex +
 					"&person_id=" + parameters.current_user_id +
 					"&toDo=set_candidate", false);
@@ -468,7 +468,7 @@ function unCandidate(){
 	if(online){
 		var xmlhttp;
 		xmlhttp=new XMLHttpRequest();
-		xmlhttp.open("POST", "main?"+
+		xmlhttp.open("POST", "?"+
 						"person_id=" + parameters.current_user_id +
 						"&toDo=delete_candidate", false);
 		xmlhttp.send();

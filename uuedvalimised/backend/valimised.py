@@ -95,7 +95,7 @@ class LogoutHandler(BaseHandler):
     def get(self):
         if self.current_user is not None:
             self.session['user'] = None
-        self.redirect('/main')
+        self.redirect('/')
 
 """ Facebook tests END """
 
@@ -103,7 +103,7 @@ class IndexPage(webapp2.RequestHandler):
     def get(self):
         if self.request.get("action"):
             action = self.request.get("action")
-            self.redirect("/main?action=" + action)
+            self.redirect("/?action=" + action)
         else:
             template_values = {}
             path = os.path.join(os.path.dirname(__file__), "index.html")
@@ -131,8 +131,7 @@ class MainPageParameters(BaseHandler):
             canCandidate, canVote, cand_data, vote_data = self.get_rights2(self.current_user['id'])
             userId = self.current_user['id']
             userName = self.current_user['name']
-            #Channel for live data
-            token = channel.create_channel(self.current_user['id'])
+           
 
         except TypeError:
 
@@ -237,6 +236,8 @@ class MainPage(BaseHandler):
             cursor.execute("INSERT INTO isik(ID, Nimi, perenimi) VALUES (%s, %s, %s) ON DUPLICATE KEY UPDATE id = id", (self.current_user['id'], firstname.encode('utf-8'), lastname.encode('utf-8')))
             conn.commit()
             conn.close()
+	    #Channel for live data
+            token = channel.create_channel(self.current_user['id'])
         except (TypeError):
             pass
 
@@ -283,7 +284,7 @@ class MainPage(BaseHandler):
             """, (self.current_user['id']))
             conn.commit()
             conn.close()
-            self.redirect("/main?action=" + self.request.get("action"))
+            self.redirect("/?action=" + self.request.get("action"))
             self.notify_all()
 
         if self.request.get("toDo") == "delete_vote":
@@ -297,7 +298,7 @@ class MainPage(BaseHandler):
             """, (self.current_user['id']))
             conn.commit()
             conn.close()
-            self.redirect("/main?action=" + self.request.get("action"))
+            self.redirect("/?action=" + self.request.get("action"))
             self.notify_all()
         if self.request.get("toDo") == "set_candidate":
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
@@ -310,7 +311,7 @@ class MainPage(BaseHandler):
             """ % (self.request.get("Party"), self.request.get("Area"), self.current_user['id']))
             conn.commit()
             conn.close()
-            self.redirect('/main?action=' + self.request.get("action"))
+            self.redirect('/?action=' + self.request.get("action"))
             self.notify_all()
         if self.request.get("toDo") == "make_vote":
             conn=rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
@@ -324,7 +325,7 @@ class MainPage(BaseHandler):
 
             conn.commit()
             conn.close()
-            self.redirect("/main?action=" + self.request.get("action"))
+            self.redirect("/?action=" + self.request.get("action"))
             self.notify_all()
 
     def get_rights(self, id):
