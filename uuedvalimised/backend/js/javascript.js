@@ -5,7 +5,7 @@ window.onload=function() {
 	
 	getMainPageParametersAndUpdate();
 	
-	getDataForLocalStorage();
+	//getDataForLocalStorage();
 	
 	jQuery(document).ready( function() {
 		jQuery('#tab-container').easytabs();
