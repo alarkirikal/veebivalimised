@@ -41,6 +41,8 @@ var infoBoxes;
 
 var map;
 
+var results;
+
 function begin(){
 	jQuery(window).hashchange( function(){
 		if (location.hash == "#tabpage_7"){
@@ -57,11 +59,28 @@ function initialize(){
 	
 	infoBoxes = [];
 	
-	createMap();
+	getJsonDataAndAddMarkers();
 	
-	addMarkers();
+	createMap();
 
 	createLegend();
+}
+
+function myArraySort(a,b){
+	return ((a[0] < b[0]) ? -1 : ((a[0] > b[0]) ? 1 : 0));
+}
+
+function getJsonDatAndAddMarkers(){
+	results = new Array();
+	jQuery.getJSON("myjson/map", function(data){
+		var i = 0;
+		jQuery.each(data, function(index, item){
+			results[i] = [parseInt(index), item["party"], item["total"], item["votes"]];
+			i++;
+		});
+		results.sort(myArraySort);
+		addMarkers();
+	});
 }
 
 function addMarkers(){
@@ -74,6 +93,10 @@ function addMarkers(){
 	infoBoxes[i] = new InfoBox(getOptions());
 	addListeners(i);	
 	}
+}
+
+function getMarkerColor(){
+
 }
 
 function addListeners(i){
