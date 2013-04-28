@@ -7,7 +7,7 @@ window.onload=function() {
 	
 	beginMapsLoad();
 	
-	getDataForLocalStorage();
+	//getDataForLocalStorage();
 	
 	jQuery(document).ready( function() {
 		jQuery('#tab-container').easytabs();
@@ -79,23 +79,10 @@ window.onload=function() {
     		
     	}
     	
-    }
-    
-    
+    }    
 }
 
-
-
-  
 function getMainPageParametersAndUpdate(){
-		parameters = {};
-		jQuery.getJSON("mainpageparameters" , function(data){
-				jQuery.each(data, function(index, item){
-					parameters[index] = item;
-				});
-			});
-		updateAfterMainPage(parameters);
-		/*
 		if(navigator.onLine){
 			jQuery.getJSON("mainpageparameters" , function(data){
 				jQuery.each(data, function(index, item){
@@ -109,7 +96,7 @@ function getMainPageParametersAndUpdate(){
 				parameters[index] = item;
 			});
 			updateAfterMainPage(parameters)
-		}*/
+		}
 }
 
 function updateAfterMainPage(parameters){
@@ -806,7 +793,7 @@ function createLegend(){
 	var legend = document.createElement("div");
 	document.getElementById("googleMap").appendChild(legend);
 	legend.id = "legend";
-	legend.innerHTML = "Juhtivate erakonnad";
+	legend.innerHTML = "Erakonnad";
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
 		document.getElementById('legend'));	
 	for (var i = 0; i < 6; i++){
