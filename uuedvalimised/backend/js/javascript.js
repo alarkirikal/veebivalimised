@@ -3,9 +3,9 @@ var online = navigator.onLine;
 var letters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","š","z","ž","t","u","v","w","õ","ä","ö","ü","x","y"];
 window.onload=function() {
 	
-	getDataForLocalStorage();
-
 	getMainPageParametersAndUpdate();
+	
+	//getDataForLocalStorage();
 	
 	jQuery(document).ready( function() {
 		jQuery('#tab-container').easytabs();
