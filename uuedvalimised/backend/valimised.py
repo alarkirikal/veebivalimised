@@ -521,6 +521,60 @@ class VotePage(webapp2.RequestHandler):
         self.conn.close()
 
 
+class MapPage(webapp2.RequestHandler):
+    def connectDb(self):
+        self.conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
+        self.cursor = self.conn.cursor()
+
+    def get(self):
+        self.connectDb()
+        respJSON = {}
+        piirkond = 1
+        while piirkond < 12:
+            self.cursor.execute("""
+                SELECT
+                    partei.nimi, count(kandidaat_ID)
+                FROM
+                    vote, isik, kandidaat, partei
+                WHERE
+                    vote.kandidaat_ID = kandidaat.ID
+                AND
+                    kandidaat.isik_ID = isik.ID
+                AND
+                    kandidaat.partei_ID = partei.ID
+                AND
+                    kandidaat.piirkond_ID = %s
+
+                GROUP BY
+                    partei.nimi
+                ORDER BY
+                    count(kandidaat_ID)
+                DESC
+            """, (piirkond))
+        
+            first_parsed = True
+            total_votes = 0
+            winner_name = ""
+            winner_votes = ""
+            for row in self.cursor.fetchall():
+                if first_parsed:
+                    winner_name = row[0]
+                    winner_votes = row[1]
+                    first_parsed = False
+
+                total_votes += row[1]
+            
+            temp = {}
+            temp['party'] = winner_name
+            temp['votes'] = winner_votes
+            temp['total'] = total_votes
+            respJSON[str(piirkond)] = temp
+            piirkond += 1
+
+        self.response.out.write(json.dumps(respJSON, sort_keys=True))
+
+
+
 class StatPage(webapp2.RequestHandler):
     
     def connectDb(self):
@@ -644,6 +698,7 @@ app = webapp2.WSGIApplication([
     ('/logout', LogoutHandler),
     ('/myjson/vote', VotePage),
     ('/myjson/stat', StatPage),
+    ('/myjson/map', MapPage),
     ('/myjson', DataPage),
     #('/main', MainPage),
     ('/index', IndexPage),
