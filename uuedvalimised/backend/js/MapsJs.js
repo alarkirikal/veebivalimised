@@ -1,12 +1,13 @@
 window.onload = begin;
 
 var partys = [
-			  ["http://maps.google.com/mapfiles/ms/icons/blue-dot.png", "Eestimaa sinised"],
-			  ["http://maps.google.com/mapfiles/ms/icons/red-dot.png", "Eestimma mustad"],
-			  ["http://maps.google.com/mapfiles/ms/icons/green-dot.png", "Eestimma läbipaistvad"],
-			  ["http://maps.google.com/mapfiles/ms/icons/yellow-dot.png", "Eestimma kollased"],
-			  ["http://maps.google.com/mapfiles/ms/icons/orange-dot.png", "Eestimma ruudulised"],
-			  ["http://maps.google.com/mapfiles/ms/icons/purple-dot.png", "Eestimma triibulised"]
+			  ["http://maps.google.com/mapfiles/ms/icons/blue-dot.png", "Eestimaa Sinised", "blue"],
+			  ["http://maps.google.com/mapfiles/ms/icons/red-dot.png", "Eestimaa Mustad", "red"],
+			  ["http://maps.google.com/mapfiles/ms/icons/green-dot.png", "Eestimaa Läbipaistvad", "green"],
+			  ["http://maps.google.com/mapfiles/ms/icons/yellow-dot.png", "Eestimaa Kollased", "yellow"],
+			  ["http://maps.google.com/mapfiles/ms/icons/orange-dot.png", "Eestimaa Ruudulised", "orange"],
+			  ["http://maps.google.com/mapfiles/ms/icons/ltblue-dot.png", "Eestimaa Joonelised", "aqua"],
+			  ["http://maps.google.com/mapfiles/ms/icons/red.png", "Tulemused puuduvad", "white"]
 			  ]
 
 var myLatLngs = [
@@ -49,8 +50,6 @@ function begin(){
 			initialize();
 		}
 	});
-	
-	
 }
 
 function initialize(){
@@ -70,7 +69,7 @@ function myArraySort(a,b){
 	return ((a[0] < b[0]) ? -1 : ((a[0] > b[0]) ? 1 : 0));
 }
 
-function getJsonDatAndAddMarkers(){
+function getJsonDataAndAddMarkers(){
 	results = new Array();
 	jQuery.getJSON("myjson/map", function(data){
 		var i = 0;
@@ -85,18 +84,25 @@ function getJsonDatAndAddMarkers(){
 
 function addMarkers(){
 	for (var i = 0; i<11; i++){
+	var partyArray = getColor(results[i][1]);
 	markers[i] = new google.maps.Marker({
+		  icon: partyArray[0],
 		  position: myLatLngs[i],
 		  map: map,
 		  title: piirkonnad[i]
 	});
-	infoBoxes[i] = new InfoBox(getOptions());
+	infoBoxes[i] = new InfoBox(getOptions(i));
 	addListeners(i);	
 	}
 }
 
-function getMarkerColor(){
-
+function getColor(party){
+	for (var i = 0; i<6; i++){
+		if (partys[i][1] == party){
+			return partys[i];
+		}
+	}
+	return partys[6];
 }
 
 function addListeners(i){
@@ -110,9 +116,15 @@ function addListeners(i){
 
 function createMap(){
 	var mapProp = {
-	  center:new google.maps.LatLng(58.528742,25.370850),
-	  zoom:7,
-	  mapTypeId:google.maps.MapTypeId.ROADMAP
+	  center:new google.maps.LatLng(58.528742,25.370850)
+	  ,zoom:7
+	  ,mapTypeId:google.maps.MapTypeId.ROADMAP
+	  ,panControl: false
+	  ,zoomControl: true
+	  ,mapTypeControl: false
+	  ,scaleControl: false
+	  ,streetViewControl: false
+	  ,overviewMapControl: false
 	  };
 
 	map=new google.maps.Map(document.getElementById("googleMap")
@@ -137,19 +149,29 @@ function createLegend(){
 }
 
 
-function getOptions(){
+function getOptions(i){
 	var boxText = document.createElement("div");
-	boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: yellow; padding: 5px;";
-	boxText.innerHTML = "Valimispiirkond";
+	partyArray = getColor(results[i][1]);
+	boxText.style.cssText = "border: 1px solid black; margin-top: 8px; background: yellow; padding: 5px; font-weight: bold; font-size: 10px;";
+	boxText.style.background = partyArray[2];
+	var erakond = partyArray[1]
+	var osakaal; 
+	if (partyArray[1] == "Tulemused puuduvad"){
+		osakaal = "0";
+	}
+	else{
+		osakaal = Math.round(results[i][3]*100.0/results[i][2]);
+	}	
+	boxText.innerHTML = piirkonnad[i] + "<br />Juhtiv erakond: " + partyArray[1] + "<br />Häälte osakaal: " + osakaal + "%";
 	var options = {
                  content: boxText
                 ,disableAutoPan: false
                 ,maxWidth: 0
-                ,pixelOffset: new google.maps.Size(-75, 0)
+                ,pixelOffset: new google.maps.Size(-100, 0)
                 ,zIndex: null
-                ,boxStyle: { 
+                ,boxStyle: {
+				  width: "260px",
                   opacity: 0.75
-                  ,width: "150px"
                  }
 				,closeBoxURL: ""
                 ,infoBoxClearance: new google.maps.Size(1, 1)
