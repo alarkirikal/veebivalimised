@@ -98,14 +98,15 @@ function createMap(){
 }
 
 function createLegend(){
+	var legend = document.createElement("div");
+	document.getElementById("googleMap").appendChild(legend);
+	legend.id = "legend";
+	legend.innerHTML = "Juhtivate erakonnad";
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
 		document.getElementById('legend'));	
-	var legend = document.getElementById('legend');
-	for (var i = 0; i < 5; i++){
+	for (var i = 0; i < 6; i++){
 		var icon = partys[i][0];
-		console.log(icon);
 		var name = partys[i][1];
-		console.log(name);
 		var div = document.createElement('div');
 		div.innerHTML = '<img src="' + icon + '"> ' + name;
 		legend.appendChild(div);
