@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" manifest="/static/uuedvalimised.appcache">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
@@ -13,7 +13,7 @@
 <table width="100%">
 <tr>
     <td class="pealkiri" style="float:left">Veebivalimised</td>
-    <td style="float:right">
+    <td style="float:right" id="fbloginBtn">
         <fb:login-button autologoutlink="true"></fb:login-button>
 		<br />
 		<div id = "loggedInAs" style = "display:none;">
@@ -27,13 +27,13 @@
 <div id="tab-container">
 	
 		<ul class = "etabs">
-			<li class = "tab"><a href="#tabpage_1"> Avaleht </a> </li>
-			<li class = "tab"><a href="#tabpage_2"> Hääletamine </a> </li>
-			<li class = "tab"><a href="#tabpage_3"> Statistika Kandidaatide järgi </a> </li>
-			<li class = "tab"><a href="#tabpage_4"> Statistika Erakondade Järgi </a> </li>
-			<li class = "tab"><a href="#tabpage_5"> Kandideeri Valimistele </a> </li>
-			<li class = "tab"><a href="#tabpage_6"> Vaata Kandidaate </a> </li>
-			<li class = "tab"><a href="#tabpage_7"> Kaart </a> </li>
+			<li class = "tab" id="tab1"><a href="#tabpage_1"> Avaleht </a> </li>
+			<li class = "tab" id="tab2"><a href="#tabpage_2"> Hääletamine </a> </li>
+			<li class = "tab" id="tab3"><a href="#tabpage_3"> Statistika Kandidaatide järgi </a> </li>
+			<li class = "tab" id="tab4"><a href="#tabpage_4"> Statistika Erakondade Järgi </a> </li>
+			<li class = "tab" id="tab5"><a href="#tabpage_5"> Kandideeri Valimistele </a> </li>
+			<li class = "tab" id="tab6"><a href="#tabpage_6"> Vaata Kandidaate </a> </li>
+			<li class = "tab" id="tab7"><a href="#tabpage_7"> Kaart </a> </li>
 		</ul>
 	
 	<div class="panel-container">
@@ -97,7 +97,7 @@
 							</tbody>
 						</table>
 					</div>
-					<button onClick="checkVoteAndSend()">Hääleta!</button>
+					<button onClick="checkVoteAndSend()" id="voteBtn">Hääleta!</button>
 			</div>
 			</div>
 			<div id = "noVoteAsQuest" style = "display:none;">
@@ -107,7 +107,7 @@
 				<div id = "votedFor">
 				Olete juba hääletanud <strong>{{ vote_isik }}</strong> poolt, kes on erakonnas <strong>{{ vote_party }}</strong> piirkonnas <strong>{{ vote_region }}</strong>.
 				</div>
-					<button onClick = "unVote()">Tühista hääl</button>
+					<button onClick = "unVote()" id="unVoteBtn">Tühista hääl</button>
             </div>
 		    </div>
 		</div>
@@ -254,7 +254,7 @@
 					</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px"/></span>
 					<br/><br/>
 					
-					<button onClick = "checkApplicationAndSend()">Kandideeri</button>									
+					<button onClick = "checkApplicationAndSend()" id="kandideeri">Kandideeri</button>									
 				</div>
              
                 <div id="Candidate" style = "display:none;">
@@ -262,7 +262,7 @@
 						Viga!
 					</div>
 					
-					<button onClick = unCandidate()>Tühista kandideering</button>
+					<button onClick = unCandidate() id="uncandidate">Tühista kandideering</button>
 				</div>
 
 				<div id = "noCandidateAsQuest" style = "display:none;">

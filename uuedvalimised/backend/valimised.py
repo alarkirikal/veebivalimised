@@ -237,7 +237,7 @@ class MainPage(BaseHandler):
             conn.commit()
             conn.close()
 	    #Channel for live data
-            token = channel.create_channel(self.current_user['id'])
+#            token = channel.create_channel(self.current_user['id'])
         except (TypeError):
             pass
 

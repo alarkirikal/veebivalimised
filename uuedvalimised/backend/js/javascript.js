@@ -340,10 +340,12 @@ function unVote(){
 
 function addVoteCandidates(data){
 	var table_obj = jQuery('#voting_table_body');
+	counter = 0;
 	jQuery.each(data, function(index, item) {
 		if (index != "id") {
-			table_obj.append(jQuery('<tr><td><input type="radio" name="selected_candidate" value="' + item.cand_id + '"></td><td>' + item.cand_id + '</td><td>' + item.firstname + ' ' + item.lastname + '</td><td>' + item.party + '</td></tr>'));
-			}
+			table_obj.append(jQuery('<tr id=candidate'+counter+'><td><input type="radio" id=candidateSelect'+counter+' name="selected_candidate" value="' + item.cand_id + '"></td><td>' + item.cand_id + '</td><td id=candidateName'+counter+'>' + item.firstname + ' ' + item.lastname + '</td><td id=candidateParty'+counter+'>' + item.party + '</td></tr>'));
+			counter++;
+		}
 	});
 }
 
