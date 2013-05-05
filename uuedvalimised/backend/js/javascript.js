@@ -167,10 +167,6 @@ function drawChart(array, tabname){
 
 function updateStat() {
 	var arrayForChart = new Array();
-	/*if (area != upDatedArea){
-		console.log("piirkonnad ei klapi");
-		return
-	}*/
 	var tabname = "";
 	if (document.getElementById("tabpage_3").style.display != "none"){
 		tabname = "Candidates";
@@ -183,7 +179,7 @@ function updateStat() {
 	}
 	var area = document.getElementById("selection" + tabname).value;
 	if (document.getElementById("selection" + tabname).value != ""){
-		Effect.Appear('loading_img_' + tabname);
+		document.getElementById("loading_img_" + tabname).style.display = "";
 		jQuery('#' + tabname + 'Table').html("");
 		jQuery.getJSON("myjson/stat?area=" + area + "&tabname=" + tabname, function(data){
 			var totalvotes = 0
@@ -210,9 +206,9 @@ function updateStat() {
 			//Make the table sortable again
 				ts_makeSortable(document.getElementById(tabname + "SortTable"));
 			});
-			console.log(arrayForChart);
 			drawChart(arrayForChart, tabname);
-			Effect.Fade('loading_img_' + tabname);
+			
+			document.getElementById('loading_img_' + tabname).style.display= "none";
 		});
 		
 	}
@@ -224,7 +220,7 @@ function displayStat(tabname) {
 	var area = document.getElementById("selection" + tabname).value;
 	document.getElementById("statisticsAreaToAppear" + tabname).style.display="none";
 	if (document.getElementById("selection" + tabname).value != "") {
-		Effect.Appear('loading_img_' + tabname);
+		document.getElementById('loading_img_' + tabname).style.display = "";
 		jQuery('#' + tabname + 'Table').html("");
 		
 		if(navigator.onLine){
@@ -241,8 +237,8 @@ function displayStat(tabname) {
 		var selectedOption = document.getElementById("selection" + tabname).options[document.getElementById("selection" +tabname).selectedIndex];
 		document.getElementById("areaName" + tabname).innerHTML = selectedOption.text;
 		setTimeout(function(){
-			Effect.Fade('loading_img_' +tabname);
-			Effect.Appear("statisticsAreaToAppear" + tabname, {duration: 0.5});
+			document.getElementById('loading_img_' +tabname).style.display = "none";
+			document.getElementById("statisticsAreaToAppear" + tabname).style.display = "";
 		}, 1000);
 		
 	}
@@ -273,7 +269,6 @@ function displayStatPage(data,tabname){
 	//Make the table sortable again
 		ts_makeSortable(document.getElementById(tabname + "SortTable"));
 	});
-	console.log(arrayForChart);
 	drawChart(arrayForChart, tabname);
 }
 
@@ -351,7 +346,6 @@ function addVoteCandidates(data){
 
 function getContent(){ // VOTE PAGE CONTENT 
 	start_loading();
-	
 	var selectionIndex=document.getElementById('selection').selectedIndex;
 	if(selectionIndex != 0){
 		jQuery('#voting_table_body').empty();
@@ -371,13 +365,9 @@ function getContent(){ // VOTE PAGE CONTENT
 	//If the chosen option is without a value
 	if (document.getElementById("selection").value == "") {
 		document.getElementById("ifVoteDisplayed").value = "waitabit";
-		console.log("esimese valiku algus");
-		console.log(document.getElementById("ifVoteDisplayed").value);
-		Effect.Fade("areaToAppear", {duration: 0.5});
+		document.getElementById("areaToAppear").style.display = "none";
 		window.setTimeout( function() {
 			document.getElementById("ifVoteDisplayed").value = "beginning";
-			console.log("esimese valiku l6pp");
-			console.log(document.getElementById("ifVoteDisplayed").value);
 			stop_loading();
 		}, 500);
 		return;
@@ -385,22 +375,18 @@ function getContent(){ // VOTE PAGE CONTENT
 	//
 	if (document.getElementById("ifVoteDisplayed").value == "true") {
 		document.getElementById("ifVoteDisplayed").value = "false";
-		console.log("from 1 to 0, start");
-		new Effect.Opacity("areaToAppear", {from: 1.0, to:0, duration:0.2});
-		console.log("from 1 to 0, end");
+		document.getElementById("areaToAppear").style.display = "none";
 	}
 	
 	if (document.getElementById("ifVoteDisplayed").value == "beginning") {
 		window.setTimeout( function () {
 		function x() {
-			Effect.Appear("areaToAppear", {duration: 0.2});
+			document.getElementById("areaToAppear").style.display = "";
 			function y() {
 				document.getElementById("areaToAppear").style.display = "";
-				console.log("beginning, hakkan ootama");
 				window.setTimeout( function() {
 					stop_loading();
 					document.getElementById("ifVoteDisplayed").value = "true";
-					console.log("beginning, l6petasin ootamise");
 					return;
 				}, 300);
 			}
@@ -409,14 +395,13 @@ function getContent(){ // VOTE PAGE CONTENT
 		x();
 		}, 300);
 	} else {
-	console.log('peaks nagu tekitama ka nyyd 0 to 1-i');
 	window.setTimeout(function () {
 		var image = document.getElementById("imageToSwap");
 		var dropd = document.getElementById("selection");
 		image.src = dropd.value;
 		
 		window.setTimeout( function() {
-			new Effect.Opacity("areaToAppear", {from:0, to:1.0, duration:0.2});
+			document.getElementById("areaToAppear").style.display = "";
 			document.getElementById("ifVoteDisplayed").value = "true";
 			stop_loading();
 		}, 200);
@@ -428,14 +413,12 @@ function checkApplicationAndSend(){
 	var applicationAreaSelect = document.getElementById("applicationArea");
 	var applicationPartySelect = document.getElementById("applicationParty");
 	if (applicationAreaSelect.selectedIndex == 0){
-		new Effect.Highlight("applicationArea");
 		document.getElementById("RedX1").style.display="";
 	}
 	else {
 		document.getElementById("RedX1").style.display="none";
 	}
 	if(applicationPartySelect.selectedIndex == 0){
-		new Effect.Highlight("applicationParty");
 		document.getElementById("RedX2").style.display="";
 	}
 	else {
@@ -468,11 +451,11 @@ function unCandidate(){
 }
 
 function start_loading() {
-    Effect.Appear('loading_img');
+	document.getElementById('loading_img').style.display="";
 }
 
 function stop_loading() {
-    Effect.Fade('loading_img', {duration:0.0});
+	document.getElementById('loading_img').style.display="none";
 }
 
 //PALUN JAVASCRIPT MA ANUN SIND
@@ -703,7 +686,6 @@ var map;
 var results;
 
 function beginMapsLoad(){
-	initialize();
 	jQuery(window).hashchange( function(){
 		if (location.hash == "#tabpage_7"){
 			initialize();
