@@ -284,7 +284,6 @@ class MainPage(BaseHandler):
             """, (self.current_user['id']))
             conn.commit()
             conn.close()
-            self.redirect("/?action=" + self.request.get("action"))
             self.notify_all()
 
         if self.request.get("toDo") == "delete_vote":
@@ -298,7 +297,6 @@ class MainPage(BaseHandler):
             """, (self.current_user['id']))
             conn.commit()
             conn.close()
-            self.redirect("/?action=" + self.request.get("action"))
             self.notify_all()
         if self.request.get("toDo") == "set_candidate":
             conn = rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
@@ -311,7 +309,6 @@ class MainPage(BaseHandler):
             """ % (self.request.get("Party"), self.request.get("Area"), self.current_user['id']))
             conn.commit()
             conn.close()
-            self.redirect('/?action=' + self.request.get("action"))
             self.notify_all()
         if self.request.get("toDo") == "make_vote":
             conn=rdbms.connect(instance=_INSTANCE_NAME, database='Veebivalimised')
@@ -325,7 +322,6 @@ class MainPage(BaseHandler):
 
             conn.commit()
             conn.close()
-            self.redirect("/?action=" + self.request.get("action"))
             self.notify_all()
 
     def get_rights(self, id):

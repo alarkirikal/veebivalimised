@@ -265,10 +265,7 @@ function displayStatPage(data,tabname){
 
 			row.appendTo(jQuery('#' + tabname + 'Table'));
 	});
-	jQuery.getScript("js/sortable.js", function(){
-	//Make the table sortable again
-		ts_makeSortable(document.getElementById(tabname + "SortTable"));
-	});
+	ts_makeSortable(document.getElementById(tabname + "SortTable"));
 	drawChart(arrayForChart, tabname);
 }
 
@@ -528,10 +525,8 @@ function getForm(form) {
 				myDiv.append(jQuery('<h3>P&auml;ringule vastused puuduvad!</h3>'));
 			}
 			else{
-				jQuery.getScript("js/sortable.js", function(){
-						//Make the table sortable again
-					ts_makeSortable(document.getElementById("myTable"));
-				});
+				ts_makeSortable(document.getElementById("myTable"));
+				
 			}
 		});
 	}else{
@@ -566,15 +561,11 @@ function getForm(form) {
 			myDiv.append(jQuery('<h3>P&auml;ringule vastused puuduvad!</h3>'));
 		}
 		else{
-			jQuery.getScript("js/sortable.js", function(){
-					//Make the table sortable again
-				ts_makeSortable(document.getElementById("myTable"));
-			});
+			ts_makeSortable(document.getElementById("myTable"));
+			}
 		}
 	
 	}
-
-}
 
 function getDataForLocalStorage(){
 	if(!supports_html5_storage() && !online){
