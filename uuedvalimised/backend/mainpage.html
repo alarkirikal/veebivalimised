@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -10,7 +10,8 @@
 <body>
 
 <p class="paisjajalus">Antud rakendus ei ole mõeldud kasutamiseks reaalsetel valimistel</p>
-<table width="100%">
+<table class="loginTable">
+
 <tr>
     <td class="pealkiri" style="float:left">Veebivalimised</td>
     <td style="float:right" id="fbloginBtn">
@@ -20,7 +21,9 @@
             Logitud sisse kui:  
 		</div>
     </td>
-    <div id="fb-root"></div>
+    <td>
+    	<div id="fb-root"></div>
+    </td>
 </tr>
 </table>
 
@@ -38,7 +41,7 @@
 	
 	<div class="panel-container">
 	    <div class = "tabpage" id="tabpage_1" style = "display: none;">
-		<div id="page_container">
+		<div id="page_container_front">
 		    <h4> Tere tulemast Veebivalimise keskonda. </h4> 
 		    <p>
 			Antud keskond on loodud kolme tudengi poolt: Alar Kirikal, Siim Plangi ja Argo Mändla. <br>
@@ -54,7 +57,7 @@
 				<div class="noprint">
 						<p class="noprinttitle">Valige valimispiirkond </p>
 						<select class="noprint" id="selection" onChange="getContent()">
-			           		<optgroup>
+			           		<optgroup label="Valige valimispiirkond">
 								<option value=""> Valimispiirkonnad </option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_01.png">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
 			           			<option value="Images/Valimisringkonnad/Valimisringkond_nr_02.png">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
@@ -68,14 +71,14 @@
 			    				<option value="Images/Valimisringkonnad/Valimisringkond_nr_10.png">Valimisringkond nr 10: Tartu</option>
 		    					<option value="Images/Valimisringkonnad/Valimisringkond_nr_11.png">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 			           		</optgroup>
-			           </select> <span id="loading_img" style="display:none;"><img src="Images/loader.gif" width = "16px" height = "16px"/></span>
-						<br><br>
+			           </select> <span id="loading_img" style="display:none;"><img src="Images/loader.gif" alt="Loader" width = "16" height = "16" /></span>
+						<br><br />
 						<hr>
 				</div>
 				<div id="areaToAppear" style="display:none;">
 				<input type="hidden" id="ifVoteDisplayed" value="beginning" />
 				<div>
-			        <p><img id="imageToSwap" src="Images/Valimisringkonnad/Valimisringkond_nr_01.png" width = 512px height = 369px/></p>
+			        <p><img id="imageToSwap" alt="ringkond" src="Images/Valimisringkonnad/Valimisringkond_nr_01.png" width = "512" height = "369"/></p>
 				</div>
 				<div>
 			       	<p class="textBold" id="piirkond"></p>
@@ -112,10 +115,10 @@
 		    </div>
 		</div>
 		<div class="tabpage" id="tabpage_3" style = "display: none;">
-			<div id="page_container">
+			<div id="page_container3">
 					<p class="noprinttitle"> Valige valimispiirkond </p>
 					<select class="noprint" id="selectionCandidates" onchange="displayStat('Candidates')">
-			           	<optgroup>
+			           	<optgroup label="Valimispiirkonnad">
 			           		<option value = "">Valimispiirkonnad </option>
 							<option value = "12">Kogu Eesti </option>
 			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
@@ -130,7 +133,7 @@
 							<option value = "10">Valimisringkond nr 10: Tartu</option>
 							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 			           	</optgroup>
-			        </select> <span id="loading_img_Candidates" style="display:none;"><img src="Images/loader.gif" width = "16px" height = "16px"/></span>
+			        </select> <span id="loading_img_Candidates" style="display:none;"><img src="Images/loader.gif" alt="loaderGif" width = "16" height = "16"/></span>
 			        <br><br>
 					<hr class="noprint">
 				</div>
@@ -157,16 +160,16 @@
 					</div>
 				
 			
-				<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_3')"/>
+				<input class="noprint" type="image" src=Images/print.png alt="printimage" onclick="printPage('#tabpage_3')"/>
 				</div>
 			</div>
 
 		<div class="tabpage" id="tabpage_4" style = "display: none;">
-			<div id="page_container">
+			<div id="page_container4">
 				<div>
 					<p class="noprinttitle">Valige valimispiirkond </p>
 					<select class="noprint" id="selectionParty" onchange="displayStat('Party')">
-			           	<optgroup>
+			           	<optgroup label="Valimispiirkonnad">
 			           		<option value = "">Valimispiirkonnad</option>
 			           		<option value = "12">Kogu Eesti </option>
 			           		<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
@@ -181,7 +184,7 @@
 							<option value = "10">Valimisringkond nr 10: Tartu</option>
 							<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 			           	</optgroup>
-			        </select> <span id="loading_img_Party" style="display:none;"><img src="Images/loader.gif" width = "16px" height = "16px"/></span>
+			        </select> <span id="loading_img_Party" style="display:none;"><img src="Images/loader.gif" alt="againloadergif" width = "16" height = "16"/></span>
 			        <br><br>
 					<hr class="noprint">
 				</div>
@@ -206,13 +209,13 @@
 					
 				</div>
 					
-			<input class="noprint" type="image" src=Images/print.png value="Print Current Page" onclick="printPage('#tabpage_4')" />
+			<input class="noprint" type="image" src=Images/print.png alt="printagain" onclick="printPage('#tabpage_4')" />
 		</div>
 		</div>
    </div>
    
    		<div class="tabpage" id="tabpage_5" style = "display: none;">
-			<div id="page_container">
+			<div id="page_container5">
 				<div id="notCandidate" style = "display:none;">
 					
 					<div id = "loggedInAs2">
@@ -223,7 +226,7 @@
 					<br/><br/>
 					Valige kandideerimispiirkond
 					<select id="applicationArea" name="Area">
-						<optgroup>
+						<optgroup label="valimispiirkonnad">
 								<option value = "">Valimispiirkonnad</option>
 								<option value = "1">Valimisringkond nr 1: Haabersti, Põhja-Tallinn, Kristiine</option>
 								<option value = "2">Valimisringkond nr 2: Kesklinn, Lasnamäe, Pirita</option>
@@ -238,11 +241,11 @@
 								<option value = "11">Valimisringkond nr 11: Põlvamaa, Valgamaa, Võrumaa</option>
 						</optgroup>
 					</select>
-					<span id="RedX1" style="display:none;"><img src="Images/RedX.png" width="15px" height = "15px"/></span>
+					<span id="RedX1" style="display:none;"><img src="Images/RedX.png" alt="redX" width="15" height = "15"/></span>
 					<br/><br/>
 						Valige erakond
 					<select id="applicationParty" name="Party">
-						<optgroup>
+						<optgroup label="Erakonnad">
 							<option value ="">Erakonnad</option>
 							<option value = "1">Eestimaa Mustad</option>
 							<option value = "2">Eestimaa Sinised</option>
@@ -251,7 +254,7 @@
 							<option value = "5">Eestimaa Kollased</option>
 							<option value = "6">Eestimaa Läbipaistvad</option>
 						</optgroup>
-					</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" width="15px" height = "15px"/></span>
+					</select><span id="RedX2" style="display:none;"><img src="Images/RedX.png" alt="redx2" width="15" height = "15"/></span>
 					<br/><br/>
 					
 					<button onClick = "checkApplicationAndSend()" id="kandideeri">Kandideeri</button>									
@@ -272,10 +275,10 @@
 	</div>
 
 		<div class="tabpage" id="tabpage_6" style = "display: none;">
-			<div id="page_container">
+			<div id="page_container6">
 					<h3> Kandidaatite otsing: </h3>
 					<hr> <br />
-					<form name="testform" action="" method="GET" >
+					<form name="testform" action="http://uuedvalimised.appspot.com/" method="GET" >
 
 						Nimi:<input type="text" list="candidateSearchByName" name="candidateSearchByName" >
 						<datalist id="candidateSearchByName">
@@ -292,8 +295,8 @@
 			</div>
 		</div>
 		<div class="tabpage" id="tabpage_7" style = "display: none;">
-			<div id="page_container">
-				<div id="googleMap" style="width:960 px;height:500px;"></div>
+			<div id="page_container7">
+				<div id="googleMap" style="width:960px;height:500px;"></div>
 			</div>
 		</div>
 	</div>
@@ -304,14 +307,14 @@
 					 Kokkulangevused reaalse e-valimiste protsessiga on juhuslikud</p>
 
 
-<script language="javascript" src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
-<script language="javascript" src="js/jquery.ba-hashchange.min.js" type="text/javascript"></script>
-<script language="javascript" src="js/jquery.easytabs.min.js" type="text/javascript"></script>
-<script language="javascript" src="js/sortable.js" type="text/javascript"></script>
-<script language="javascript" src="js/jsapi.js" type="text/javascript"></script>
-<script language="javascript" src="js/MapsJs.js" type="text/javascript"></script>
-<script language="javascript" src="js/javascript.js" type="text/javascript"></script>
-<script language="javascript" src="js/infobox_packed.js" type="text/javascript"></script>
+<script src="js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="js/jquery.ba-hashchange.min.js" type="text/javascript"></script>
+<script src="js/jquery.easytabs.min.js" type="text/javascript"></script>
+<script src="js/sortable.js" type="text/javascript"></script>
+<script src="js/jsapi.js" type="text/javascript"></script>
+<script src="js/MapsJs.js" type="text/javascript"></script>
+<script src="js/javascript.js" type="text/javascript"></script>
+<script src="js/infobox_packed.js" type="text/javascript"></script>
 
 
 <script type="text/javascript">

@@ -31,6 +31,10 @@ html{
 	padding:5mm;
 }
 
+.loginTable {
+	width: 100%;
+}
+
 .textCenter{
 	font-family:Verdana, Geneva, Tahoma, sans-serif;
 	text-align:center;
@@ -81,8 +85,8 @@ html{
 
 .iceberg{
 	display: block;
-	width: 100m;
-	height: 400m;
+/* 	width: 100mm; */
+/* 	height: 400mm; */
 }
 
 #titanic{
@@ -165,8 +169,7 @@ table.sortable tr.sortbottom td {
 }
 
 .etabs { margin: 0; padding: 0; }
-.tab { 	display: inline-block; zoom:1; 
-		*display:inline; background: #eee; 
+.tab { 	display: inline-block; background: #eee; 
 		border: solid 1px #999; border-bottom: none; 
 		-webkit-border-top-right-radius: 10px;
 		-moz-border-radius-topright: 10px;
@@ -188,7 +191,7 @@ table.sortable tr.sortbottom td {
 		border-radius: 10px;
 		border-top-left-radius: 0;}
 
-table.data {max-width:350; table-layout:fixed;text-align:center;}
+table.data {max-width:350px; table-layout:fixed;text-align:center;}
 .data th {cursor: pointer; text-decoration: none;}
 .data th,.data td{padding:3px 12px;}
 .data tr {border-bottom: 1px solid #E3E3E3;}
